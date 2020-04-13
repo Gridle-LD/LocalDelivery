@@ -11,8 +11,11 @@ public interface JsonApiHolder {
     Call<SignUpResponse> signUp(@Body SignUpData signUpData);
 
     @POST("otpVerify/{userId}")
-    Call<OtpResponse> verifyOtp(@Path("userId") String userId, @Body OtpData otpData);
+    Call<OtpResponse> verifyOtp(@Path("userId") String id, @Body OtpData otpData);
 
     @POST("login")
     Call<LoginResponse> login(@Body LoginData loginData);
+
+    @POST("otpResend/{userId}")
+    Call<ResendOtpResponse> resendOtp(@Path("userId") String id);
 }
