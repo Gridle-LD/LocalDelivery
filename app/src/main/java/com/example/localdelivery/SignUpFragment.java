@@ -57,33 +57,33 @@ public class SignUpFragment extends Fragment {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-                        new OtpFragment()).commit();
-//                editTextNameSignUp = view.findViewById(R.id.editTextNameSignUp);
-//                editTextMobileNumberSignUp = view.findViewById(R.id.editTextMobileNumberSignUp);
-//                editTextCreatePasswordSignUp = view.findViewById(R.id.editTextCreatePasswordSignUp);
-//                editTextConfirmPasswordSignUp = view.findViewById(R.id.editTextConfirmPasswordSignUp);
-//                String name = editTextNameSignUp.getText().toString().trim();
-//                if(name.equals("")) {
-//                    Toast.makeText(mContext, "Name cannot be empty !", Toast.LENGTH_LONG).show();
-//                    return ;
-//                }
-//                String mobileNumber = editTextMobileNumberSignUp.getText().toString().trim();
-//                if(mobileNumber.length()<10) {
-//                    Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                String createPassword = editTextCreatePasswordSignUp.getText().toString().trim();
-//                String confirmPassword = editTextConfirmPasswordSignUp.getText().toString().trim();
-//                if(createPassword.length()<6) {
-//                    Toast.makeText(mContext, "Password length too small !", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                if(!createPassword.equals(confirmPassword)) {
-//                    Toast.makeText(mContext, "Passwords do not match !", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                signUp(name, mobileNumber, confirmPassword);
+//                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+//                        new OtpFragment()).commit();
+                editTextNameSignUp = view.findViewById(R.id.editTextNameSignUp);
+                editTextMobileNumberSignUp = view.findViewById(R.id.editTextMobileNumberSignUp);
+                editTextCreatePasswordSignUp = view.findViewById(R.id.editTextCreatePasswordSignUp);
+                editTextConfirmPasswordSignUp = view.findViewById(R.id.editTextConfirmPasswordSignUp);
+                String name = editTextNameSignUp.getText().toString().trim();
+                if(name.equals("")) {
+                    Toast.makeText(mContext, "Name cannot be empty !", Toast.LENGTH_LONG).show();
+                    return ;
+                }
+                String mobileNumber = editTextMobileNumberSignUp.getText().toString().trim();
+                if(mobileNumber.length()<10) {
+                    Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String createPassword = editTextCreatePasswordSignUp.getText().toString().trim();
+                String confirmPassword = editTextConfirmPasswordSignUp.getText().toString().trim();
+                if(createPassword.length()<6) {
+                    Toast.makeText(mContext, "Password length too small !", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(!createPassword.equals(confirmPassword)) {
+                    Toast.makeText(mContext, "Passwords do not match !", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                signUp(name, mobileNumber, confirmPassword);
             }
         });
         textViewLogin.setOnClickListener(new View.OnClickListener() {
