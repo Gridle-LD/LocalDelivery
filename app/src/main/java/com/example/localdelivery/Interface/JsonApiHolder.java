@@ -1,0 +1,38 @@
+package com.example.localdelivery.Interface;
+
+import com.example.localdelivery.model.LoginData;
+import com.example.localdelivery.model.LoginResponse;
+import com.example.localdelivery.model.NearbyShopsData;
+import com.example.localdelivery.model.NearbyShopsResponse;
+import com.example.localdelivery.model.OtpData;
+import com.example.localdelivery.model.OtpResponse;
+import com.example.localdelivery.model.ResendOtpResponse;
+import com.example.localdelivery.model.SignUpData;
+import com.example.localdelivery.model.SignUpResponse;
+
+import java.util.List;
+
+import io.reactivex.Single;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+
+public interface JsonApiHolder {
+
+    @POST("signUp")
+    Single<SignUpResponse> signUp(@Body SignUpData signUpData);
+
+    @POST("otpVerify/{userId}")
+    Single<OtpResponse> verifyOtp(@Path("userId") String id, @Body OtpData otpData);
+
+    @POST("login")
+    Single<LoginResponse> login(@Body LoginData loginData);
+
+    @POST("otpResend/{userId}")
+    Single<ResendOtpResponse> resendOtp(@Path("userId") String id);
+
+    @PUT("shopaction/getNearbyShops")
+    Single<NearbyShopsResponse> getNearbyShops(@Body NearbyShopsData nearbyShopsData);
+}
