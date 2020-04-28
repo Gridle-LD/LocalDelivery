@@ -119,15 +119,15 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                 }
                 if(otp.length()<4) {
                     Toast.makeText(mContext, "Fill all the fields !", Toast.LENGTH_LONG).show();
-//                    return;
+                    return;
                 }
                 stopTimer();
                 timer_text_view.setVisibility(View.INVISIBLE);
                 resend_otp_text.setVisibility(View.INVISIBLE);
-//                verifyOtp(otp);
-                Intent intent = new Intent(mContext , MainActivity.class);
-                startActivity(intent);
-                mActivity.finish();
+                verifyOtp(otp);
+//                Intent intent = new Intent(mContext , MainActivity.class);
+//                startActivity(intent);
+//                mActivity.finish();
             }
         });
 

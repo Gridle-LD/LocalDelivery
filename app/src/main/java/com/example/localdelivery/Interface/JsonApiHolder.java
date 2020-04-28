@@ -21,16 +21,16 @@ import retrofit2.http.Path;
 
 public interface JsonApiHolder {
 
-    @POST("signUp")
+    @POST("user/signUp")
     Single<SignUpResponse> signUp(@Body SignUpData signUpData);
 
-    @POST("otpVerify/{userId}")
+    @POST("user/otpVerify/{userId}")
     Single<OtpResponse> verifyOtp(@Path("userId") String id, @Body OtpData otpData);
 
-    @POST("login")
+    @POST("user/login")
     Single<LoginResponse> login(@Body LoginData loginData);
 
-    @POST("otpResend/{userId}")
+    @POST("user/otpResend/{userId}")
     Single<ResendOtpResponse> resendOtp(@Path("userId") String id);
 
     @PUT("shopaction/getNearbyShops")

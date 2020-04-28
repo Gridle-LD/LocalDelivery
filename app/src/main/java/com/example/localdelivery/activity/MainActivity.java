@@ -4,14 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.MainPagerAdapter;
-import com.example.localdelivery.fragment.SignUpFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {

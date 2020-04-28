@@ -9,17 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.localdelivery.R;
+import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NearbyShopsAdapter extends RecyclerView.Adapter<NearbyShopsAdapter.NearbyShopsViewHolder>{
     private Context context;
-    private List<NearbyShopsResponse.NearbyShopsObject> nearbyShopsResponses;
+    private List<ShopsEntity> nearbyShopsResponses;
     private OnItemClickListener mListener;
 
     public NearbyShopsAdapter(Context context,
-                              List<NearbyShopsResponse.NearbyShopsObject> nearbyShopsResponses) {
+                              List<ShopsEntity> nearbyShopsResponses) {
         this.context = context;
         this.nearbyShopsResponses = new ArrayList<>(nearbyShopsResponses);
     }
@@ -42,7 +43,7 @@ public class NearbyShopsAdapter extends RecyclerView.Adapter<NearbyShopsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull NearbyShopsViewHolder holder, int position) {
-        NearbyShopsResponse.NearbyShopsObject nearbyShopsObject = nearbyShopsResponses.get(position);
+        ShopsEntity nearbyShopsObject = nearbyShopsResponses.get(position);
         holder.textViewShopName.setText(nearbyShopsObject.getShopName());
         holder.textViewShopType.setText(nearbyShopsObject.getShopType());
     }
