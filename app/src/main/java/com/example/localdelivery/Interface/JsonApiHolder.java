@@ -9,11 +9,7 @@ import com.example.localdelivery.model.OtpResponse;
 import com.example.localdelivery.model.ResendOtpResponse;
 import com.example.localdelivery.model.SignUpData;
 import com.example.localdelivery.model.SignUpResponse;
-
-import java.util.List;
-
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;

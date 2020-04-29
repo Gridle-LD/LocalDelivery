@@ -72,18 +72,22 @@ public class LoginFragment extends Fragment {
         imageViewButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mobileNumber = editTextMobileNumber.getText().toString().trim();
-                if(mobileNumber.length()<10) {
-                    Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                String password = editTextPassword.getText().toString().trim();
-                if(password.length()==0) {
-                    Toast.makeText(mContext, "Password field cannot be empty !", Toast.LENGTH_LONG)
-                            .show();
-                    return;
-                }
-                login(mobileNumber, password);
+//                String mobileNumber = editTextMobileNumber.getText().toString().trim();
+//                if(mobileNumber.length()<10) {
+//                    Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                String password = editTextPassword.getText().toString().trim();
+//                if(password.length()==0) {
+//                    Toast.makeText(mContext, "Password field cannot be empty !", Toast.LENGTH_LONG)
+//                            .show();
+//                    return;
+//                }
+//                login(mobileNumber, password);
+                Intent intent = new Intent(mActivity , MainActivity.class);
+//                                intent.putExtra(MainActivity.firstLogin, "true");
+                startActivity(intent);
+                Objects.requireNonNull(mActivity).finish();
             }
         });
 

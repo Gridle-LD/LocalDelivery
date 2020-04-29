@@ -13,13 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ShopDetailsActivity"></activity>
+        <activity android:name=".activity.ShopDetailActivity"
+            android:theme="@style/AppTheme.ShopDetail"/>
         <activity
-            android:name=".activity.SignUpLoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.SignUpLoginActivity" />
         <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,8 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

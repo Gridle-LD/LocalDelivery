@@ -10,17 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.localdelivery.R;
 import com.example.localdelivery.local.ShopsEntity;
-import com.example.localdelivery.model.NearbyShopsResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearbyShopsAdapter extends RecyclerView.Adapter<NearbyShopsAdapter.NearbyShopsViewHolder>{
+public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsViewHolder>{
     private Context context;
     private List<ShopsEntity> nearbyShopsResponses;
     private OnItemClickListener mListener;
 
-    public NearbyShopsAdapter(Context context,
-                              List<ShopsEntity> nearbyShopsResponses) {
+    public ShopsAdapter(Context context,
+                        List<ShopsEntity> nearbyShopsResponses) {
         this.context = context;
         this.nearbyShopsResponses = new ArrayList<>(nearbyShopsResponses);
     }

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ShopDetailActivity"
+    android:background="#E6DFE1">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/imageViewVisitStore">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardViewToolBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="@drawable/card_shape"
+                            app:cardElevation="0dp"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <ImageView
+                            android:id="@+id/imageViewBackButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:elevation="1dp"
+                            android:src="@drawable/back_button"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBar"
+                            app:layout_constraintStart_toStartOf="@+id/cardViewToolBar"
+                            app:layout_constraintTop_toTopOf="@+id/cardViewToolBar" />
+
+                        <ImageView
+                            android:id="@+id/imageViewFavLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/fav_like"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBar"
+                            app:layout_constraintEnd_toEndOf="@+id/cardViewToolBar"
+                            app:layout_constraintTop_toTopOf="@+id/cardViewToolBar" />
+
+                        <ImageView
+                            android:id="@+id/imageViewFavUnlike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:elevation="1dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBar"
+                            app:layout_constraintEnd_toEndOf="@+id/cardViewToolBar"
+                            app:layout_constraintTop_toTopOf="@+id/cardViewToolBar"
+                            app:srcCompat="@drawable/fav_unlike" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardViewShopImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            app:cardCornerRadius="12dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cardViewToolBar">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="160dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/shop_image" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraint_layout_shop_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="125dp"
+                            android:layout_marginTop="16dp"
+                            android:background="#FBF9FA"
+                            app:layout_constraintTop_toBottomOf="@+id/cardViewShopImage"
+                            tools:layout_editor_absoluteX="0dp">
+
+                                <ImageView
+                                    android:id="@+id/imageView21"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/rating_box" />
+
+                                <TextView
+                                    android:id="@+id/textView7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserrat_semi_bold"
+                                    android:text="4.5"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/imageView21"
+                                    app:layout_constraintEnd_toEndOf="@+id/imageView21"
+                                    app:layout_constraintStart_toStartOf="@+id/imageView21"
+                                    app:layout_constraintTop_toTopOf="@+id/imageView21" />
+
+                                <TextView
+                                    android:id="@+id/textView8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:fontFamily="@font/montserrat_semi_bold"
+                                    android:text="Creative Collection"
+                                    android:textColor="#2B2024"
+                                    android:textSize="16sp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textView9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:fontFamily="@font/montserrat_light"
+                                    android:text="Shop Type : Grocery"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toTopOf="@+id/textView10"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                                <TextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:fontFamily="@font/montserrat_light"
+                                    android:text="9:00 AM - 9:00 PM"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toTopOf="@+id/textView11"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                                <TextView
+                                    android:id="@+id/textView11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:fontFamily="@font/montserrat_light"
+                                    android:text="MIG 1 C Block Shyam Nagar Kanpur"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraint_layout_call"
+                            android:layout_width="0dp"
+                            android:layout_height="125dp"
+                            android:layout_marginTop="16dp"
+                            android:background="#FBF9FA"
+                            app:layout_constraintEnd_toStartOf="@+id/divider"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_shop_description">
+
+                                <ImageView
+                                    android:id="@+id/imageView23"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    app:layout_constraintBottom_toTopOf="@+id/textView13"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/call_button" />
+
+                                <TextView
+                                    android:id="@+id/textView13"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="Call Store"
+                                    android:textColor="#2B2024"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/imageView23" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:id="@+id/divider"
+                            android:layout_width="1dp"
+                            android:layout_height="125dp"
+                            android:layout_marginTop="16dp"
+                            android:background="#FD0054"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/constraint_layout_shop_description" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraint_layout_review"
+                            android:layout_width="0dp"
+                            android:layout_height="125dp"
+                            android:layout_marginTop="16dp"
+                            android:background="#FBF9FA"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/divider"
+                            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_shop_description">
+
+                                <ImageView
+                                    android:id="@+id/imageView24"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    app:layout_constraintBottom_toTopOf="@+id/textView14"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/review_button" />
+
+                                <TextView
+                                    android:id="@+id/textView14"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="Write a Review"
+                                    android:textColor="#2B2024"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/imageView24" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_call"
+                            app:srcCompat="@drawable/tick" />
+
+                        <TextView
+                            android:id="@+id/textViewLocation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Delivering to : MIG 1 C Block Shyam Nagar Kanpur"
+                            android:textColor="#2B2024"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView25"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView25"
+                            app:layout_constraintTop_toTopOf="@+id/imageView25" />
+
+                        <ImageView
+                            android:id="@+id/imageView26"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView25"
+                            app:srcCompat="@drawable/tick" />
+
+                        <TextView
+                            android:id="@+id/textView16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Currently preparing order for pickup"
+                            android:textColor="#2B2024"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView26"
+                            app:layout_constraintStart_toEndOf="@+id/imageView26"
+                            app:layout_constraintTop_toTopOf="@+id/imageView26" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/imageViewVisitStore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/visit_store_button" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_order_type"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blurr_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#2B2024"
+                    android:alpha="0.8">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/order_type_screen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/order_type_screen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewPickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pickup"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textColor="#2B2024"
+                    app:layout_constraintBottom_toBottomOf="@+id/order_type_screen"
+                    app:layout_constraintEnd_toEndOf="@+id/order_type_screen"
+                    app:layout_constraintStart_toStartOf="@+id/order_type_screen"
+                    app:layout_constraintTop_toTopOf="@+id/order_type_screen" />
+
+                <TextView
+                    android:id="@+id/textViewDelivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="Delivery"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textColor="#2B2024"
+                    app:layout_constraintBottom_toBottomOf="@+id/order_type_screen"
+                    app:layout_constraintEnd_toEndOf="@+id/order_type_screen"
+                    app:layout_constraintStart_toStartOf="@+id/order_type_screen"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPickup" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
