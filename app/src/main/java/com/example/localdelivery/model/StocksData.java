@@ -10,6 +10,7 @@ public class StocksData {
     private boolean available;
     private String shop;
     private String createdAt;
+    private int quantity;
 
     public StocksData(String _id, String name, String price, String type,
                       String image, boolean available, String shop, String createdAt) {
@@ -85,5 +86,13 @@ public class StocksData {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

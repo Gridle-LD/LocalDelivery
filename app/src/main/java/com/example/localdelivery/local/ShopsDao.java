@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public interface ShopsDao {
 
     @Delete
     void delete(ShopsEntity shopsEntity);
+
+    @Query("delete from shops_table")
+    void deleteAll();
 
     @Query("select * from shops_table")
     LiveData<List<ShopsEntity>> getAllShops();

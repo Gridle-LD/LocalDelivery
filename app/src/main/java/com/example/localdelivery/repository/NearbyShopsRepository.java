@@ -2,6 +2,7 @@ package com.example.localdelivery.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.lifecycle.LiveData;
 import com.example.localdelivery.Interface.JsonApiHolder;
@@ -65,9 +66,9 @@ public class NearbyShopsRepository {
                                             shopsObject.getShopName(),
                                             shopsObject.getShopType()
                                     );
-
                                     shopsEntities.add(shopsEntity);
                                 }
+                                Log.e("TAG", "onSuccess: " + shopsEntities.size());
                                 add(shopsEntities);
                             }
 
@@ -84,9 +85,15 @@ public class NearbyShopsRepository {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
+                shopsDao.deleteAll();
+            }
+        }).andThen(Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
                 shopsDao.insert(shopsEntities);
             }
-        }).subscribeOn(Schedulers.io())
+        }))
+                .subscribeOn(Schedulers.io())
                 .subscribe();
     }
 

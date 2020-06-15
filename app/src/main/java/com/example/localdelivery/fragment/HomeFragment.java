@@ -117,6 +117,9 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onItemClick(int position) {
                                 Intent intent = new Intent(mContext, ShopDetailActivity.class);
+
+                                //knowing the position of the clicked shop
+                                intent.putExtra(String.valueOf(ShopDetailActivity.position), position);
                                 startActivity(intent);
                             }
                         });

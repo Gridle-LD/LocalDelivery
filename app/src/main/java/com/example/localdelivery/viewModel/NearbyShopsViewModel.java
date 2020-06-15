@@ -20,7 +20,7 @@ public class NearbyShopsViewModel extends AndroidViewModel {
         nearbyShopsRepository = new NearbyShopsRepository(application);
     }
 
-    public  LiveData<List<ShopsEntity>> getShopsList() {
+    public LiveData<List<ShopsEntity>> getShopsList() {
         shopsList = nearbyShopsRepository.getAllShops();
         return shopsList;
     }

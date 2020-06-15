@@ -23,11 +23,14 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             public void run(){
 
+                //If logged in
                 if(prefUtils.isLoggedIn()){
                     Intent intent = new Intent(SplashActivity.this , MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
+
+                //If not logged in
                 else {
                     Intent intent = new Intent(SplashActivity.this , SignUpLoginActivity.class);
                     startActivity(intent);

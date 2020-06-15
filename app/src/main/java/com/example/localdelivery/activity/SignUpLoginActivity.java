@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -28,10 +29,10 @@ import java.util.Locale;
 public class SignUpLoginActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
-    private int mrequestCode = 1;
-    private Double latitude=0.0;
-    private Double longitude=0.0;
-    private String address="";
+    private int mRequestCode = 1;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
+    private String address = "";
     private PrefUtils prefUtils;
 
     @Override
@@ -39,8 +40,10 @@ public class SignUpLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
         getSupportFragmentManager().beginTransaction().replace(
-                R.id.fragment_sign_up_login , new SignUpFragment())
+                R.id.fragment_sign_up_login, new SignUpFragment())
                 .commit();
+
+        //for location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(
                 SignUpLoginActivity.this);
         prefUtils = new PrefUtils(SignUpLoginActivity.this);
@@ -49,48 +52,23 @@ public class SignUpLoginActivity extends AppCompatActivity {
     }
 
     private void getLocation() {
+        //Checking permission
         if (ContextCompat.checkSelfPermission(SignUpLoginActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
 
-            Toast.makeText(SignUpLoginActivity.this, "granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpLoginActivity.this, "Location Permission Granted",
+                    Toast.LENGTH_SHORT).show();
             getLatLong();
-        }
-        else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(SignUpLoginActivity.this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-
-                new AlertDialog.Builder(SignUpLoginActivity.this)
-                        .setTitle("Permission needed")
-                        .setMessage("Access to your location is needed")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(SignUpLoginActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        mrequestCode);
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show();
-
-
-            }
-            else {
-                ActivityCompat.requestPermissions(SignUpLoginActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mrequestCode);
-            }
+        } else {
+            //Asking for permission
+            ActivityCompat.requestPermissions(SignUpLoginActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mRequestCode);
         }
     }
 
+    //finding latitude, longitude and address of current location
+    @SuppressLint("MissingPermission")
     private void getLatLong() {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(SignUpLoginActivity.this, new OnSuccessListener<Location>() {
@@ -110,6 +88,7 @@ public class SignUpLoginActivity extends AppCompatActivity {
                 });
     }
 
+    //converting lat long to address string
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(SignUpLoginActivity.this, Locale.getDefault());
@@ -134,19 +113,46 @@ public class SignUpLoginActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if(requestCode == mrequestCode){
+        if(requestCode == mRequestCode){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(SignUpLoginActivity.this , "Permission Granted" ,
                         Toast.LENGTH_SHORT).show();
                 getLatLong();
             }
             else{
-                Toast.makeText(SignUpLoginActivity.this , "Not Granted" ,
+                //describing importance of the permission
+                Toast.makeText(SignUpLoginActivity.this , "Permission Not Granted !" ,
                         Toast.LENGTH_SHORT).show();
-                moveTaskToBack(true);
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
+                buildDialog();
             }
         }
+    }
+
+    private void buildDialog() {
+        new AlertDialog.Builder(SignUpLoginActivity.this)
+                .setTitle("Permission needed")
+                .setMessage("Access to your location is needed")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(SignUpLoginActivity.this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                mRequestCode);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        //closing the app
+                        moveTaskToBack(true);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
     }
 }

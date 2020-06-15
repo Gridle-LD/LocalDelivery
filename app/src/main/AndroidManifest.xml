@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.localdelivery">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,6 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".activity.SignUpLoginActivity"
+            android:foregroundServiceType="location"
+            tools:ignore="Instantiatable" />
+
         <activity android:name=".activity.ShopDetailActivity"
             android:theme="@style/AppTheme.ShopDetail"/>
         <activity

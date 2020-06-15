@@ -1,16 +1,14 @@
 package com.example.localdelivery.local;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
-
 import com.example.localdelivery.model.StocksData;
 import java.util.List;
 
-@Entity(tableName = "shops_table")
+@Entity(tableName = "shops_table", indices = {@Index(value = {"_id"}, unique = true)})
 public class ShopsEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;

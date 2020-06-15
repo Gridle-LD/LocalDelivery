@@ -109,8 +109,8 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         imageViewSubmitOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-                        new SignUpFragment()).commit();
+//                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+//                        new SignUpFragment()).commit();
                 String otp="";
                 for(int i=0; i<code.length; i++) {
                     if(code[i]!='\u0000') {
@@ -153,7 +153,6 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
             public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
                 updateTimer();
-
             }
 
             @Override
