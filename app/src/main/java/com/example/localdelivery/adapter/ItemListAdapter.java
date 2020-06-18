@@ -51,8 +51,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
         StocksData stocksData = stocksDataList.get(position);
         holder.textViewName.setText(stocksData.getName());
         holder.textViewPrice.setText("Price - Rs " + stocksData.getPrice());
-        Log.e("Item List Adapter", "onBindViewHolder: " + (stocksData.getQuantity()+1));
-//        holder.textViewQuantity.setText(stocksData.getQuantity());
+        holder.textViewQuantity.setText(String.valueOf(stocksData.getQuantity()));
     }
 
     @Override
@@ -102,10 +101,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
                     }
                 }
             });
-        }
-
-        public void setCount() {
-
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,11 @@ import android.widget.Toast;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.StocksTabLayoutAdapter;
 import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.model.StocksData;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StocksFragment extends Fragment {
 
@@ -30,14 +35,16 @@ public class StocksFragment extends Fragment {
     private Activity mActivity;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private ShopsEntity shop;
+    private static ShopsEntity shop;
     private ImageView imageViewViewCart;
+    private List<StocksData> cartList;
 
     public StocksFragment() {
         // Required empty public constructor
     }
 
     public StocksFragment(ShopsEntity shop) {
+        cartList = new ArrayList<>();
         this.shop = shop;
     }
 
@@ -65,7 +72,13 @@ public class StocksFragment extends Fragment {
         imageViewViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "View Cart !", Toast.LENGTH_LONG).show();
+                for(StocksData stocksData : shop.getStock()) {
+                    if(stocksData.getQuantity()!=0) {
+                        cartList.add(stocksData);
+                    }
+                }
+                getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                        new OrderFragment(cartList)).commit();
             }
         });
         return view;
@@ -79,6 +92,16 @@ public class StocksFragment extends Fragment {
 
         if(!searchView.isFocused()) {
             searchView.clearFocus();
+        }
+    }
+
+    public static void changeQuantity(String type, int position, int quantity, String name) {
+        int i=0;
+        for(StocksData stocksData : shop.getStock()) {
+            if(stocksData.getType().equals(type) && stocksData.getName().equals(name)) {
+                shop.getStock().get(i).setQuantity(quantity);
+            }
+            ++i;
         }
     }
 

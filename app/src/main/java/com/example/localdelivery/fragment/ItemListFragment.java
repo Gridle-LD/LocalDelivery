@@ -77,19 +77,20 @@ public class ItemListFragment extends Fragment {
             public void onAddClick(int position, TextView textView) {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
-                Toast.makeText(getContext(), String.valueOf(++count), Toast.LENGTH_LONG).show();
-//                textView.setText(++count);
-//                stocksDataList.get(position).setQuantity(++count);
-//                itemListAdapter.notifyDataSetChanged();
+                stocksDataList.get(position).setQuantity(++count);
+                StocksFragment.changeQuantity(type, position, count, stocksDataList.get(position).getName());
+                itemListAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onRemoveClick(int position, TextView textView) {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
-//                textView.setText(--count);
-//                stocksDataList.get(position).setQuantity(--count);
-//                itemListAdapter.notifyDataSetChanged();
+                if(count!=0) {
+                    stocksDataList.get(position).setQuantity(--count);
+                    StocksFragment.changeQuantity(type, position, count, stocksDataList.get(position).getName());
+                    itemListAdapter.notifyDataSetChanged();
+                }
             }
         });
         return view;
@@ -98,7 +99,6 @@ public class ItemListFragment extends Fragment {
     private void getStocks() {
         for(StocksData stocksData : shop.getStock()) {
             if(stocksData.getType().equals(type)) {
-                stocksData.setQuantity(0);
                 stocksDataList.add(stocksData);
             }
         }

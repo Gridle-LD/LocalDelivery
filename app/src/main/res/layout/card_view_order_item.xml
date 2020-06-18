@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView2"
+            android:id="@+id/cardView2Order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -23,40 +23,42 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageViewItemImage"
+                android:id="@+id/imageViewItemImageOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/item_image" />
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textViewItemName"
+            android:id="@+id/textViewItemNameOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lays - Masala magic"
-            android:textSize="16sp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_medium"
+            android:text="Lays - Masala magic"
             android:textColor="#2B2024"
-            app:layout_constraintBottom_toTopOf="@+id/textViewItemPrice"
-            app:layout_constraintStart_toEndOf="@+id/cardView2"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewItemTypeOrder"
+            app:layout_constraintStart_toEndOf="@+id/cardView2Order"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewItemPrice"
+            android:id="@+id/textViewItemPriceOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Price - Rs 20"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/montserrat_regular"
-            android:textSize="12sp"
+            android:text="Price - Rs"
             android:textColor="#2B2024"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardView2"
-            app:layout_constraintTop_toBottomOf="@+id/textViewItemName" />
+            app:layout_constraintStart_toEndOf="@+id/cardView2Order"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemTypeOrder" />
 
         <ImageView
-            android:id="@+id/imageViewAddItem"
+            android:id="@+id/imageViewAddItemOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -66,15 +68,15 @@
             app:srcCompat="@drawable/add_button" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout_add_item_part"
+            android:id="@+id/constraint_layout_add_item_part_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItem"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewAddItem"
-            app:layout_constraintTop_toTopOf="@+id/imageViewAddItem">
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItemOrder"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewAddItemOrder"
+            app:layout_constraintTop_toTopOf="@+id/imageViewAddItemOrder">
 
             <ImageView
-                android:id="@+id/imageViewAddItemPart"
+                android:id="@+id/imageViewAddItemPartOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/add_button_part"
@@ -83,18 +85,18 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <ImageView
-                android:id="@+id/imageViewRemoveItem"
+                android:id="@+id/imageViewRemoveItemOrder"
                 android:layout_width="12dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItemPart"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewAddItemPart"
-                app:layout_constraintTop_toTopOf="@+id/imageViewAddItemPart"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItemPartOrder"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewAddItemPartOrder"
+                app:layout_constraintTop_toTopOf="@+id/imageViewAddItemPartOrder"
                 app:srcCompat="@drawable/remove_button" />
 
             <TextView
-                android:id="@+id/textViewItemQuantity"
+                android:id="@+id/textViewItemQuantityOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -102,21 +104,46 @@
                 android:textSize="12sp"
                 android:textColor="#FD0054"
                 android:fontFamily="@font/montserrat_semi_bold"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItemPart"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewAddItemPart"
-                app:layout_constraintStart_toStartOf="@+id/imageViewAddItemPart"
-                app:layout_constraintTop_toTopOf="@+id/imageViewAddItemPart" />
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItemPartOrder"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewAddItemPartOrder"
+                app:layout_constraintStart_toStartOf="@+id/imageViewAddItemPartOrder"
+                app:layout_constraintTop_toTopOf="@+id/imageViewAddItemPartOrder" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            android:id="@+id/divider2"
+            android:id="@+id/divider2Order"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="#FD0054"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewItemTypeOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Type : "
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="#2B2024"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewItemPriceOrder"
+            app:layout_constraintStart_toEndOf="@+id/cardView2Order"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemNameOrder" />
+
+        <TextView
+            android:id="@+id/textViewTotalItemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Rs :"
+            android:textColor="#2B2024"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,27 +1,25 @@
 package com.example.localdelivery.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.LiveData;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
-
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.localdelivery.R;
 import com.example.localdelivery.fragment.StocksFragment;
-import com.example.localdelivery.local.ShopsDao;
-import com.example.localdelivery.local.ShopsDatabase;
 import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShopDetailActivity extends AppCompatActivity {
@@ -45,6 +43,8 @@ public class ShopDetailActivity extends AppCompatActivity {
     private TextView textViewShopName;
     private TextView textViewShopType;
     private TextView textViewShopAddress;
+    private String phoneNumber;
+    private int mRequestCode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         constraintLayoutCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ShopDetailActivity.this, "On a Call !", Toast.LENGTH_LONG)
-                        .show();
+                call();
             }
         });
 
@@ -151,12 +150,43 @@ public class ShopDetailActivity extends AppCompatActivity {
         viewModel.getShopsList().observe(ShopDetailActivity.this, new Observer<List<ShopsEntity>>() {
             @Override
             public void onChanged(List<ShopsEntity> shopsEntities) {
-                shop = shopsEntities.get(getIntent().getIntExtra(String.valueOf(position), 0));
-                textViewShopName.setText(shop.getShopName());
-                textViewShopType.setText("Shop Type : " + shop.getShopType());
-                textViewShopAddress.setText(shop.getAddress());
-                textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
+                if(shopsEntities.size()!=0) {
+                    shop = shopsEntities.get(getIntent().getIntExtra(String.valueOf(position), 0));
+                    textViewShopName.setText(shop.getShopName());
+                    textViewShopType.setText("Shop Type : " + shop.getShopType());
+                    textViewShopAddress.setText(shop.getAddress());
+                    textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
+                    phoneNumber = shop.getPhoneNumber();
+                }
             }
         });
+    }
+
+    private void call() {
+        String uri = "tel:" + phoneNumber.trim();
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse(uri));
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},
+                    mRequestCode);
+            return;
+        }
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == mRequestCode) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                call();
+            }
+            else {
+                Toast.makeText(ShopDetailActivity.this, "Call Permission Not Granted !",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

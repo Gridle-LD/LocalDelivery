@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.OrderFragment"
+    android:background="#E6DFE1">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewToolBarOrder"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/card_shape"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageViewBackButtonOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:elevation="1dp"
+                android:src="@drawable/back_button"
+                app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBarOrder"
+                app:layout_constraintStart_toStartOf="@+id/cardViewToolBarOrder"
+                app:layout_constraintTop_toTopOf="@+id/cardViewToolBarOrder" />
+
+            <ImageView
+                android:id="@+id/imageViewFavLikeOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/fav_like"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBarOrder"
+                app:layout_constraintEnd_toEndOf="@+id/cardViewToolBarOrder"
+                app:layout_constraintTop_toTopOf="@+id/cardViewToolBarOrder" />
+
+            <ImageView
+                android:id="@+id/imageViewFavUnlikeOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:elevation="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBarOrder"
+                app:layout_constraintEnd_toEndOf="@+id/cardViewToolBarOrder"
+                app:layout_constraintTop_toTopOf="@+id/cardViewToolBarOrder"
+                app:srcCompat="@drawable/fav_unlike" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout_order_items_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewToolBarOrder"
+                android:background="@android:color/white">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_order_item_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOrderItem"
+                    tools:listitem="@layout/card_view_order_item" />
+
+                <TextView
+                    android:id="@+id/textViewAddAnotherItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Add another item +"
+                    android:textSize="12sp"
+                    android:textColor="#FD0054"
+                    android:fontFamily="@font/montserrat_light"
+                    app:layout_constraintStart_toStartOf="@id/constraint_layout_order_items_list"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view_order_item_list" />
+
+                <TextView
+                    android:id="@+id/textViewBillTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text="Bill Total : Rs 0"
+                    android:textColor="#2B2024"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/constraint_layout_order_items_list"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewAddAnotherItem" />
+
+                <TextView
+                    android:id="@+id/textViewOrderItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="Order Items"
+                    android:textColor="#FD0054"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@id/constraint_layout_order_items_list"
+                    app:layout_constraintStart_toStartOf="@id/constraint_layout_order_items_list"
+                    app:layout_constraintTop_toTopOf="@id/constraint_layout_order_items_list" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout_customer_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/constraint_layout_order_items_list"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:id="@+id/textViewCustomerDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="Customer Details"
+                    android:textColor="#FD0054"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/editTextCustomerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Name"
+                    android:fontFamily="@font/montserrat_regular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewCustomerDetails" />
+
+                <EditText
+                    android:id="@+id/editTextCustomerContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Contact Number"
+                    android:fontFamily="@font/montserrat_regular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editTextCustomerName" />
+
+                <EditText
+                    android:id="@+id/editTextCustomerAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Address"
+                    android:fontFamily="@font/montserrat_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editTextCustomerContact" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/imageButtonPlaceOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/place_order_button"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/constraint_layout_customer_details"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

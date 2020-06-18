@@ -17,6 +17,8 @@ public class PrefUtils {
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String ADDRESS = "address";
+    private static final String NAME = "name";
+    private static final String CONTACT_NUMBER = "contactNumber";
 
     public PrefUtils(Context context){
         ctx = context;
@@ -69,4 +71,22 @@ public class PrefUtils {
     public String getAddress() {
         return sp.getString(ADDRESS, null);
     }
+
+    public void setName(String name) {
+        editor.putString(NAME, name).commit();
+    }
+
+    public String getNAME() {
+        return sp.getString(NAME, null);
+    }
+
+    public void setContactNumber(String contactNumber) {
+        editor.putString(CONTACT_NUMBER, contactNumber).commit();
+    }
+
+    public String getContactNumber() {
+        return sp.getString(CONTACT_NUMBER, null);
+    }
+
+
 }
