@@ -6,10 +6,12 @@ import com.example.localdelivery.model.NearbyShopsData;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.OtpData;
 import com.example.localdelivery.model.OtpResponse;
+import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.ResendOtpResponse;
 import com.example.localdelivery.model.SignUpData;
 import com.example.localdelivery.model.SignUpResponse;
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -31,4 +33,7 @@ public interface JsonApiHolder {
 
     @PUT("shopaction/getNearbyShops")
     Single<NearbyShopsResponse> getNearbyShops(@Body NearbyShopsData nearbyShopsData);
+
+    @POST("user/order")
+    Single<ResponseBody> placeOrder(@Body PlaceOrderData placeOrderData);
 }

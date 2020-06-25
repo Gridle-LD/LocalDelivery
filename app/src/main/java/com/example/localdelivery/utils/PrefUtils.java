@@ -19,6 +19,7 @@ public class PrefUtils {
     private static final String ADDRESS = "address";
     private static final String NAME = "name";
     private static final String CONTACT_NUMBER = "contactNumber";
+    private static final String USER_ID = "userId";
 
     public PrefUtils(Context context){
         ctx = context;
@@ -88,5 +89,11 @@ public class PrefUtils {
         return sp.getString(CONTACT_NUMBER, null);
     }
 
+    public void setUserId(String userId) {
+        editor.putString(USER_ID, userId);
+    }
 
+    public String getUserId() {
+        return sp.getString(USER_ID, null);
+    }
 }

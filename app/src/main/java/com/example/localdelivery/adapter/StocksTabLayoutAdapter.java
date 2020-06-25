@@ -7,13 +7,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.localdelivery.fragment.ItemListFragment;
 import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.model.StocksData;
+
+import java.util.List;
 
 public class StocksTabLayoutAdapter extends FragmentStatePagerAdapter {
 
     private int NoOfTabs;
-    private ShopsEntity shop;
+    private List<StocksData> shop;
 
-    public StocksTabLayoutAdapter(@NonNull FragmentManager fm, int NoOfTabs, Context context, ShopsEntity shop) {
+    public StocksTabLayoutAdapter(@NonNull FragmentManager fm, int NoOfTabs, Context context, List<StocksData> shop) {
         super(fm);
         this.NoOfTabs = NoOfTabs;
         this.shop = shop;

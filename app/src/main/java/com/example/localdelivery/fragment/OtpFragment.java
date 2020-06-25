@@ -327,6 +327,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                             @Override
                             public void onSuccess(OtpResponse otpResponse) {
                                 prefUtils.createLogin("JWT "+otpResponse.getToken());
+                                prefUtils.setUserId(userId);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
                                 Intent intent = new Intent(mContext , MainActivity.class);
                                 startActivity(intent);

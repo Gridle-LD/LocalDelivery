@@ -2,14 +2,10 @@ package com.example.localdelivery.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,7 +19,7 @@ public class RetrofitInstance {
     private static Retrofit retrofit=null;
     private static int REQUEST_TIMEOUT = 60;
     private static OkHttpClient okHttpClient;
-    private static final String BASE_URL = "https://a6d18911528c.ngrok.io/";
+    private static final String BASE_URL = "https://9d67e1a8596a.ngrok.io/";
 
     public String getBaseUrl() {
         return BASE_URL;

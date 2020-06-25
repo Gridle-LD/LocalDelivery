@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String mobileNumber, String password) {
-        LoginData loginData = new LoginData(mobileNumber, password);
+        final LoginData loginData = new LoginData(mobileNumber, password);
 
         disposable.add(
                 jsonApiHolder.login(loginData)
@@ -115,6 +115,7 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onSuccess(LoginResponse loginResponse) {
                                 prefUtils.createLogin("JWT "+loginResponse.getToken());
+                                prefUtils.setUserId(loginResponse.getUserId());
                                 Intent intent = new Intent(mActivity , MainActivity.class);
 //                                intent.putExtra(MainActivity.firstLogin, "true");
                                 startActivity(intent);

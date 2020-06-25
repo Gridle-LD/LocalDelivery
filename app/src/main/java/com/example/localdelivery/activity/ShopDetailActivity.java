@@ -110,7 +110,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailActivity.this, "Pickup",
                                 Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop)).commit();
+                                new StocksFragment(shop.getStock(), shop.get_id())).commit();
                     }
                 });
 
@@ -120,7 +120,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailActivity.this, "Delivery",
                                 Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop)).commit();
+                                new StocksFragment(shop.getStock(), shop.get_id())).commit();
                     }
                 });
             }

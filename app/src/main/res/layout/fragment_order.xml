@@ -69,8 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewOrderItem"
-                    tools:listitem="@layout/card_view_order_item" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOrderItem" />
 
                 <TextView
                     android:id="@+id/textViewAddAnotherItem"

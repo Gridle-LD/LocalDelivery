@@ -33,7 +33,7 @@ public class ItemListFragment extends Fragment {
     private int position;
     private Context mContext;
     private Activity mActivity;
-    private ShopsEntity shop;
+    private List<StocksData> shop;
     private RecyclerView recyclerView;
     private ItemListAdapter itemListAdapter;
     private List<StocksData> stocksDataList;
@@ -44,7 +44,7 @@ public class ItemListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public ItemListFragment(int position, ShopsEntity shop, String type) {
+    public ItemListFragment(int position, List<StocksData> shop, String type) {
         this.position = position;
         this.shop = shop;
         this.type = type;
@@ -97,7 +97,7 @@ public class ItemListFragment extends Fragment {
     }
 
     private void getStocks() {
-        for(StocksData stocksData : shop.getStock()) {
+        for(StocksData stocksData : shop) {
             if(stocksData.getType().equals(type)) {
                 stocksDataList.add(stocksData);
             }

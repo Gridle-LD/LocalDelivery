@@ -35,17 +35,19 @@ public class StocksFragment extends Fragment {
     private Activity mActivity;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private static ShopsEntity shop;
+    private static List<StocksData> shop;
     private ImageView imageViewViewCart;
     private List<StocksData> cartList;
+    private String shopId;
 
     public StocksFragment() {
         // Required empty public constructor
     }
 
-    public StocksFragment(ShopsEntity shop) {
+    public StocksFragment(List<StocksData> shop, String shopId) {
         cartList = new ArrayList<>();
         this.shop = shop;
+        this.shopId = shopId;
     }
 
     @Override
@@ -72,13 +74,18 @@ public class StocksFragment extends Fragment {
         imageViewViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(StocksData stocksData : shop.getStock()) {
+                for(StocksData stocksData : shop) {
                     if(stocksData.getQuantity()!=0) {
                         cartList.add(stocksData);
                     }
                 }
-                getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new OrderFragment(cartList)).commit();
+                if(cartList.size()>0) {
+                    getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                            new OrderFragment(shop, cartList, shopId)).commit();
+                }
+                else {
+                    Toast.makeText(mContext, "You haven't selected any Item !", Toast.LENGTH_LONG).show();
+                }
             }
         });
         return view;
@@ -97,9 +104,9 @@ public class StocksFragment extends Fragment {
 
     public static void changeQuantity(String type, int position, int quantity, String name) {
         int i=0;
-        for(StocksData stocksData : shop.getStock()) {
+        for(StocksData stocksData : shop) {
             if(stocksData.getType().equals(type) && stocksData.getName().equals(name)) {
-                shop.getStock().get(i).setQuantity(quantity);
+                shop.get(i).setQuantity(quantity);
             }
             ++i;
         }
