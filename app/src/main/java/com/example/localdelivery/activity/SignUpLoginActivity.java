@@ -1,28 +1,28 @@
 package com.example.localdelivery.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.widget.Toast;
-
 import com.example.localdelivery.R;
+import com.example.localdelivery.fragment.MapsFragment;
 import com.example.localdelivery.fragment.SignUpFragment;
+import com.example.localdelivery.utils.GpsUtils;
 import com.example.localdelivery.utils.PrefUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -34,6 +34,9 @@ public class SignUpLoginActivity extends AppCompatActivity {
     private double longitude = 0.0;
     private String address = "";
     private PrefUtils prefUtils;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private boolean isGPS = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,43 +52,7 @@ public class SignUpLoginActivity extends AppCompatActivity {
         prefUtils = new PrefUtils(SignUpLoginActivity.this);
 
         getLocation();
-    }
-
-    private void getLocation() {
-        //Checking permission
-        if (ContextCompat.checkSelfPermission(SignUpLoginActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-
-            Toast.makeText(SignUpLoginActivity.this, "Location Permission Granted",
-                    Toast.LENGTH_SHORT).show();
-            getLatLong();
-        } else {
-            //Asking for permission
-            ActivityCompat.requestPermissions(SignUpLoginActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, mRequestCode);
-        }
-    }
-
-    //finding latitude, longitude and address of current location
-    @SuppressLint("MissingPermission")
-    private void getLatLong() {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(SignUpLoginActivity.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-
-                        if (location != null) {
-                            longitude = location.getLongitude();
-                            latitude = location.getLatitude();
-                            address = getCompleteAddressString(latitude, longitude);
-
-                            prefUtils.setLatitude(String.valueOf(latitude));
-                            prefUtils.setLongitude(String.valueOf(longitude));
-                            prefUtils.setAddress(address);
-                        }
-                    }
-                });
+        requestLocationUpdates();
     }
 
     //converting lat long to address string
@@ -103,56 +70,81 @@ public class SignUpLoginActivity extends AppCompatActivity {
                 }
                 strAdd = strReturnedAddress.toString();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return strAdd;
     }
 
+    private void getLocation() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+
+        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
+            @Override
+            public void gpsStatus(boolean isGPSEnable) {
+                // turn on GPS
+                isGPS = isGPSEnable;
+            }
+        });
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        address = getCompleteAddressString(latitude, longitude);
+                        prefUtils.setLatitude(String.valueOf(latitude));
+                        prefUtils.setLongitude(String.valueOf(longitude));
+                        prefUtils.setAddress(address);
+                        if (fusedLocationClient != null) {
+                            fusedLocationClient.removeLocationUpdates(locationCallback);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private void requestLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    mRequestCode);
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                new MapsFragment()).commit();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if(requestCode == mRequestCode){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(SignUpLoginActivity.this , "Permission Granted" ,
-                        Toast.LENGTH_SHORT).show();
-                getLatLong();
-            }
-            else{
-                //describing importance of the permission
-                Toast.makeText(SignUpLoginActivity.this , "Permission Not Granted !" ,
-                        Toast.LENGTH_SHORT).show();
-                buildDialog();
+        if(requestCode == mRequestCode) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationUpdates();
             }
         }
     }
 
-    private void buildDialog() {
-        new AlertDialog.Builder(SignUpLoginActivity.this)
-                .setTitle("Permission needed")
-                .setMessage("Access to your location is needed")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(SignUpLoginActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                mRequestCode);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                        //closing the app
-                        moveTaskToBack(true);
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                    }
-                })
-                .setCancelable(false)
-                .create()
-                .show();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1001) {
+                isGPS = true; // flag maintain before get location
+            }
+        }
     }
 }

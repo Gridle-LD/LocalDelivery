@@ -34,6 +34,6 @@ public interface JsonApiHolder {
     @PUT("shopaction/getNearbyShops")
     Single<NearbyShopsResponse> getNearbyShops(@Body NearbyShopsData nearbyShopsData);
 
-    @POST("user/order")
+    @POST("customerAction/placeOrder")
     Single<ResponseBody> placeOrder(@Body PlaceOrderData placeOrderData);
 }

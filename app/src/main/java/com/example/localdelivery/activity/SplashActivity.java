@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 //If logged in
                 if(prefUtils.isLoggedIn()){
-                    Intent intent = new Intent(SplashActivity.this , MainActivity.class);
+                    Intent intent = new Intent(SplashActivity.this , SignUpLoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
