@@ -124,8 +124,6 @@ public class SignUpLoginActivity extends AppCompatActivity {
             return;
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-                new MapsFragment()).commit();
     }
 
     @Override

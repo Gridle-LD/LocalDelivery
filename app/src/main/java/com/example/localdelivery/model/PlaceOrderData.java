@@ -36,10 +36,12 @@ public class PlaceOrderData {
         public static class Shop {
             private String shopId;
             private List<Items> items;
+            private String totalPrice;
 
-            public Shop(String shopId, List<Items> items) {
+            public Shop(String shopId, List<Items> items, String totalPrice) {
                 this.shopId = shopId;
                 this.items = items;
+                this.totalPrice = totalPrice;
             }
 
             public String getShopId() {
@@ -56,6 +58,14 @@ public class PlaceOrderData {
 
             public void setItems(List<Items> items) {
                 this.items = items;
+            }
+
+            public String getTotalPrice() {
+                return totalPrice;
+            }
+
+            public void setTotalPrice(String totalPrice) {
+                this.totalPrice = totalPrice;
             }
 
             public static class Items {

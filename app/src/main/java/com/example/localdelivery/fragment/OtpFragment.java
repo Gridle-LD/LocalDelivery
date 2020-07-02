@@ -329,9 +329,8 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                                 prefUtils.createLogin("JWT "+otpResponse.getToken());
                                 prefUtils.setUserId(userId);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
-                                Intent intent = new Intent(mContext , MainActivity.class);
-                                startActivity(intent);
-                                mActivity.finish();
+                                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                                        new MapsFragment()).commit();
                             }
 
                             @Override

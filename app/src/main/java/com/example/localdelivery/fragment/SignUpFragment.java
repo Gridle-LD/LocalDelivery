@@ -95,6 +95,8 @@ public class SignUpFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login ,
                         new LoginFragment())
                         .commit();
+//                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+//                        new MapsFragment()).commit();
             }
         });
         return view;

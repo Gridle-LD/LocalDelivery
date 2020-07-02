@@ -147,7 +147,7 @@ public class OrderFragment extends Fragment {
                     String.valueOf(stocksData.getQuantity()), stocksData.get_id());
             itemsList.add(items);
         }
-        PlaceOrderData.Order.Shop shop = new PlaceOrderData.Order.Shop(shopId, itemsList);
+        PlaceOrderData.Order.Shop shop = new PlaceOrderData.Order.Shop(shopId, itemsList, String.valueOf(price));
         PlaceOrderData.Order order = new PlaceOrderData.Order(shop);
         List<PlaceOrderData.Order> orderList = new ArrayList<>();
         orderList.add(order);

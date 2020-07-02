@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     private PrefUtils prefUtils;
     private NearbyShopsViewModel nearbyShopsViewModel;
     private EditText editTextLocation;
-    private ImageView imageViewFilter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -75,15 +74,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         shopsAdapter = new ShopsAdapter(mContext, nearbyShops);
         recyclerView.setAdapter(shopsAdapter);
-        imageViewFilter = view.findViewById(R.id.imageViewFilterButton);
-
-        imageViewFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ShopDetailActivity.class);
-                startActivity(intent);
-            }
-        });
 
         getNearbyShops();
 

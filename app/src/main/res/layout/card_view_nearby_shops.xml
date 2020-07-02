@@ -67,28 +67,37 @@
             app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/textViewShopType" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:srcCompat="@drawable/rating_box" />-->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_rating_box"
+            android:layout_width="48dp"
+            android:layout_height="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/rating_box" />
+            app:cardBackgroundColor="@android:color/holo_green_dark">
 
-        <TextView
-            android:id="@+id/textViewShopRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4.5"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:textSize="12sp"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            <TextView
+                android:id="@+id/textViewShopRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.5"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"/>
+
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/imageView19"

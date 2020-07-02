@@ -45,8 +45,8 @@ public class PrefUtils {
         editor.clear();
         editor.commit();
 
-        Intent i = new Intent(ctx, SignUpLoginActivity.class);
-        ctx.startActivity(i);
+//        Intent i = new Intent(ctx, SignUpLoginActivity.class);
+//        ctx.startActivity(i);
     }
 
     public void setLatitude(String latitude) {
