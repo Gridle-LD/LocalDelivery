@@ -3,7 +3,6 @@ package com.example.localdelivery.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,22 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.OrderAdapter;
-import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -73,22 +67,37 @@ public class OrderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
+
+        setView(view);
+        calculateTotalPrice();
+        setClickListeners();
+
+        //set total price
+        textViewTotalBill.setText("Bill Total : Rs " + price);
+        return view;
+    }
+
+    private void setView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_order_item_list);
         textViewTotalBill = view.findViewById(R.id.textViewBillTotal);
         textViewAddAnotherItem = view.findViewById(R.id.textViewAddAnotherItem);
         imageViewPlaceOrder = view.findViewById(R.id.imageButtonPlaceOrder);
-
-        price = 0;
-        for(StocksData stocksData : cartList) {
-            price = price + (stocksData.getQuantity() * Integer.parseInt(stocksData.getPrice()));
-        }
-        textViewTotalBill.setText("Bill Total : Rs " + price);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
         orderAdapter = new OrderAdapter(cartList);
         recyclerView.setAdapter(orderAdapter);
+    }
+
+    private void calculateTotalPrice() {
+        price = 0;
+        for(StocksData stocksData : cartList) {
+            price = price + (stocksData.getQuantity() * Integer.parseInt(stocksData.getPrice()));
+        }
+    }
+
+    private void setClickListeners() {
         orderAdapter.setOnItemClickListener(new OrderAdapter.OnItemClickListener() {
             @Override
             public void onAddClick(int position, TextView textView) {
@@ -129,7 +138,6 @@ public class OrderFragment extends Fragment {
                 placeOrder();
             }
         });
-        return view;
     }
 
     private void changeOriginialList(int count, String id) {

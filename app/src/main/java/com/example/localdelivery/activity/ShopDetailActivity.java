@@ -52,6 +52,12 @@ public class ShopDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop_detail);
         prefUtils = new PrefUtils(ShopDetailActivity.this);
 
+        setView();
+        getShopDetails();
+        setClickListeners();
+    }
+
+    private void setView() {
         imageViewFavLike = findViewById(R.id.imageViewFavLike);
         imageViewFavUnlike = findViewById(R.id.imageViewFavUnlike);
         constraintLayoutCall = findViewById(R.id.constraint_layout_call);
@@ -66,9 +72,26 @@ public class ShopDetailActivity extends AppCompatActivity {
         textViewShopName = findViewById(R.id.textViewShopNameDetail);
         textViewShopType = findViewById(R.id.textViewShopTypeDetail);
         textViewShopAddress = findViewById(R.id.textViewShopAddressDetail);
+    }
 
-        getShopDetails();
+    private void getShopDetails() {
+        viewModel = ViewModelProviders.of(ShopDetailActivity.this).get(NearbyShopsViewModel.class);
+        viewModel.getShopsList().observe(ShopDetailActivity.this, new Observer<List<ShopsEntity>>() {
+            @Override
+            public void onChanged(List<ShopsEntity> shopsEntities) {
+                if(shopsEntities.size()!=0) {
+                    shop = shopsEntities.get(getIntent().getIntExtra(String.valueOf(position), 0));
+                    textViewShopName.setText(shop.getShopName());
+                    textViewShopType.setText("Shop Type : " + shop.getShopType());
+                    textViewShopAddress.setText(shop.getAddress());
+                    textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
+                    phoneNumber = shop.getPhoneNumber();
+                }
+            }
+        });
+    }
 
+    private void setClickListeners() {
         imageViewFavUnlike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,25 +161,6 @@ public class ShopDetailActivity extends AppCompatActivity {
                 });
                 if(flag==0) {
                     constraint_layout_order_type.setVisibility(View.GONE);
-                }
-            }
-        });
-
-
-    }
-
-    private void getShopDetails() {
-        viewModel = ViewModelProviders.of(ShopDetailActivity.this).get(NearbyShopsViewModel.class);
-        viewModel.getShopsList().observe(ShopDetailActivity.this, new Observer<List<ShopsEntity>>() {
-            @Override
-            public void onChanged(List<ShopsEntity> shopsEntities) {
-                if(shopsEntities.size()!=0) {
-                    shop = shopsEntities.get(getIntent().getIntExtra(String.valueOf(position), 0));
-                    textViewShopName.setText(shop.getShopName());
-                    textViewShopType.setText("Shop Type : " + shop.getShopType());
-                    textViewShopAddress.setText(shop.getAddress());
-                    textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
-                    phoneNumber = shop.getPhoneNumber();
                 }
             }
         });

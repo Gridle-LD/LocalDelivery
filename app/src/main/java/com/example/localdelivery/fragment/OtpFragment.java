@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.R;
@@ -28,17 +25,10 @@ import com.example.localdelivery.activity.MainActivity;
 import com.example.localdelivery.model.OtpData;
 import com.example.localdelivery.model.OtpResponse;
 import com.example.localdelivery.model.ResendOtpResponse;
-
-import org.jetbrains.annotations.NotNull;
-import java.util.Objects;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyListener, View.OnFocusChangeListener {
 
@@ -61,10 +51,6 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private TextView resend_otp_text;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ImageView imageViewOtpVerifyScreen;
-
-    public OtpFragment(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
 
     public OtpFragment(String userId, String mobileNumber) {
         this.userId = userId;
@@ -91,26 +77,39 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
+
+        setView(view);
+        setListeners();
+        startTimer();
+        setClickListeners();
+
+        return view;
+    }
+
+    private void setView(View view) {
         editText1 = view.findViewById(R.id.editText);
         editText2 = view.findViewById(R.id.editText2);
         editText3 = view.findViewById(R.id.editText3);
         editText4 = view.findViewById(R.id.editText4);
-        setListners();
+
         textViewMobileNumber = view.findViewById(R.id.textViewMobileNumberOtp);
-        textViewMobileNumber.setText(mobileNumber);
         imageViewSubmitOtp = view.findViewById(R.id.imageView15);
         resend_otp_button = view.findViewById(R.id.imageView16);
-        resend_otp_button.setVisibility(View.INVISIBLE);
         timer_text_view = view.findViewById(R.id.timer_text_view);
         resend_otp_text = view.findViewById(R.id.resend_otp_text);
         imageViewOtpVerifyScreen = view.findViewById(R.id.otp_verify_screen);
-        startTimer();
 
+        //displaying mobile number
+        textViewMobileNumber.setText(mobileNumber);
+
+        //initially hiding the resend otp button
+        resend_otp_button.setVisibility(View.INVISIBLE);
+    }
+
+    private void setClickListeners() {
         imageViewSubmitOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-//                        new SignUpFragment()).commit();
                 String otp="";
                 for(int i=0; i<code.length; i++) {
                     if(code[i]!='\u0000') {
@@ -125,9 +124,6 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                 timer_text_view.setVisibility(View.INVISIBLE);
                 resend_otp_text.setVisibility(View.INVISIBLE);
                 verifyOtp(otp);
-//                Intent intent = new Intent(mContext , MainActivity.class);
-//                startActivity(intent);
-//                mActivity.finish();
             }
         });
 
@@ -137,7 +133,6 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                 resendOtp();
             }
         });
-        return view;
     }
 
     private void stopTimer() {
@@ -188,7 +183,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
 
     }
 
-    private void setListners()
+    private void setListeners()
     {
         editText1.addTextChangedListener(this);
         editText2.addTextChangedListener(this);
@@ -329,8 +324,9 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                                 prefUtils.createLogin("JWT "+otpResponse.getToken());
                                 prefUtils.setUserId(userId);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
-                                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-                                        new MapsFragment()).commit();
+                                Intent intent = new Intent(mContext , MainActivity.class);
+                                startActivity(intent);
+                                mActivity.finish();
                             }
 
                             @Override

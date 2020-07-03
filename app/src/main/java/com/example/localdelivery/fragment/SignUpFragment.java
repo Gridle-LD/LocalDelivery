@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
@@ -30,6 +32,7 @@ public class SignUpFragment extends Fragment {
     private EditText editTextMobileNumberSignUp;
     private EditText editTextCreatePasswordSignUp;
     private EditText editTextConfirmPasswordSignUp;
+    private ProgressBar progressBar;
     private JsonApiHolder jsonApiHolder;
     private Context mContext;
     private Activity mActivity;
@@ -54,40 +57,45 @@ public class SignUpFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
+        setView(view);
+        setClickListeners();
+        return view;
+    }
+
+    private void setView(View view) {
         textViewLogin = view.findViewById(R.id.textViewLoginSignUp);
         buttonSignUp = view.findViewById(R.id.buttonSignUp);
+        editTextNameSignUp = view.findViewById(R.id.editTextNameSignUp);
+        editTextMobileNumberSignUp = view.findViewById(R.id.editTextMobileNumberSignUp);
+        editTextCreatePasswordSignUp = view.findViewById(R.id.editTextCreatePasswordSignUp);
+        editTextConfirmPasswordSignUp = view.findViewById(R.id.editTextConfirmPasswordSignUp);
+        progressBar = view.findViewById(R.id.progressBarSignUp);
+    }
+
+    private void setClickListeners() {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-//                        new OtpFragment()).commit();
-                editTextNameSignUp = view.findViewById(R.id.editTextNameSignUp);
-                editTextMobileNumberSignUp = view.findViewById(R.id.editTextMobileNumberSignUp);
-                editTextCreatePasswordSignUp = view.findViewById(R.id.editTextCreatePasswordSignUp);
-                editTextConfirmPasswordSignUp = view.findViewById(R.id.editTextConfirmPasswordSignUp);
                 String name = editTextNameSignUp.getText().toString().trim();
-                if(name.equals("")) {
-                    Toast.makeText(mContext, "Name cannot be empty !", Toast.LENGTH_LONG).show();
-                    return ;
-                }
-                String mobileNumber = editTextMobileNumberSignUp.getText().toString().trim();
-                if(mobileNumber.length()<10) {
-                    Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
+                if(!validateName(name)) {
                     return;
                 }
+
+                String mobileNumber = editTextMobileNumberSignUp.getText().toString().trim();
+                if(!validateMobileNumber(mobileNumber)) {
+                    return;
+                }
+
                 String createPassword = editTextCreatePasswordSignUp.getText().toString().trim();
                 String confirmPassword = editTextConfirmPasswordSignUp.getText().toString().trim();
-                if(createPassword.length()<6) {
-                    Toast.makeText(mContext, "Password length too small !", Toast.LENGTH_LONG).show();
+                if(!validatePassword(createPassword, confirmPassword)) {
                     return;
                 }
-                if(!createPassword.equals(confirmPassword)) {
-                    Toast.makeText(mContext, "Passwords do not match !", Toast.LENGTH_LONG).show();
-                    return;
-                }
+
                 signUp(name, mobileNumber, confirmPassword);
             }
         });
+
         textViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,15 +103,44 @@ public class SignUpFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login ,
                         new LoginFragment())
                         .commit();
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-//                        new MapsFragment()).commit();
             }
         });
-        return view;
+    }
+
+    private boolean validateName(String name) {
+        if(name.equals("")) {
+            Toast.makeText(mContext, "Name cannot be empty !", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateMobileNumber(String mobileNumber) {
+        if(mobileNumber.length()<10) {
+            Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validatePassword(String createPassword, String confirmPassword) {
+        if(createPassword.length()<6) {
+            Toast.makeText(mContext, "Password length too small !", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(!createPassword.equals(confirmPassword)) {
+            Toast.makeText(mContext, "Passwords do not match !", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
     private void signUp(String name, final String mobileNumber, String password) {
         SignUpData signUpData = new SignUpData(name, password, mobileNumber);
+
+        progressBar.setVisibility(View.VISIBLE);
+        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         disposable.add(
                 jsonApiHolder.signUp(signUpData)
@@ -112,6 +149,8 @@ public class SignUpFragment extends Fragment {
                         .subscribeWith(new DisposableSingleObserver<SignUpResponse>() {
                             @Override
                             public void onSuccess(SignUpResponse signUpResponse) {
+                                progressBar.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 assert getFragmentManager() != null;
                                 assert signUpResponse != null;
                                 getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
@@ -120,6 +159,8 @@ public class SignUpFragment extends Fragment {
 
                             @Override
                             public void onError(Throwable e) {
+                                progressBar.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
                             }
                         }));

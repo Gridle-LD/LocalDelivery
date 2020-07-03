@@ -4,27 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.StocksTabLayoutAdapter;
-import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.model.StocksData;
 import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,31 +58,19 @@ public class StocksFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stocks, container, false);
+
+        setView(view);
+        setSearchView();
+        setTabLayout();
+        setClickListeners();
+        return view;
+    }
+
+    private void setView(View view) {
         searchView = view.findViewById(R.id.searchViewStocks);
         tabLayout = view.findViewById(R.id.tabLayoutStocks);
         viewPager = view.findViewById(R.id.viewPager);
         imageViewViewCart = view.findViewById(R.id.imageViewViewCart);
-        setSearchView();
-        setTabLayout();
-
-        imageViewViewCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(StocksData stocksData : shop) {
-                    if(stocksData.getQuantity()!=0) {
-                        cartList.add(stocksData);
-                    }
-                }
-                if(cartList.size()>0) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                            new OrderFragment(shop, cartList, shopId)).commit();
-                }
-                else {
-                    Toast.makeText(mContext, "You haven't selected any Item !", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        return view;
     }
 
     private void setSearchView() {
@@ -127,6 +109,26 @@ public class StocksFragment extends Fragment {
                 tabLayout.getTabCount(), mContext, shop);
         viewPager.setAdapter(mainPagerAdapter);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
+
+    private void setClickListeners() {
+        imageViewViewCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(StocksData stocksData : shop) {
+                    if(stocksData.getQuantity()!=0) {
+                        cartList.add(stocksData);
+                    }
+                }
+                if(cartList.size()>0) {
+                    getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                            new OrderFragment(shop, cartList, shopId)).commit();
+                }
+                else {
+                    Toast.makeText(mContext, "You haven't selected any Item !", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

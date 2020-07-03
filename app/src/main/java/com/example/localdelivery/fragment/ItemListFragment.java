@@ -2,30 +2,19 @@ package com.example.localdelivery.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.localdelivery.R;
-import com.example.localdelivery.activity.ShopDetailActivity;
 import com.example.localdelivery.adapter.ItemListAdapter;
-import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,13 +54,32 @@ public class ItemListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+
+        setView(view);
+        getStocks();
+        setListeners();
+        return view;
+    }
+
+    private void setView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_item_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        getStocks();
+
         itemListAdapter = new ItemListAdapter(mContext, stocksDataList);
         recyclerView.setAdapter(itemListAdapter);
+    }
+
+    private void getStocks() {
+        for(StocksData stocksData : shop) {
+            if(stocksData.getType().equals(type)) {
+                stocksDataList.add(stocksData);
+            }
+        }
+    }
+
+    private void setListeners() {
         itemListAdapter.setOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
             @Override
             public void onAddClick(int position, TextView textView) {
@@ -93,14 +101,5 @@ public class ItemListFragment extends Fragment {
                 }
             }
         });
-        return view;
-    }
-
-    private void getStocks() {
-        for(StocksData stocksData : shop) {
-            if(stocksData.getType().equals(type)) {
-                stocksDataList.add(stocksData);
-            }
-        }
     }
 }

@@ -33,8 +33,10 @@
                         android:id="@+id/card_view_profile_image"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:backgroundTint="@color/colorAccent"
-                        app:cardCornerRadius="32dp"
+                        app:cardCornerRadius="20dp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView17"
                         app:layout_constraintEnd_toStartOf="@+id/imageView17"
                         app:layout_constraintStart_toStartOf="parent"
@@ -56,15 +58,14 @@
 
                     <ImageView
                         android:id="@+id/imageView17"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="32dp"
-                        android:layout_marginStart="64dp"
                         android:layout_marginTop="24dp"
-                        android:layout_marginEnd="32dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         app:layout_constraintBottom_toBottomOf="@id/constraint_layout_top_bar"
                         app:layout_constraintEnd_toEndOf="@id/constraint_layout_top_bar"
-                        app:layout_constraintStart_toStartOf="@id/constraint_layout_top_bar"
+                        app:layout_constraintStart_toEndOf="@id/card_view_profile_image"
                         app:layout_constraintTop_toTopOf="@id/constraint_layout_top_bar"
                         app:srcCompat="@drawable/location_box" />
 
@@ -178,11 +179,12 @@
                     android:id="@+id/imageView22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:src="@drawable/sort_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewSort"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewSort"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.578" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
