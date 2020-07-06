@@ -9,8 +9,9 @@
          location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -33,10 +34,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-<!--        <service-->
-<!--            android:name=".activity.SignUpLoginActivity"-->
-<!--            android:foregroundServiceType="location"-->
-<!--            tools:ignore="Instantiatable" />-->
+        <service
+            android:name=".activity.SignUpLoginActivity"
+            android:foregroundServiceType="location"
+            tools:ignore="Instantiatable" />
 
         <activity
             android:name=".activity.ShopDetailActivity"
@@ -49,7 +50,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.ShopDetail"/>
     </application>
 
 </manifest>

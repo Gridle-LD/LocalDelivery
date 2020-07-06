@@ -2,6 +2,7 @@ package com.example.localdelivery.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import com.example.localdelivery.R;
@@ -15,6 +16,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefUtils = new PrefUtils(SplashActivity.this);
 
         Handler handler = new Handler();

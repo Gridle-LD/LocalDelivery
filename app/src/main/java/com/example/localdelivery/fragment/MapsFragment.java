@@ -2,10 +2,13 @@ package com.example.localdelivery.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -73,6 +76,7 @@ public class MapsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         prefUtils = new PrefUtils(mContext);
+        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -144,28 +148,54 @@ public class MapsFragment extends Fragment {
                         .icon(BitmapDescriptorFactory.defaultMarker
                                 (BitmapDescriptorFactory.HUE_BLUE))
                         .snippet(getCompleteAddressString(latLng.latitude, latLng.longitude)));
+
+                setAlertBox(String.valueOf(latLng.latitude), String.valueOf(latLng.longitude),
+                        getCompleteAddressString(latLng.latitude, latLng.longitude));
+            }
+
+            //converting lat long to address string
+            private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+                String strAdd = "";
+                Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+                    if (addresses != null) {
+                        Address returnedAddress = addresses.get(0);
+                        StringBuilder strReturnedAddress = new StringBuilder("");
+
+                        for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                        }
+                        strAdd = strReturnedAddress.toString();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return strAdd;
+            }
+
+            private void setAlertBox(final String latitude, final String longitude, final String address) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setCancelable(false);
+                builder.setTitle("New Location");
+                builder.setMessage("Do you want to make this location as your new location?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        prefUtils.setLatitude(latitude);
+                        prefUtils.setLongitude(longitude);
+                        prefUtils.setAddress(address);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
-    }
-
-    //converting lat long to address string
-    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        String strAdd = "";
-        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                strAdd = strReturnedAddress.toString();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strAdd;
     }
 }

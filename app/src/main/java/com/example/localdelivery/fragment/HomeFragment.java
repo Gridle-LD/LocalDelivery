@@ -3,6 +3,8 @@ package com.example.localdelivery.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -32,6 +34,7 @@ import com.example.localdelivery.utils.RetrofitInstance;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class HomeFragment extends Fragment {
     private SearchView searchView;
@@ -70,6 +73,7 @@ public class HomeFragment extends Fragment {
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
         mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setView(view);
         setSearchView();
@@ -93,6 +97,12 @@ public class HomeFragment extends Fragment {
 
         //set location in address box
         editTextLocation.setText(prefUtils.getAddress());
+
+        //set bg colour of profile
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),
+                rnd.nextInt(256));
+        cardViewProfileImage.setCardBackgroundColor(color);
 
         //set first alphabet of username
 //        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));

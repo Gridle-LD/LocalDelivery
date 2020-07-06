@@ -1,14 +1,19 @@
 package com.example.localdelivery.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +41,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private ConstraintLayout constraint_layout_order_type;
     private TextView textViewPickup;
     private TextView textViewDelivery;
+    private ImageView imageViewBackButton;
     private int flag = 0;
     public static final int position = 0;
     private NearbyShopsViewModel viewModel;
@@ -50,11 +56,41 @@ public class ShopDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefUtils = new PrefUtils(ShopDetailActivity.this);
 
+        checkNetwork();
         setView();
         getShopDetails();
         setClickListeners();
+    }
+
+    private void checkNetwork() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        android.net.NetworkInfo datac = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if ((wifi != null & datac != null)
+                && (wifi.isConnected() || datac.isConnected())) {
+            //connection is available
+        }else{
+            //no connection
+            setAlertBox();
+        }
+    }
+
+    private void setAlertBox() {
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        builder.setTitle("No internet Connection");
+        builder.setMessage("Please turn on internet connection to continue");
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void setView() {
@@ -72,6 +108,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         textViewShopName = findViewById(R.id.textViewShopNameDetail);
         textViewShopType = findViewById(R.id.textViewShopTypeDetail);
         textViewShopAddress = findViewById(R.id.textViewShopAddressDetail);
+        imageViewBackButton = findViewById(R.id.imageViewBackButton);
     }
 
     private void getShopDetails() {
@@ -164,6 +201,13 @@ public class ShopDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        imageViewBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void call() {
@@ -192,5 +236,10 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -19,7 +19,7 @@ public class RetrofitInstance {
     private static Retrofit retrofit=null;
     private static int REQUEST_TIMEOUT = 60;
     private static OkHttpClient okHttpClient;
-    private static final String BASE_URL = "https://2deea088f8ab.ngrok.io";
+    private static final String BASE_URL = "https://61f9b04b4807.ngrok.io";
 
     public String getBaseUrl() {
         return BASE_URL;

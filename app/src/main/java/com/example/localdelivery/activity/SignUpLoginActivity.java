@@ -1,16 +1,23 @@
 package com.example.localdelivery.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.example.localdelivery.R;
 import com.example.localdelivery.fragment.SignUpFragment;
 import com.example.localdelivery.utils.GpsUtils;
@@ -34,11 +41,13 @@ public class SignUpLoginActivity extends AppCompatActivity {
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private boolean isGPS = false;
+    public static final int GPS_REQUEST = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportFragmentManager().beginTransaction().replace(
                 R.id.fragment_sign_up_login, new SignUpFragment())
                 .commit();
@@ -48,8 +57,37 @@ public class SignUpLoginActivity extends AppCompatActivity {
                 SignUpLoginActivity.this);
         prefUtils = new PrefUtils(SignUpLoginActivity.this);
 
+        checkNetwork();
         getLocation();
         requestLocationUpdates();
+    }
+
+    private void checkNetwork() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        android.net.NetworkInfo datac = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if ((wifi != null & datac != null)
+                && (wifi.isConnected() || datac.isConnected())) {
+            //connection is available
+        }else{
+            //no connection
+            setAlertBox();
+        }
+    }
+
+    private void setAlertBox() {
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        builder.setTitle("No internet Connection");
+        builder.setMessage("Please turn on internet connection to continue");
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     //converting lat long to address string
@@ -130,16 +168,29 @@ public class SignUpLoginActivity extends AppCompatActivity {
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 requestLocationUpdates();
             }
+            else {
+                stopApp();
+            }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 1001) {
-                isGPS = true; // flag maintain before get location
+        if(requestCode == GPS_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                    isGPS = true; // flag maintain before get location
+            }
+            else {
+                stopApp();
             }
         }
+
+    }
+
+    private void stopApp() {
+        moveTaskToBack(true);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 }
