@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,7 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import com.example.localdelivery.activity.MainActivity;
 import com.example.localdelivery.utils.PrefUtils;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -77,6 +81,7 @@ public class MapsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         prefUtils = new PrefUtils(mContext);
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -94,8 +99,9 @@ public class MapsFragment extends Fragment {
         imageViewProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.frame_layout_shops, new HomeFragment())
-                        .commit();
+                Intent intent = new Intent(mContext, MainActivity.class);
+                startActivity(intent);
+                mActivity.finish();
             }
         });
 
@@ -198,4 +204,12 @@ public class MapsFragment extends Fragment {
             }
         });
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
 }

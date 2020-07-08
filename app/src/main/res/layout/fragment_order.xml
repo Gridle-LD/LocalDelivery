@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,43 +19,54 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewToolBarOrder"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@drawable/card_shape"
-                app:cardElevation="0dp"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/imageViewBackButtonOrder"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:elevation="1dp"
-                android:src="@drawable/back_button"
-                app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBarOrder"
-                app:layout_constraintStart_toStartOf="@+id/cardViewToolBarOrder"
-                app:layout_constraintTop_toTopOf="@+id/cardViewToolBarOrder" />
+                app:cardCornerRadius="12sp"
+                android:translationY="-8dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageViewFavLikeOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/fav_like"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBarOrder"
-                app:layout_constraintEnd_toEndOf="@+id/cardViewToolBarOrder"
-                app:layout_constraintTop_toTopOf="@+id/cardViewToolBarOrder" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_layout_top_bar_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageViewFavUnlikeOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:elevation="1dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardViewToolBarOrder"
-                app:layout_constraintEnd_toEndOf="@+id/cardViewToolBarOrder"
-                app:layout_constraintTop_toTopOf="@+id/cardViewToolBarOrder"
-                app:srcCompat="@drawable/fav_unlike" />
+                    <ImageView
+                        android:id="@+id/imageViewBackButtonOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="24dp"
+                        android:src="@drawable/back_button"
+                        app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintStart_toStartOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintTop_toTopOf="@+id/constraint_layout_top_bar_order" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFavLikeOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="24dp"
+                        android:src="@drawable/fav_like"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintEnd_toEndOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintTop_toTopOf="@+id/constraint_layout_top_bar_order" />
+
+                    <ImageView
+                        android:id="@+id/imageViewFavUnlikeOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintEnd_toEndOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintTop_toTopOf="@+id/constraint_layout_top_bar_order"
+                        app:srcCompat="@drawable/fav_unlike" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_layout_order_items_list"

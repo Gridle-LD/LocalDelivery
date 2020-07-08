@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.R;
+import com.example.localdelivery.fragment.ReviewFragment;
 import com.example.localdelivery.fragment.StocksFragment;
 import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.utils.PrefUtils;
@@ -155,8 +156,8 @@ public class ShopDetailActivity extends AppCompatActivity {
         constraintLayoutReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ShopDetailActivity.this, "On a Review !", Toast.LENGTH_LONG)
-                        .show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                        new ReviewFragment()).commit();
             }
         });
 

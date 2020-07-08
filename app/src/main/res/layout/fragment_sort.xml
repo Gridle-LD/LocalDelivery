@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.SortFragment"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="12sp"
+    android:translationY="-8dp"
+    android:layout_marginStart="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="#BCB7B9"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_high_to_low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Rating : High to Low"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            style="?android:borderlessButtonStyle"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_popularity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popularity"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            style="?android:borderlessButtonStyle"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_high_to_low" />
+
+        <TextView
+            android:id="@+id/text_view_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Distance"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            style="?android:borderlessButtonStyle"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_popularity" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButtonApplySort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FD0054"
+            android:text="Apply"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            app:cornerRadius="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_distance" />
+
+        <TextView
+            android:id="@+id/textViewClearSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationY="-8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Clear All"
+            android:textColor="#FD0054"
+            android:textSize="12sp"
+            style="?android:borderlessButtonStyle"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialButtonApplySort" />
+
+        <ImageView
+            android:id="@+id/imageViewTickHighToLow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/tick"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_high_to_low"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_view_high_to_low" />
+
+        <ImageView
+            android:id="@+id/imageViewTickPopularity"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/tick"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_popularity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_view_popularity" />
+
+        <ImageView
+            android:id="@+id/imageViewTickDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/tick"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_distance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_view_distance" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
