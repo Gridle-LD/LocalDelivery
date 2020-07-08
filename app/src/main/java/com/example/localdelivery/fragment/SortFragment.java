@@ -30,6 +30,12 @@ public class SortFragment extends Fragment {
         isDistanceSelected = false;
     }
 
+    public SortFragment(boolean isHighToLowSelected, boolean isPopularitySelected, boolean isDistanceSelected) {
+        this.isHighToLowSelected = isHighToLowSelected;
+        this.isPopularitySelected = isPopularitySelected;
+        this.isDistanceSelected = isDistanceSelected;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

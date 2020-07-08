@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.localdelivery.Interface.FilterSortClickListener;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.ShopsAdapter;
@@ -38,12 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FilterSortClickListener {
     private SearchView searchView;
     private RecyclerView recyclerView;
     private ShopsAdapter shopsAdapter;
     private JsonApiHolder jsonApiHolder;
     private List<ShopsEntity> nearbyShops = new ArrayList<>();
+    private List<ShopsEntity> nearbyShopsCopy = new ArrayList<>();
     private PrefUtils prefUtils;
     private NearbyShopsViewModel nearbyShopsViewModel;
     private EditText editTextLocation;
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayoutSort;
     private ConstraintLayout constraintLayoutFilter;
     private boolean isOpened = false;
+    private boolean isGrocerySelected = false;
+    private boolean isDairySelected = false;
+    private boolean isDeliveryAvailableSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 new Observer<List<ShopsEntity>>() {
                     @Override
                     public void onChanged(List<ShopsEntity> shopsEntities) {
+                        nearbyShops = shopsEntities;
                         shopsAdapter = new ShopsAdapter(MainActivity.this, shopsEntities);
                         recyclerView.setAdapter(shopsAdapter);
 
@@ -147,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
                                 new ShopsAdapter.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(int position) {
-                                        Intent intent = new Intent(MainActivity.this, ShopDetailActivity.class);
+                                        Intent intent = new Intent(MainActivity.this,
+                                                ShopDetailActivity.class);
 
                                         //knowing the position of the clicked shop
                                         intent.putExtra(String.valueOf(ShopDetailActivity.position), position);
@@ -197,7 +205,8 @@ public class MainActivity extends AppCompatActivity {
                 if(!isOpened) {
                     getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,
                             R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_left)
-                            .replace(R.id.frame_layout_filter, new FilterFragment()).addToBackStack(null).commit();
+                            .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected, isDairySelected
+                            ,isDeliveryAvailableSelected)).addToBackStack(null).commit();
                     isOpened = true;
                 }
                 else {
@@ -218,5 +227,41 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         isOpened = false;
+    }
+
+    @Override
+    public void setFilterClick(boolean isGrocerySelected, boolean isDairySelected,
+                               boolean isDeliveryAvailableSelected) {
+
+        isOpened = false;
+        this.isGrocerySelected = isGrocerySelected;
+        this.isDairySelected = isDairySelected;
+        this.isDeliveryAvailableSelected = isDeliveryAvailableSelected;
+
+        nearbyShopsCopy = new ArrayList<>();
+        if(isGrocerySelected) {
+            for(ShopsEntity shopsEntity : nearbyShops) {
+                if(shopsEntity.getShopType()!=null){
+                    if(shopsEntity.getShopType().equals("Grocery")) {
+                        nearbyShopsCopy.add(shopsEntity);
+                    }
+                }
+            }
+        }
+
+        shopsAdapter = new ShopsAdapter(MainActivity.this, nearbyShopsCopy);
+        recyclerView.setAdapter(shopsAdapter);
+
+        shopsAdapter.setOnItemClickListener(
+                new ShopsAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent intent = new Intent(MainActivity.this, ShopDetailActivity.class);
+
+                        //knowing the position of the clicked shop
+                        intent.putExtra(String.valueOf(ShopDetailActivity.position), position);
+                        startActivity(intent);
+                    }
+                });
     }
 }
