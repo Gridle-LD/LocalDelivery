@@ -8,6 +8,7 @@ import com.example.localdelivery.model.OtpData;
 import com.example.localdelivery.model.OtpResponse;
 import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.ResendOtpResponse;
+import com.example.localdelivery.model.ReviewData;
 import com.example.localdelivery.model.SignUpData;
 import com.example.localdelivery.model.SignUpResponse;
 import io.reactivex.Single;
@@ -36,4 +37,7 @@ public interface JsonApiHolder {
 
     @POST("customerAction/placeOrder")
     Single<ResponseBody> placeOrder(@Body PlaceOrderData placeOrderData);
+
+    @POST("customerAction/postReview")
+    Single<ResponseBody> postReview(@Body ReviewData reviewData);
 }

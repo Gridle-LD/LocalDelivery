@@ -51,7 +51,7 @@ public class FilterFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
         try {
-            listener = (FilterSortClickListener)context;
+            listener = (FilterSortClickListener)mContext;
         }
         catch (ClassCastException castException) {
             castException.printStackTrace();

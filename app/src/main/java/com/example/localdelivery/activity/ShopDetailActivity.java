@@ -157,7 +157,7 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new ReviewFragment()).commit();
+                        new ReviewFragment(shop.get_id())).commit();
             }
         });
 
