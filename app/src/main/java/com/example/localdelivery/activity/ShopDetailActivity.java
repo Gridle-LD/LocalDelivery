@@ -3,16 +3,21 @@ package com.example.localdelivery.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,9 +26,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.R;
+import com.example.localdelivery.adapter.ReviewAdapter;
 import com.example.localdelivery.fragment.ReviewFragment;
 import com.example.localdelivery.fragment.StocksFragment;
 import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import java.util.List;
@@ -43,6 +50,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private TextView textViewPickup;
     private TextView textViewDelivery;
     private ImageView imageViewBackButton;
+    private RecyclerView recyclerView;
     private int flag = 0;
     public static final int position = 0;
     private NearbyShopsViewModel viewModel;
@@ -50,8 +58,11 @@ public class ShopDetailActivity extends AppCompatActivity {
     private TextView textViewShopName;
     private TextView textViewShopType;
     private TextView textViewShopAddress;
+    private TextView textViewRating;
+    private CardView cardViewRating;
     private String phoneNumber;
     private int mRequestCode = 1;
+    private ReviewAdapter reviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +120,17 @@ public class ShopDetailActivity extends AppCompatActivity {
         textViewShopName = findViewById(R.id.textViewShopNameDetail);
         textViewShopType = findViewById(R.id.textViewShopTypeDetail);
         textViewShopAddress = findViewById(R.id.textViewShopAddressDetail);
+        textViewRating = findViewById(R.id.textViewShopRatingDetail);
+        cardViewRating = findViewById(R.id.card_view_rating_box_shop_detail);
         imageViewBackButton = findViewById(R.id.imageViewBackButton);
+        recyclerView = findViewById(R.id.recycler_view_reviews);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
+                false));
+        recyclerView.setHasFixedSize(true);
+        if(shop!=null) {
+            reviewAdapter = new ReviewAdapter(shop.getReviewList());
+            recyclerView.setAdapter(reviewAdapter);
+        }
     }
 
     private void getShopDetails() {
@@ -124,6 +145,29 @@ public class ShopDetailActivity extends AppCompatActivity {
                     textViewShopAddress.setText(shop.getAddress());
                     textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
                     phoneNumber = shop.getPhoneNumber();
+                    if(shop!=null) {
+                        reviewAdapter = new ReviewAdapter(shop.getReviewList());
+                        recyclerView.setAdapter(reviewAdapter);
+                        reviewAdapter.setOnItemClickListener(new ReviewAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                int rating = shop.getReviewList().get(position).getRating();
+                                String comment = shop.getReviewList().get(position).getComment();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                                        new ReviewFragment(rating, comment)).addToBackStack(null).commit();
+                            }
+                        });
+                        textViewRating.setText(calculateRating(shop.getReviewList()));
+                        if(Double.parseDouble(calculateRating(shop.getReviewList())) >= 4.0) {
+                            cardViewRating.setCardBackgroundColor(Color.argb(255, 17, 168, 0));
+                        }
+                        if(Double.parseDouble(calculateRating(shop.getReviewList())) >= 3.0) {
+                            cardViewRating.setCardBackgroundColor(Color.argb(255, 255, 230, 0));
+                        }
+                        else {
+                            cardViewRating.setCardBackgroundColor(Color.argb(255, 255, 0, 0));
+                        }
+                    }
                 }
             }
         });
@@ -157,7 +201,7 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new ReviewFragment(shop.get_id())).commit();
+                        new ReviewFragment(shop.get_id())).addToBackStack(null).commit();
             }
         });
 
@@ -222,6 +266,17 @@ public class ShopDetailActivity extends AppCompatActivity {
             return;
         }
         startActivity(intent);
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String calculateRating(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
+        int ratingSum = 0;
+        double ratingAverage;
+        for(NearbyShopsResponse.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
+            ratingSum += reviewObject.getRating();
+        }
+        ratingAverage = ((double) ratingSum)/reviewList.size();
+        return String.format("%.1f", ratingAverage);
     }
 
     @Override

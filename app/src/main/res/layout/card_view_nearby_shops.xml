@@ -67,16 +67,6 @@
             app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/textViewShopType" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/imageView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:srcCompat="@drawable/rating_box" />-->
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_rating_box"
             android:layout_width="48dp"
@@ -91,7 +81,7 @@
                 android:id="@+id/textViewShopRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4.5"
+                android:text="0"
                 android:fontFamily="@font/montserrat_semi_bold"
                 android:textSize="12sp"
                 android:textColor="@android:color/white"

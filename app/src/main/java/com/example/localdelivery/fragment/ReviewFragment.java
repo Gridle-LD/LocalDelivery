@@ -44,9 +44,10 @@ public class ReviewFragment extends Fragment {
     private PrefUtils prefUtils;
     private Context mContext;
     private Activity mActivity;
-    private int clicked = 0;
+    private int clicked;
     private String comment = "";
     private String shopId = "";
+    private boolean post;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,6 +60,14 @@ public class ReviewFragment extends Fragment {
 
     public ReviewFragment(String shopId) {
         this.shopId = shopId;
+        clicked = 0;
+        post = true;
+    }
+
+    public ReviewFragment(int clicked, String comment) {
+        this.clicked = clicked;
+        this.comment = comment;
+        post = false;
     }
 
     @Override
@@ -88,80 +97,74 @@ public class ReviewFragment extends Fragment {
 
         editTextReview = view.findViewById(R.id.editTextReview);
         textViewPost = view.findViewById(R.id.textViewPostReview);
+
+        if(clicked == 1) {
+            firstStarSelected();
+        }
+        if(clicked == 2) {
+            secondStarSelected();
+        }
+        if(clicked == 3) {
+            thirdStarSelected();
+        }
+        if(clicked == 4) {
+            fourthStarSelected();
+        }
+        if(clicked == 5) {
+            fifthStarSelected();
+        }
+        editTextReview.setText(comment);
     }
 
     private void setClickListeners() {
         imageViewStarClear1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewStarFill1.setVisibility(View.VISIBLE);
-                imageViewStarFill2.setVisibility(View.INVISIBLE);
-                imageViewStarFill3.setVisibility(View.INVISIBLE);
-                imageViewStarFill4.setVisibility(View.INVISIBLE);
-                imageViewStarFill5.setVisibility(View.INVISIBLE);
-                clicked = 1;
+                firstStarSelected();
             }
         });
 
         imageViewStarClear2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewStarFill1.setVisibility(View.VISIBLE);
-                imageViewStarFill2.setVisibility(View.VISIBLE);
-                imageViewStarFill3.setVisibility(View.INVISIBLE);
-                imageViewStarFill4.setVisibility(View.INVISIBLE);
-                imageViewStarFill5.setVisibility(View.INVISIBLE);
-                clicked = 2;
+                secondStarSelected();
             }
         });
 
         imageViewStarClear3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewStarFill1.setVisibility(View.VISIBLE);
-                imageViewStarFill2.setVisibility(View.VISIBLE);
-                imageViewStarFill3.setVisibility(View.VISIBLE);
-                imageViewStarFill4.setVisibility(View.INVISIBLE);
-                imageViewStarFill5.setVisibility(View.INVISIBLE);
-                clicked = 3;
+                thirdStarSelected();
             }
         });
 
         imageViewStarClear4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewStarFill1.setVisibility(View.VISIBLE);
-                imageViewStarFill2.setVisibility(View.VISIBLE);
-                imageViewStarFill3.setVisibility(View.VISIBLE);
-                imageViewStarFill4.setVisibility(View.VISIBLE);
-                imageViewStarFill5.setVisibility(View.INVISIBLE);
-                clicked = 4;
+                fourthStarSelected();
             }
         });
 
         imageViewStarClear5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewStarFill1.setVisibility(View.VISIBLE);
-                imageViewStarFill2.setVisibility(View.VISIBLE);
-                imageViewStarFill3.setVisibility(View.VISIBLE);
-                imageViewStarFill4.setVisibility(View.VISIBLE);
-                imageViewStarFill5.setVisibility(View.VISIBLE);
-                clicked = 5;
-            }
-        });
-
-        editTextReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                comment = editTextReview.getText().toString().trim();
+                fifthStarSelected();
             }
         });
 
         textViewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postReview();
+                if(post) {
+                    comment = editTextReview.getText().toString().trim();
+                    if(clicked!=0) {
+                        postReview();
+                    }
+                    else {
+                        Toast.makeText(mContext, "Please give the rating !", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
             }
         });
     }
@@ -175,7 +178,9 @@ public class ReviewFragment extends Fragment {
                         .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
                             @Override
                             public void onSuccess(ResponseBody responseBody) {
-                                Toast.makeText(mContext, "Review Posted Successfully !", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "Review Posted Successfully !", Toast.LENGTH_SHORT)
+                                        .show();
+                                getParentFragmentManager().popBackStack();
                             }
 
                             @Override
@@ -184,5 +189,50 @@ public class ReviewFragment extends Fragment {
                             }
                         })
         );
+    }
+
+    private void firstStarSelected() {
+        imageViewStarFill1.setVisibility(View.VISIBLE);
+        imageViewStarFill2.setVisibility(View.INVISIBLE);
+        imageViewStarFill3.setVisibility(View.INVISIBLE);
+        imageViewStarFill4.setVisibility(View.INVISIBLE);
+        imageViewStarFill5.setVisibility(View.INVISIBLE);
+        clicked = 1;
+    }
+
+    private void secondStarSelected() {
+        imageViewStarFill1.setVisibility(View.VISIBLE);
+        imageViewStarFill2.setVisibility(View.VISIBLE);
+        imageViewStarFill3.setVisibility(View.INVISIBLE);
+        imageViewStarFill4.setVisibility(View.INVISIBLE);
+        imageViewStarFill5.setVisibility(View.INVISIBLE);
+        clicked = 2;
+    }
+
+    private void thirdStarSelected() {
+        imageViewStarFill1.setVisibility(View.VISIBLE);
+        imageViewStarFill2.setVisibility(View.VISIBLE);
+        imageViewStarFill3.setVisibility(View.VISIBLE);
+        imageViewStarFill4.setVisibility(View.INVISIBLE);
+        imageViewStarFill5.setVisibility(View.INVISIBLE);
+        clicked = 3;
+    }
+
+    private void fourthStarSelected() {
+        imageViewStarFill1.setVisibility(View.VISIBLE);
+        imageViewStarFill2.setVisibility(View.VISIBLE);
+        imageViewStarFill3.setVisibility(View.VISIBLE);
+        imageViewStarFill4.setVisibility(View.VISIBLE);
+        imageViewStarFill5.setVisibility(View.INVISIBLE);
+        clicked = 4;
+    }
+
+    private void fifthStarSelected() {
+        imageViewStarFill1.setVisibility(View.VISIBLE);
+        imageViewStarFill2.setVisibility(View.VISIBLE);
+        imageViewStarFill3.setVisibility(View.VISIBLE);
+        imageViewStarFill4.setVisibility(View.VISIBLE);
+        imageViewStarFill5.setVisibility(View.VISIBLE);
+        clicked = 5;
     }
 }

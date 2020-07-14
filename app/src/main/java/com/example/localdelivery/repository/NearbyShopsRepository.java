@@ -56,15 +56,16 @@ public class NearbyShopsRepository {
                                 nearbyShops = nearbyShopsResponse.getMessage();
                                 for(NearbyShopsResponse.NearbyShopsObject shopsObject: nearbyShops) {
                                     ShopsEntity shopsEntity = new ShopsEntity(
-                                        shopsObject.getStock(),
+                                            shopsObject.getStock(),
+                                            shopsObject.getReviews(),
                                             shopsObject.get_id(),
                                             shopsObject.getPhoneNumber(),
                                             shopsObject.getName(),
-                                            shopsObject.getAddress(),
-                                            shopsObject.getLatitude(),
-                                            shopsObject.getLongitude(),
-                                            shopsObject.getShopName(),
-                                            shopsObject.getShopType()
+                                            shopsObject.getShopDetails().getAddress(),
+                                            shopsObject.getShopDetails().getLatitude(),
+                                            shopsObject.getShopDetails().getLongitude(),
+                                            shopsObject.getShopDetails().getShopName(),
+                                            shopsObject.getShopDetails().getShopType()
                                     );
                                     shopsEntities.add(shopsEntity);
                                 }

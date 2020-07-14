@@ -28,7 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
-import com.example.localdelivery.activity.MainActivity;
 import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.activity.ShopDetailActivity;
 import com.example.localdelivery.adapter.ShopsAdapter;
