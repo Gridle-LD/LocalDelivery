@@ -4,6 +4,7 @@ import com.example.localdelivery.model.LoginData;
 import com.example.localdelivery.model.LoginResponse;
 import com.example.localdelivery.model.NearbyShopsData;
 import com.example.localdelivery.model.NearbyShopsResponse;
+import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.model.OtpData;
 import com.example.localdelivery.model.OtpResponse;
 import com.example.localdelivery.model.PlaceOrderData;
@@ -11,9 +12,13 @@ import com.example.localdelivery.model.ResendOtpResponse;
 import com.example.localdelivery.model.ReviewData;
 import com.example.localdelivery.model.SignUpData;
 import com.example.localdelivery.model.SignUpResponse;
+
+import java.util.List;
+
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -40,4 +45,7 @@ public interface JsonApiHolder {
 
     @POST("customerAction/postReview")
     Single<ResponseBody> postReview(@Body ReviewData reviewData);
+
+    @GET("customerAction/getOrders")
+    Single<OrdersResponse> getOrders();
 }

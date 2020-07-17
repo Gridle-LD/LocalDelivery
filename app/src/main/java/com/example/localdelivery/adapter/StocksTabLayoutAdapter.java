@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.localdelivery.fragment.ItemListFragment;
-import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.model.StocksData;
 
 import java.util.List;

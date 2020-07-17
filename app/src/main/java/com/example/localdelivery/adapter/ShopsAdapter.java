@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.localdelivery.R;
-import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.NearbyShopsResponse;
 
 import java.util.ArrayList;

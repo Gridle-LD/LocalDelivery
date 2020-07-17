@@ -1,10 +1,13 @@
-package com.example.localdelivery.local;
+package com.example.localdelivery.local.Entity;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.example.localdelivery.local.Converter.ReviewConverter;
+import com.example.localdelivery.local.Converter.StocksConverter;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.StocksData;
 import java.util.List;

@@ -4,7 +4,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.repository.NearbyShopsRepository;
 import java.util.List;
 

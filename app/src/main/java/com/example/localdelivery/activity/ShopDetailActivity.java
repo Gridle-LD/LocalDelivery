@@ -29,7 +29,7 @@ import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.ReviewAdapter;
 import com.example.localdelivery.fragment.ReviewFragment;
 import com.example.localdelivery.fragment.StocksFragment;
-import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;

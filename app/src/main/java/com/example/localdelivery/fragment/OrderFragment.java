@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
-import com.example.localdelivery.adapter.OrderAdapter;
+import com.example.localdelivery.adapter.OrderItemAdapter;
 import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.utils.PrefUtils;
@@ -32,7 +32,7 @@ import okhttp3.ResponseBody;
 public class OrderFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private OrderAdapter orderAdapter;
+    private OrderItemAdapter orderItemAdapter;
     private List<StocksData> shop;
     private List<StocksData> cartList;
     private TextView textViewTotalBill;
@@ -88,8 +88,8 @@ public class OrderFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        orderAdapter = new OrderAdapter(cartList);
-        recyclerView.setAdapter(orderAdapter);
+        orderItemAdapter = new OrderItemAdapter(cartList);
+        recyclerView.setAdapter(orderItemAdapter);
     }
 
     private void calculateTotalPrice() {
@@ -100,13 +100,13 @@ public class OrderFragment extends Fragment {
     }
 
     private void setClickListeners() {
-        orderAdapter.setOnItemClickListener(new OrderAdapter.OnItemClickListener() {
+        orderItemAdapter.setOnItemClickListener(new OrderItemAdapter.OnItemClickListener() {
             @Override
             public void onAddClick(int position, TextView textView) {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
                 cartList.get(position).setQuantity(++count);
-                orderAdapter.notifyDataSetChanged();
+                orderItemAdapter.notifyDataSetChanged();
                 price += Integer.parseInt(cartList.get(position).getPrice());
                 textViewTotalBill.setText("Bill Total : Rs " + price);
                 changeOriginialList(count, cartList.get(position).get_id());
@@ -118,7 +118,7 @@ public class OrderFragment extends Fragment {
                 int count = Integer.parseInt(number);
                 if(count!=0) {
                     cartList.get(position).setQuantity(--count);
-                    orderAdapter.notifyDataSetChanged();
+                    orderItemAdapter.notifyDataSetChanged();
                     price -= Integer.parseInt(cartList.get(position).getPrice());
                     textViewTotalBill.setText("Bill Total : Rs " + price);
                     changeOriginialList(count, cartList.get(position).get_id());

@@ -1,4 +1,4 @@
-package com.example.localdelivery.local;
+package com.example.localdelivery.local.Converter;
 
 import androidx.room.TypeConverter;
 import com.example.localdelivery.model.NearbyShopsResponse;

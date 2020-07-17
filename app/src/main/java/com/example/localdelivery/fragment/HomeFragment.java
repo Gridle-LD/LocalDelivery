@@ -31,7 +31,7 @@ import com.example.localdelivery.R;
 import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.activity.ShopDetailActivity;
 import com.example.localdelivery.adapter.ShopsAdapter;
-import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;

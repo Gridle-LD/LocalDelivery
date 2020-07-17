@@ -6,9 +6,9 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.lifecycle.LiveData;
 import com.example.localdelivery.Interface.JsonApiHolder;
-import com.example.localdelivery.local.ShopsDao;
+import com.example.localdelivery.local.Dao.ShopsDao;
 import com.example.localdelivery.local.ShopsDatabase;
-import com.example.localdelivery.local.ShopsEntity;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.NearbyShopsData;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
@@ -69,7 +69,6 @@ public class NearbyShopsRepository {
                                     );
                                     shopsEntities.add(shopsEntity);
                                 }
-                                Log.e("TAG", "onSuccess: " + shopsEntities.size());
                                 add(shopsEntities);
                             }
 

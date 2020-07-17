@@ -1,7 +1,6 @@
 package com.example.localdelivery.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.localdelivery.R;
-import com.example.localdelivery.local.ShopsEntity;
 import com.example.localdelivery.model.StocksData;
 
 import java.util.List;
