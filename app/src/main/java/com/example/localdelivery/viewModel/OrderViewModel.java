@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.localdelivery.local.Entity.OrderEntity;
+import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.repository.OrderRepository;
 import java.util.List;
 import io.reactivex.disposables.CompositeDisposable;
@@ -24,5 +25,9 @@ public class OrderViewModel extends AndroidViewModel {
 
     public CompositeDisposable getDisposable() {
         return orderRepository.getDisposable();
+    }
+
+    public OrdersResponse getCompleteOrderList() {
+        return orderRepository.getCompleteOrderList();
     }
 }

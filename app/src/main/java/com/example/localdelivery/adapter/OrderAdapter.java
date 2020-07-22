@@ -23,7 +23,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public interface OnItemClickListener {
-        void onClick(int position, TextView textView);
+        void onClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -62,6 +62,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             textViewNameAlphabet = itemView.findViewById(R.id.text_view_name_alphabet_order);
             textViewUsername = itemView.findViewById(R.id.text_view_name_order);
             textViewPrice = itemView.findViewById(R.id.text_view_price_order);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            listener.onClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

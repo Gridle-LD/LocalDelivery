@@ -2,6 +2,7 @@ package com.example.localdelivery.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.lifecycle.LiveData;
 import com.example.localdelivery.Interface.JsonApiHolder;
@@ -50,6 +51,8 @@ public class OrderRepository {
                             public void onSuccess(OrdersResponse ordersResponse) {
                                 List<OrderEntity> orderEntityList = new ArrayList<>();
                                 ordersList = ordersResponse;
+                                Log.e("TAG", "onSuccess: " + ordersList.getResult().getOrders()
+                                        .get(0).getOrder().get(0).getTotalPrice());
                                 for(OrdersResponse.Result.Orders response : ordersList.getResult().getOrders()) {
                                     OrderEntity orderEntity = new OrderEntity(
                                             response.getOrder().get(0).get_id(),
@@ -95,4 +98,6 @@ public class OrderRepository {
     public CompositeDisposable getDisposable() {
         return disposable;
     }
+
+    public OrdersResponse getCompleteOrderList() { return ordersList; }
 }

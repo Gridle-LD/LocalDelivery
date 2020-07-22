@@ -7,6 +7,8 @@ import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.model.OtpData;
 import com.example.localdelivery.model.OtpResponse;
+import com.example.localdelivery.model.PayTmCheckSumData;
+import com.example.localdelivery.model.PayTmCheckSumResponse;
 import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.ResendOtpResponse;
 import com.example.localdelivery.model.ReviewData;
@@ -48,4 +50,7 @@ public interface JsonApiHolder {
 
     @GET("customerAction/getOrders")
     Single<OrdersResponse> getOrders();
+
+    @POST("customerAction/paisa")
+    Single<PayTmCheckSumResponse> getPayTmCheckSum(@Body PayTmCheckSumData payTmCheckSumData);
 }

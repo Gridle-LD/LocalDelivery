@@ -1,13 +1,21 @@
 package com.example.localdelivery.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.provider.Settings;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +25,28 @@ import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.OrderItemAdapter;
+import com.example.localdelivery.model.OrdersResponse;
+import com.example.localdelivery.model.PayTmCheckSumData;
+import com.example.localdelivery.model.PayTmCheckSumResponse;
 import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
+import com.paytm.pgsdk.TransactionManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -46,10 +70,24 @@ public class OrderFragment extends Fragment {
     private PrefUtils prefUtils;
     private ImageButton imageViewPlaceOrder;
 
+    private List<OrdersResponse.Result.Orders> ordersList;
+    private int position;
+    private boolean canEditOrder;
+
+    private Integer ActivityRequestCode = 200;
+
     public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId) {
         this.shop = shop;
         this.cartList = cartList;
         this.shopId = shopId;
+        canEditOrder = true;
+    }
+
+    public OrderFragment(List<OrdersResponse.Result.Orders> ordersList, int position) {
+        this.ordersList = ordersList;
+        this.position = position;
+        canEditOrder = false;
+        price = Integer.parseInt(ordersList.get(position).getOrder().get(0).getTotalPrice());
     }
 
     @Override
@@ -70,9 +108,14 @@ public class OrderFragment extends Fragment {
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
 
+        if(!canEditOrder) {
+            convertList();
+        }
         setView(view);
-        calculateTotalPrice();
-        setClickListeners();
+        if(canEditOrder) {
+            calculateTotalPrice();
+            setClickListeners();
+        }
 
         //set total price
         textViewTotalBill.setText("Bill Total : Rs " + price);
@@ -90,6 +133,11 @@ public class OrderFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         orderItemAdapter = new OrderItemAdapter(cartList);
         recyclerView.setAdapter(orderItemAdapter);
+
+        if(!canEditOrder) {
+            textViewAddAnotherItem.setVisibility(View.GONE);
+            imageViewPlaceOrder.setVisibility(View.GONE);
+        }
     }
 
     private void calculateTotalPrice() {
@@ -137,7 +185,7 @@ public class OrderFragment extends Fragment {
         imageViewPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                placeOrder();
+                getToken();
             }
         });
     }
@@ -171,6 +219,7 @@ public class OrderFragment extends Fragment {
                             @Override
                             public void onSuccess(ResponseBody responseBody) {
                                 Toast.makeText(mContext, "Placed Order !", Toast.LENGTH_SHORT).show();
+                                mActivity.onBackPressed();
                             }
 
                             @Override
@@ -179,5 +228,159 @@ public class OrderFragment extends Fragment {
                             }
                         })
         );
+    }
+
+    private void convertList() {
+        cartList = new ArrayList<>();
+            for (OrdersResponse.Result.Orders.Order.Items items : ordersList.get(position).getOrder()
+                    .get(0).getItems()) {
+                StocksData stocksData = new StocksData(
+                        items.getItem().get_id(),
+                        items.getItem().getName(),
+                        items.getItem().getPrice(),
+                        items.getItem().getType(),
+                        items.getItem().getImage(),
+                        items.getItem().isAvailable(),
+                        items.getItem().getShop(),
+                        items.getItem().getCreatedAt()
+                );
+
+                stocksData.setQuantity(Integer.parseInt(items.getQuantity()));
+
+                cartList.add(stocksData);
+            }
+    }
+
+    private String getOrderId() {
+        Calendar c = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy");
+        String date = df.format(c.getTime());
+        Random rand = new Random();
+        int min =1000, max= 9999;
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return date + randomNum;
+    }
+
+    private void getToken() {
+        final String orderId = getOrderId();
+        PayTmCheckSumData payTmCheckSumData = new PayTmCheckSumData("BGkMJs06905184978035",
+                orderId, String.valueOf(price));
+
+        disposable.add(
+                jsonApiHolder.getPayTmCheckSum(payTmCheckSumData)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<PayTmCheckSumResponse>() {
+                            @Override
+                            public void onSuccess(PayTmCheckSumResponse payTmCheckSumResponse) {
+                                if(payTmCheckSumResponse!=null) {
+                                    if(payTmCheckSumResponse.getResult().getVerified()) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(payTmCheckSumResponse
+                                                    .getPaytmResponse());
+                                            JSONObject jsonObjectBody = jsonObject.getJSONObject("body");
+                                            startPayTmPayment(jsonObjectBody.getString("txnToken"), orderId);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
+                            }
+                        }));
+    }
+
+    private void startPayTmPayment(String token, String orderIdString) {
+        String host = "https://securegw-stage.paytm.in/";
+        String callBackUrl = host + "theia/paytmCallback?ORDER_ID="+orderIdString;
+        PaytmOrder paytmOrder = new PaytmOrder(orderIdString, "BGkMJs06905184978035", token, String.valueOf(price),
+                callBackUrl);
+        TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback(){
+            @Override
+            public void onTransactionResponse(Bundle bundle) {
+                Log.e("paytm", "Response (onTransactionResponse) : "+bundle.toString());
+            }
+
+            @Override
+            public void networkNotAvailable() {
+                Log.e("paytm", "network not available ");
+            }
+
+            @Override
+            public void onErrorProceed(String s) {
+                Log.e("paytm", " onErrorProcess "+s.toString());
+            }
+
+            @Override
+            public void clientAuthenticationFailed(String s) {
+                Log.e("paytm", "Clientauth "+s);
+            }
+
+            @Override
+            public void someUIErrorOccurred(String s) {
+                Log.e("paytm", " UI error "+s);
+            }
+
+            @Override
+            public void onErrorLoadingWebPage(int i, String s, String s1) {
+                Log.e("paytm", " error loading web "+s+"--"+s1);
+            }
+
+            @Override
+            public void onBackPressedCancelTransaction() {
+                Log.e("paytm", "backPress ");
+            }
+
+            @Override
+            public void onTransactionCancel(String s, Bundle bundle) {
+                Log.e("paytm", " transaction cancel "+s);
+            }
+        });
+
+        transactionManager.setShowPaymentUrl(host + "theia/api/v1/showPaymentPage");
+        transactionManager.startTransaction(mActivity, ActivityRequestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // -1 means successful  // 0 means failed
+        // one error is - nativeSdkForMerchantMessage : networkError
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("paytm", "onActivityResult: " + requestCode);
+        if (requestCode == ActivityRequestCode && data != null) {
+            Log.e("paytn", "onActivityResult: " + "paytm opened activity");
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                for (String key : bundle.keySet()) {
+                    Log.e("paytm", key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
+                }
+            }
+            Log.e("paytm", " data "+  data.getStringExtra("nativeSdkForMerchantMessage"));
+            Log.e("paytm", " data response - "+data.getStringExtra("response"));
+/*
+ data response - {"BANKNAME":"WALLET","BANKTXNID":"1394221115",
+ "CHECKSUMHASH":"7jRCFIk6eRmrep+IhnmQrlrL43KSCSXrmM+VHP5pH0ekXaaxjt3MEgd1N9mLtWyu4VwpWexHOILCTAhybOo5EVDmAEV33rg2VAS/p0PXdk\u003d",
+ "CURRENCY":"INR","GATEWAYNAME":"WALLET","MID":"EAcP3138556","ORDERID":"100620202152",
+ "PAYMENTMODE":"PPI","RESPCODE":"01","RESPMSG":"Txn Success","STATUS":"TXN_SUCCESS",
+ "TXNAMOUNT":"2.00","TXNDATE":"2020-06-10 16:57:45.0","TXNID":"2020061011121280011018328631290118"}
+  */
+            Toast.makeText(mContext, data.getStringExtra("nativeSdkForMerchantMessage")
+                    + data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
+        }else{
+            Log.e("paytm", " payment failed");
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }
