@@ -9,6 +9,8 @@ import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.local.Dao.ShopsDao;
 import com.example.localdelivery.local.ShopsDatabase;
 import com.example.localdelivery.local.Entity.ShopsEntity;
+import com.example.localdelivery.model.FavData;
+import com.example.localdelivery.model.FavResponse;
 import com.example.localdelivery.model.NearbyShopsData;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
@@ -21,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class NearbyShopsRepository {
 
@@ -78,6 +81,34 @@ public class NearbyShopsRepository {
                                         .show();
                             }
                         }));
+    }
+
+    public void fav(int pos, int like) {
+        if(nearbyShops!=null) {
+            FavData favData = new FavData(nearbyShops.get(pos).get_id(), like);
+            disposable.add(
+                    jsonApiHolder.favourite(favData)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new DisposableSingleObserver<FavResponse>() {
+                                @Override
+                                public void onSuccess(FavResponse favResponse) {
+                                    if(favResponse.getMessage().equals("liked")) {
+                                        Toast.makeText(context, "Shop Added to Favourites !", Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                    if(favResponse.getMessage().equals("unliked")) {
+                                        Toast.makeText(context, "Shop Removed from Favourites !", Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Toast.makeText(context, "An Error Occurred !", Toast.LENGTH_SHORT)
+                                            .show();
+                                }}));
+        }
     }
 
     @SuppressLint("CheckResult")

@@ -6,12 +6,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.OrderAdapter;
 import com.example.localdelivery.local.Entity.OrderEntity;
@@ -60,7 +57,6 @@ public class MyOrdersFragment extends Fragment {
 
     private void setClickListeners() {
         if(orderViewModel.getCompleteOrderList()!=null) {
-            Log.e("myordersfragment", "setClickListeners: " + orderViewModel.getCompleteOrderList());
             ordersList = orderViewModel.getCompleteOrderList().getResult().getOrders();
 
             orderAdapter.setOnItemClickListener(new OrderAdapter.OnItemClickListener() {

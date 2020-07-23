@@ -367,9 +367,11 @@
 
                 <TextView
                     android:id="@+id/textViewPickup"
+                    style="?borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pickup"
+                    android:textAllCaps="false"
                     android:textSize="16sp"
                     android:fontFamily="@font/montserrat_regular"
                     android:textColor="#2B2024"
@@ -380,10 +382,12 @@
 
                 <TextView
                     android:id="@+id/textViewDelivery"
+                    style="?borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="Delivery"
+                    android:textAllCaps="false"
                     android:textSize="16sp"
                     android:fontFamily="@font/montserrat_regular"
                     android:textColor="#2B2024"

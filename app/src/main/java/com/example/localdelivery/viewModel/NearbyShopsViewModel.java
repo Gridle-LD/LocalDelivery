@@ -29,4 +29,8 @@ public class NearbyShopsViewModel extends AndroidViewModel {
         disposable = nearbyShopsRepository.getDisposable();
         return disposable;
     }
+
+    public void fav(int pos, int like) {
+        nearbyShopsRepository.fav(pos, like);
+    }
 }

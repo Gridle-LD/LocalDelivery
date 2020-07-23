@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -177,16 +178,18 @@ public class ShopDetailActivity extends AppCompatActivity {
         imageViewFavUnlike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewFavLike.setVisibility(View.VISIBLE);
-                imageViewFavUnlike.setVisibility(View.GONE);
+                viewModel.fav(getIntent().getIntExtra(String.valueOf(position),0), 1);
+                    imageViewFavLike.setVisibility(View.VISIBLE);
+                    imageViewFavUnlike.setVisibility(View.GONE);
             }
         });
 
         imageViewFavLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageViewFavLike.setVisibility(View.GONE);
-                imageViewFavUnlike.setVisibility(View.VISIBLE);
+                viewModel.fav(getIntent().getIntExtra(String.valueOf(position),0), 0);
+                    imageViewFavLike.setVisibility(View.GONE);
+                    imageViewFavUnlike.setVisibility(View.VISIBLE);
             }
         });
 
@@ -277,6 +280,10 @@ public class ShopDetailActivity extends AppCompatActivity {
         }
         ratingAverage = ((double) ratingSum)/reviewList.size();
         return String.format("%.1f", ratingAverage);
+    }
+
+    private void fav(int like) {
+
     }
 
     @Override

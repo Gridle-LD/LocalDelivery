@@ -1,5 +1,7 @@
 package com.example.localdelivery.Interface;
 
+import com.example.localdelivery.model.FavData;
+import com.example.localdelivery.model.FavResponse;
 import com.example.localdelivery.model.LoginData;
 import com.example.localdelivery.model.LoginResponse;
 import com.example.localdelivery.model.NearbyShopsData;
@@ -39,7 +41,7 @@ public interface JsonApiHolder {
     @POST("user/otpResend/{userId}")
     Single<ResendOtpResponse> resendOtp(@Path("userId") String id);
 
-    @PUT("shopaction/getNearbyShops")
+    @PUT("shopAction/getNearbyShops")
     Single<NearbyShopsResponse> getNearbyShops(@Body NearbyShopsData nearbyShopsData);
 
     @POST("customerAction/placeOrder")
@@ -53,4 +55,7 @@ public interface JsonApiHolder {
 
     @POST("customerAction/paisa")
     Single<PayTmCheckSumResponse> getPayTmCheckSum(@Body PayTmCheckSumData payTmCheckSumData);
+
+    @PUT("customerAction/fav")
+    Single<FavResponse> favourite(@Body FavData favData);
 }

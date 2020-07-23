@@ -3,28 +3,45 @@ package com.example.localdelivery.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import com.example.localdelivery.Interface.FilterSortClickListener;
 import com.example.localdelivery.R;
 import com.example.localdelivery.fragment.HomeFragment;
 import com.example.localdelivery.fragment.MyOrdersFragment;
 import com.example.localdelivery.fragment.ProfileFragment;
+import com.example.localdelivery.utils.PrefUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements FilterSortClickListener {
 
     private BottomNavigationView bottomNavigationView;
+    private EditText editTextLocation;
+    private CardView cardViewProfileImage;
+    private TextView textViewProfileAlphabet;
+    private PrefUtils prefUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        prefUtils = new PrefUtils(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -65,10 +82,42 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
     }
 
     private void setView() {
+        editTextLocation = findViewById(R.id.editTextLocation);
+        cardViewProfileImage = findViewById(R.id.card_view_profile_image);
+        textViewProfileAlphabet = findViewById(R.id.text_view_profile_alphabet);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //set location in address box
+        editTextLocation.setText(prefUtils.getAddress());
+
+        //set bg colour of profile
+        Random rnd = new Random();
+        int color = Color.argb(255,  (rnd.nextInt(225)+25), (rnd.nextInt(225)+25),
+                (rnd.nextInt(225)+25));
+        cardViewProfileImage.setCardBackgroundColor(color);
+
+        //set first alphabet of username
+//        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
+//        textViewProfileAlphabet.setText(firstAlphabet.toUpperCase());
     }
 
     private void setClickListeners() {
+
+        editTextLocation.addTextChangedListener( new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.
                 OnNavigationItemSelectedListener() {
             @Override
