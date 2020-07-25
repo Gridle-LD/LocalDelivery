@@ -55,7 +55,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
         if(Double.parseDouble(calculateRating(nearbyShopsObject.getReviewList())) >= 4.0) {
             holder.cardViewRating.setCardBackgroundColor(Color.argb(255, 17, 168, 0));
         }
-        if(Double.parseDouble(calculateRating(nearbyShopsObject.getReviewList())) >= 3.0) {
+        else if(Double.parseDouble(calculateRating(nearbyShopsObject.getReviewList())) >= 3.0) {
             holder.cardViewRating.setCardBackgroundColor(Color.argb(255, 255, 230, 0));
         }
         else {

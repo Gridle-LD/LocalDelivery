@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.repository.NearbyShopsRepository;
 import java.util.List;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class NearbyShopsViewModel extends AndroidViewModel {

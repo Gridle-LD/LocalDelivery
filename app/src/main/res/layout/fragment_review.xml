@@ -24,7 +24,7 @@
 
             <ImageView
                 android:id="@+id/imageViewBackButtonReview"
-                android:layout_width="wrap_content"
+                android:layout_width="32dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
@@ -281,5 +281,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/progressBarReview"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_view_review_box"
+        app:layout_constraintEnd_toEndOf="@+id/card_view_review_box"
+        app:layout_constraintStart_toStartOf="@+id/card_view_review_box"
+        app:layout_constraintTop_toTopOf="@+id/card_view_review_box"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

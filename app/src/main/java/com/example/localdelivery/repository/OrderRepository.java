@@ -51,15 +51,14 @@ public class OrderRepository {
                             public void onSuccess(OrdersResponse ordersResponse) {
                                 List<OrderEntity> orderEntityList = new ArrayList<>();
                                 ordersList = ordersResponse;
-                                Log.e("TAG", "onSuccess: " + ordersList.getResult().getOrders()
-                                        .get(0).getOrder().get(0).getTotalPrice());
                                 for(OrdersResponse.Result.Orders response : ordersList.getResult().getOrders()) {
                                     OrderEntity orderEntity = new OrderEntity(
                                             response.getOrder().get(0).get_id(),
                                             response.getOrder().get(0).getStatus(),
                                             response.getOrder().get(0).isPickUp(),
                                             response.getOrder().get(0).getShopId().getShopDetails().getShopName(),
-                                            response.getOrder().get(0).getTotalPrice()
+                                            response.getOrder().get(0).getTotalPrice(),
+                                            response.getOrder().get(0).getCreatedAt()
                                     );
                                     orderEntityList.add(orderEntity);
                                 }

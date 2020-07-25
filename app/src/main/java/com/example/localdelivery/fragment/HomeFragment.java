@@ -50,9 +50,6 @@ public class HomeFragment extends Fragment {
     private List<ShopsEntity> nearbyShopsCopy;
     private PrefUtils prefUtils;
     private NearbyShopsViewModel nearbyShopsViewModel;
-//    private EditText editTextLocation;
-//    private CardView cardViewProfileImage;
-//    private TextView textViewProfileAlphabet;
     private ConstraintLayout constraintLayoutSort;
     private ConstraintLayout constraintLayoutFilter;
     private boolean isOpened = false;
@@ -95,9 +92,6 @@ public class HomeFragment extends Fragment {
 
     private void setView(View view) {
         searchView = view.findViewById(R.id.searchView);
-//        editTextLocation = view.findViewById(R.id.editTextLocation);
-//        cardViewProfileImage = view.findViewById(R.id.card_view_profile_image);
-//        textViewProfileAlphabet = view.findViewById(R.id.text_view_profile_alphabet);
         constraintLayoutSort = view.findViewById(R.id.constraint_layout_sort_button);
         constraintLayoutFilter = view.findViewById(R.id.constraint_layout_filter_button);
         recyclerView = view.findViewById(R.id.recycler_view_nearby_shops);
@@ -106,19 +100,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         shopsAdapter = new ShopsAdapter(mContext, nearbyShops);
         recyclerView.setAdapter(shopsAdapter);
-
-//        //set location in address box
-//        editTextLocation.setText(prefUtils.getAddress());
-//
-//        //set bg colour of profile
-//        Random rnd = new Random();
-//        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),
-//                rnd.nextInt(256));
-//        cardViewProfileImage.setCardBackgroundColor(color);
-
-        //set first alphabet of username
-//        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
-//        textViewProfileAlphabet.setText(firstAlphabet.toUpperCase());
 
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -172,21 +153,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void setTextListeners() {
-
-//        editTextLocation.addTextChangedListener( new TextWatcher() {
-//
-//            public void afterTextChanged(Editable s) {
-//            }
-//
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            public void onTextChanged(CharSequence s, int start, int before,
-//                                      int count) {
-//                Intent intent = new Intent(mContext, MapsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
 
         constraintLayoutSort.setOnClickListener(new View.OnClickListener() {
             @Override

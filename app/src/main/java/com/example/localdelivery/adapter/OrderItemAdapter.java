@@ -53,7 +53,12 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
 
     @Override
     public int getItemCount() {
-        return cartList.size();
+        if(cartList!=null) {
+            return cartList.size();
+        }
+        else {
+            return 0;
+        }
     }
 
     public static class OrderAdapterViewHolder extends RecyclerView.ViewHolder {

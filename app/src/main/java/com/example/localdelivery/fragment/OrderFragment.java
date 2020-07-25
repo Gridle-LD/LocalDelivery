@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,10 +34,8 @@ import com.example.localdelivery.utils.RetrofitInstance;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.paytm.pgsdk.TransactionManager;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -46,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -70,24 +66,12 @@ public class OrderFragment extends Fragment {
     private PrefUtils prefUtils;
     private ImageButton imageViewPlaceOrder;
 
-    private List<OrdersResponse.Result.Orders> ordersList;
-    private int position;
-    private boolean canEditOrder;
-
     private Integer ActivityRequestCode = 200;
 
     public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId) {
         this.shop = shop;
         this.cartList = cartList;
         this.shopId = shopId;
-        canEditOrder = true;
-    }
-
-    public OrderFragment(List<OrdersResponse.Result.Orders> ordersList, int position) {
-        this.ordersList = ordersList;
-        this.position = position;
-        canEditOrder = false;
-        price = Integer.parseInt(ordersList.get(position).getOrder().get(0).getTotalPrice());
     }
 
     @Override
@@ -108,14 +92,9 @@ public class OrderFragment extends Fragment {
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
 
-        if(!canEditOrder) {
-            convertList();
-        }
         setView(view);
-        if(canEditOrder) {
-            calculateTotalPrice();
-            setClickListeners();
-        }
+        calculateTotalPrice();
+        setClickListeners();
 
         //set total price
         textViewTotalBill.setText("Bill Total : Rs " + price);
@@ -133,11 +112,6 @@ public class OrderFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         orderItemAdapter = new OrderItemAdapter(cartList);
         recyclerView.setAdapter(orderItemAdapter);
-
-        if(!canEditOrder) {
-            textViewAddAnotherItem.setVisibility(View.GONE);
-            imageViewPlaceOrder.setVisibility(View.GONE);
-        }
     }
 
     private void calculateTotalPrice() {
@@ -228,27 +202,6 @@ public class OrderFragment extends Fragment {
                             }
                         })
         );
-    }
-
-    private void convertList() {
-        cartList = new ArrayList<>();
-            for (OrdersResponse.Result.Orders.Order.Items items : ordersList.get(position).getOrder()
-                    .get(0).getItems()) {
-                StocksData stocksData = new StocksData(
-                        items.getItem().get_id(),
-                        items.getItem().getName(),
-                        items.getItem().getPrice(),
-                        items.getItem().getType(),
-                        items.getItem().getImage(),
-                        items.getItem().isAvailable(),
-                        items.getItem().getShop(),
-                        items.getItem().getCreatedAt()
-                );
-
-                stocksData.setQuantity(Integer.parseInt(items.getQuantity()));
-
-                cartList.add(stocksData);
-            }
     }
 
     private String getOrderId() {

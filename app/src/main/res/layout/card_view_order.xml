@@ -4,87 +4,164 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
-    android:background="#FBF9FA"
-    android:layout_marginBottom="8dp">
+    android:background="#FBF9FA">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circle_image_view_order"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:civ_border_color="#BCB7B9"
-            app:civ_border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/text_view_name_alphabet_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="S"
             android:textSize="40dp"
             android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/circle_image_view_order"
-            app:layout_constraintEnd_toEndOf="@+id/circle_image_view_order"
-            app:layout_constraintStart_toStartOf="@+id/circle_image_view_order"
-            app:layout_constraintTop_toTopOf="@+id/circle_image_view_order" />
+            app:layout_constraintBottom_toBottomOf="@+id/cardViewOrder"
+            app:layout_constraintEnd_toEndOf="@+id/cardViewOrder"
+            app:layout_constraintStart_toStartOf="@+id/cardViewOrder"
+            app:layout_constraintTop_toTopOf="@+id/cardViewOrder" />
 
-        <TextView
-            android:id="@+id/text_view_name_order"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageViewShopOrder"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/shop_image" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/text_view_name_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_medium"
+            android:maxLines="1"
             android:text="Shyamlal"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/text_view_price_order"
-            app:layout_constraintStart_toEndOf="@+id/circle_image_view_order"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewPendingOrder"
+            app:layout_constraintStart_toEndOf="@+id/cardViewOrder"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/text_view_price_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:text="Rs 250"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/circle_image_view_order"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_name_order" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="has an order of"
+            android:text="Rs 250"
             android:textColor="@android:color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_name_order"
-            app:layout_constraintStart_toEndOf="@+id/text_view_name_order"
-            app:layout_constraintTop_toTopOf="@+id/text_view_name_order" />
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDateOrder"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name_order" />
 
         <ImageView
             android:id="@+id/image_view_arrow_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/arrow" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/imageViewPendingOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/pending_icon" />
+
+        <ImageView
+            android:id="@+id/imageViewCancelledOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cross" />
+
+        <ImageView
+            android:id="@+id/imageViewCompletedOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/tick" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Order Amount :"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat_light"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_price_order"
+            app:layout_constraintStart_toEndOf="@+id/cardViewOrder"
+            app:layout_constraintTop_toTopOf="@+id/text_view_price_order" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Date                     :"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat_light"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewDateOrder"
+            app:layout_constraintStart_toEndOf="@+id/cardViewOrder"
+            app:layout_constraintTop_toTopOf="@+id/textViewDateOrder" />
+
+        <TextView
+            android:id="@+id/textViewDateOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="20 July, 2020"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView11"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_price_order" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

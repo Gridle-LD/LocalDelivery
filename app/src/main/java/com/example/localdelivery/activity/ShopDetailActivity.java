@@ -21,7 +21,6 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -162,7 +161,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                         if(Double.parseDouble(calculateRating(shop.getReviewList())) >= 4.0) {
                             cardViewRating.setCardBackgroundColor(Color.argb(255, 17, 168, 0));
                         }
-                        if(Double.parseDouble(calculateRating(shop.getReviewList())) >= 3.0) {
+                        else if(Double.parseDouble(calculateRating(shop.getReviewList())) >= 3.0) {
                             cardViewRating.setCardBackgroundColor(Color.argb(255, 255, 230, 0));
                         }
                         else {
@@ -280,10 +279,6 @@ public class ShopDetailActivity extends AppCompatActivity {
         }
         ratingAverage = ((double) ratingSum)/reviewList.size();
         return String.format("%.1f", ratingAverage);
-    }
-
-    private void fav(int like) {
-
     }
 
     @Override

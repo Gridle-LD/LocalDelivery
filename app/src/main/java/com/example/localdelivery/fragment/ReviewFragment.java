@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
@@ -38,6 +40,7 @@ public class ReviewFragment extends Fragment {
 
     private TextView textViewPost;
     private EditText editTextReview;
+    private ProgressBar progressBar;
 
     private CompositeDisposable disposable = new CompositeDisposable();
     private JsonApiHolder jsonApiHolder;
@@ -97,6 +100,7 @@ public class ReviewFragment extends Fragment {
 
         editTextReview = view.findViewById(R.id.editTextReview);
         textViewPost = view.findViewById(R.id.textViewPostReview);
+        progressBar = view.findViewById(R.id.progressBarReview);
 
         if(clicked == 1) {
             firstStarSelected();
@@ -170,6 +174,9 @@ public class ReviewFragment extends Fragment {
     }
 
     private void postReview() {
+        progressBar.setVisibility(View.VISIBLE);
+        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         disposable.add(
                 jsonApiHolder.postReview(new ReviewData(clicked, comment, shopId))
@@ -178,6 +185,8 @@ public class ReviewFragment extends Fragment {
                         .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
                             @Override
                             public void onSuccess(ResponseBody responseBody) {
+                                progressBar.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 Toast.makeText(mContext, "Review Posted Successfully !", Toast.LENGTH_SHORT)
                                         .show();
                                 getParentFragmentManager().popBackStack();
@@ -185,6 +194,8 @@ public class ReviewFragment extends Fragment {
 
                             @Override
                             public void onError(Throwable e) {
+                                progressBar.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
                             }
                         })

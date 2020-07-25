@@ -1,6 +1,11 @@
 package com.example.localdelivery.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.localdelivery.R;
+import com.example.localdelivery.activity.ConfirmedOrderActivity;
 import com.example.localdelivery.adapter.OrderAdapter;
 import com.example.localdelivery.local.Entity.OrderEntity;
 import com.example.localdelivery.model.OrdersResponse;
@@ -23,6 +29,17 @@ public class MyOrdersFragment extends Fragment {
     private List<OrdersResponse.Result.Orders> ordersList;
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
+    private Context mContext;
+    private Activity mActivity;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if(context instanceof Activity) {
+            mActivity = (Activity) context;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,8 +79,9 @@ public class MyOrdersFragment extends Fragment {
             orderAdapter.setOnItemClickListener(new OrderAdapter.OnItemClickListener() {
                 @Override
                 public void onClick(int position) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout_order,
-                            new OrderFragment(ordersList, position)).addToBackStack(null).commit();
+                    Intent intent = new Intent(mContext, ConfirmedOrderActivity.class);
+                    intent.putExtra(String.valueOf(ConfirmedOrderActivity.position), position);
+                    startActivity(intent);
                 }
             });
         }

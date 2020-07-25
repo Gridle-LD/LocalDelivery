@@ -15,16 +15,18 @@ public class OrderEntity {
     private boolean pickUp;
     private String shopName;
     private String totalPrice;
+    private String createdAt;
 
     @Ignore
     public OrderEntity() {}
 
-    public OrderEntity(String _id, String status, boolean pickUp, String shopName, String totalPrice) {
+    public OrderEntity(String _id, String status, boolean pickUp, String shopName, String totalPrice, String createdAt) {
         this._id = _id;
         this.status = status;
         this.pickUp = pickUp;
         this.shopName = shopName;
         this.totalPrice = totalPrice;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -73,5 +75,13 @@ public class OrderEntity {
 
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

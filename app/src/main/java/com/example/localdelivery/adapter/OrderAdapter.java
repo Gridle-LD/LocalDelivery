@@ -3,14 +3,12 @@ package com.example.localdelivery.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.localdelivery.R;
 import com.example.localdelivery.local.Entity.OrderEntity;
-
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -44,7 +42,30 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         String name = orderEntity.getShopName().toUpperCase();
         holder.textViewNameAlphabet.setText(String.valueOf(name.charAt(0)));
         holder.textViewUsername.setText(orderEntity.getShopName());
-        holder.textViewPrice.setText(orderEntity.getTotalPrice());
+        holder.textViewPrice.setText("Rs " + orderEntity.getTotalPrice());
+        String date = "";
+        for(int i=0; i<orderEntity.getCreatedAt().length(); i++) {
+            if(orderEntity.getCreatedAt().charAt(i) == 'T') {
+                break;
+            }
+            date += orderEntity.getCreatedAt().charAt(i);
+        }
+        holder.textViewDate.setText(date);
+        if(orderEntity.getStatus().equals("Pending")) {
+            holder.imageViewPending.setVisibility(View.VISIBLE);
+            holder.imageViewCompleted.setVisibility(View.INVISIBLE);
+            holder.imageViewCancelled.setVisibility(View.INVISIBLE);
+        }
+        if(orderEntity.getStatus().equals("Completed")) {
+            holder.imageViewPending.setVisibility(View.INVISIBLE);
+            holder.imageViewCompleted.setVisibility(View.VISIBLE);
+            holder.imageViewCancelled.setVisibility(View.INVISIBLE);
+        }
+        if(orderEntity.getStatus().equals("Cancelled")) {
+            holder.imageViewPending.setVisibility(View.INVISIBLE);
+            holder.imageViewCompleted.setVisibility(View.INVISIBLE);
+            holder.imageViewCancelled.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -56,12 +77,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         private TextView textViewNameAlphabet;
         private TextView textViewUsername;
         private TextView textViewPrice;
+        private TextView textViewDate;
+        private ImageView imageViewPending;
+        private ImageView imageViewCompleted;
+        private ImageView imageViewCancelled;
 
         public OrderViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             textViewNameAlphabet = itemView.findViewById(R.id.text_view_name_alphabet_order);
             textViewUsername = itemView.findViewById(R.id.text_view_name_order);
             textViewPrice = itemView.findViewById(R.id.text_view_price_order);
+            textViewDate = itemView.findViewById(R.id.textViewDateOrder);
+            imageViewPending = itemView.findViewById(R.id.imageViewPendingOrder);
+            imageViewCompleted = itemView.findViewById(R.id.imageViewCompletedOrder);
+            imageViewCancelled = itemView.findViewById(R.id.imageViewCancelledOrder);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
