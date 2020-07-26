@@ -33,6 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyListener, View.OnFocusChangeListener {
 
+    private String username;
     private String userId;
     private String mobileNumber;
     private JsonApiHolder jsonApiHolder;
@@ -53,7 +54,8 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private CompositeDisposable disposable = new CompositeDisposable();
     private ImageView imageViewOtpVerifyScreen;
 
-    public OtpFragment(String userId, String mobileNumber) {
+    public OtpFragment(String username, String userId, String mobileNumber) {
+        this.username = username;
         this.userId = userId;
         this.mobileNumber = mobileNumber;
     }
@@ -324,7 +326,9 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                             @Override
                             public void onSuccess(OtpResponse otpResponse) {
                                 prefUtils.createLogin("JWT "+otpResponse.getToken());
+                                prefUtils.setName(username);
                                 prefUtils.setUserId(userId);
+                                prefUtils.setContactNumber(mobileNumber);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
                                 Intent intent = new Intent(mContext , MainActivity.class);
                                 startActivity(intent);

@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
         return true;
     }
 
-    private void login(String mobileNumber, String password) {
+    private void login(final String mobileNumber, String password) {
         final LoginData loginData = new LoginData(mobileNumber, password);
         progressBar.setVisibility(View.VISIBLE);
         mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -139,6 +139,7 @@ public class LoginFragment extends Fragment {
                             public void onSuccess(LoginResponse loginResponse) {
                                 prefUtils.createLogin("JWT "+loginResponse.getToken());
                                 prefUtils.setUserId(loginResponse.getUserId());
+                                prefUtils.setContactNumber(mobileNumber);
                                 progressBar.setVisibility(View.GONE);
                                 mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 Intent intent = new Intent(mActivity , MainActivity.class);

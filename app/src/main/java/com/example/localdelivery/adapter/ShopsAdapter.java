@@ -65,7 +65,12 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
 
     @Override
     public int getItemCount() {
-        return nearbyShopsResponses.size();
+        if(nearbyShopsResponses!=null) {
+            return nearbyShopsResponses.size();
+        }
+        else {
+            return 0;
+        }
     }
 
     @SuppressLint("DefaultLocale")

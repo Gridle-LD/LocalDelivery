@@ -19,9 +19,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     private List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList;
     private OnItemClickListener mListener;
+    private boolean flag;
 
-    public ReviewAdapter(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
+    public ReviewAdapter(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList, boolean flag) {
         this.reviewList = reviewList;
+        this.flag = flag;
     }
 
     public interface OnItemClickListener {
@@ -76,7 +78,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public int getItemCount() {
-        return reviewList.size();
+        if(reviewList!=null) {
+            if(!flag) {
+                return Math.min(reviewList.size(), 4);
+            }
+            else {
+                return reviewList.size();
+            }
+        }
+        else {
+            return 0;
+        }
     }
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {

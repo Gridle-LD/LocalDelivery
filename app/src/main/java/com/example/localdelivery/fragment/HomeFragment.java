@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -17,18 +15,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
-import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.activity.ShopDetailActivity;
 import com.example.localdelivery.adapter.ShopsAdapter;
 import com.example.localdelivery.local.Entity.ShopsEntity;
@@ -37,11 +32,11 @@ import com.example.localdelivery.utils.RetrofitInstance;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class HomeFragment extends Fragment {
     private SearchView searchView;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private ShopsAdapter shopsAdapter;
     private JsonApiHolder jsonApiHolder;
     private Context mContext;
@@ -87,6 +82,8 @@ public class HomeFragment extends Fragment {
         setSearchView();
         getNearbyShops();
         setTextListeners();
+
+        progressBar.setVisibility(View.GONE);
         return view;
     }
 
@@ -95,6 +92,7 @@ public class HomeFragment extends Fragment {
         constraintLayoutSort = view.findViewById(R.id.constraint_layout_sort_button);
         constraintLayoutFilter = view.findViewById(R.id.constraint_layout_filter_button);
         recyclerView = view.findViewById(R.id.recycler_view_nearby_shops);
+        progressBar = view.findViewById(R.id.progressBar3);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);

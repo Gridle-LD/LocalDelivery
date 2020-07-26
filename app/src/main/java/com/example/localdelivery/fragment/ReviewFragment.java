@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
+import com.example.localdelivery.adapter.ReviewAdapter;
+import com.example.localdelivery.model.NearbyShopsResponse;
+import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.ReviewData;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -39,8 +50,15 @@ public class ReviewFragment extends Fragment {
     private ImageView imageViewStarFill5;
 
     private TextView textViewPost;
+    private CardView cardView;
+    private CardView cardViewTopBar;
     private EditText editTextReview;
     private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private TextView textViewRated;
+    private TextView textViewAndSays;
+    private TextView textViewComment;
+    private TextView textViewFeedback;
 
     private CompositeDisposable disposable = new CompositeDisposable();
     private JsonApiHolder jsonApiHolder;
@@ -51,6 +69,9 @@ public class ReviewFragment extends Fragment {
     private String comment = "";
     private String shopId = "";
     private boolean post;
+    private boolean feedback = false;
+    private List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList = new ArrayList<>();
+    private ReviewAdapter reviewAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,8 +82,9 @@ public class ReviewFragment extends Fragment {
         }
     }
 
-    public ReviewFragment(String shopId) {
+    public ReviewFragment(String shopId, List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
         this.shopId = shopId;
+        this.reviewList = reviewList;
         clicked = 0;
         post = true;
     }
@@ -73,6 +95,10 @@ public class ReviewFragment extends Fragment {
         post = false;
     }
 
+    public ReviewFragment(boolean feedback) {
+        this.feedback = feedback;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,6 +107,9 @@ public class ReviewFragment extends Fragment {
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
         setView(view);
+        if(post) {
+            getReviewList();
+        }
         setClickListeners();
         return view;
     }
@@ -99,8 +128,20 @@ public class ReviewFragment extends Fragment {
         imageViewStarFill5 = view.findViewById(R.id.imageViewStarFill5);
 
         editTextReview = view.findViewById(R.id.editTextReview);
+        cardViewTopBar = view.findViewById(R.id.card_view_top_bar_review);
+        cardView = view.findViewById(R.id.cardViewEditTextReview);
         textViewPost = view.findViewById(R.id.textViewPostReview);
         progressBar = view.findViewById(R.id.progressBarReview);
+        textViewRated = view.findViewById(R.id.textViewRated);
+        textViewAndSays = view.findViewById(R.id.textViewAndSays);
+        textViewComment = view.findViewById(R.id.textViewComment);
+        textViewFeedback = view.findViewById(R.id.textViewFeedback);
+        recyclerView = view.findViewById(R.id.recycler_view_reviews_detail);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL,
+                false));
+        recyclerView.setHasFixedSize(true);
+        reviewAdapter = new ReviewAdapter(reviewList, true);
+        recyclerView.setAdapter(reviewAdapter);
 
         if(clicked == 1) {
             firstStarSelected();
@@ -117,7 +158,22 @@ public class ReviewFragment extends Fragment {
         if(clicked == 5) {
             fifthStarSelected();
         }
-        editTextReview.setText(comment);
+
+        if(post) {
+            editTextReview.setText(comment);
+        }
+        else if(feedback) {
+            cardViewTopBar.setVisibility(View.GONE);
+            textViewFeedback.setVisibility(View.VISIBLE);
+        }
+        else {
+            textViewRated.setVisibility(View.VISIBLE);
+            textViewAndSays.setVisibility(View.VISIBLE);
+            textViewComment.setVisibility(View.VISIBLE);
+            textViewComment.setText(comment);
+            cardView.setVisibility(View.GONE);
+            textViewPost.setVisibility(View.GONE);
+        }
     }
 
     private void setClickListeners() {
@@ -169,6 +225,21 @@ public class ReviewFragment extends Fragment {
                                 .show();
                     }
                 }
+            }
+        });
+    }
+
+    private void getReviewList() {
+        reviewAdapter = new ReviewAdapter(reviewList, true);
+        recyclerView.setAdapter(reviewAdapter);
+
+        reviewAdapter.setOnItemClickListener(new ReviewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                int rating = reviewList.get(position).getRating();
+                String comment = reviewList.get(position).getComment();
+                getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                        new ReviewFragment(rating, comment)).addToBackStack(null).commit();
             }
         });
     }

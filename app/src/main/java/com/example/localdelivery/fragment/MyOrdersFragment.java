@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
 import com.example.localdelivery.R;
 import com.example.localdelivery.activity.ConfirmedOrderActivity;
 import com.example.localdelivery.adapter.OrderAdapter;
@@ -28,6 +30,7 @@ public class MyOrdersFragment extends Fragment {
     private List<OrderEntity> allOrders;
     private List<OrdersResponse.Result.Orders> ordersList;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private OrderAdapter orderAdapter;
     private Context mContext;
     private Activity mActivity;
@@ -49,11 +52,14 @@ public class MyOrdersFragment extends Fragment {
 
         setView(view);
         getOrders();
+
+        progressBar.setVisibility(View.GONE);
         return view;
     }
 
     private void setView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_order);
+        progressBar = view.findViewById(R.id.progressBar2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);

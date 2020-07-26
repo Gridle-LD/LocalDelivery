@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ import com.example.localdelivery.local.Entity.OrderEntity;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.OrderViewModel;
-
 import java.util.ArrayList;
 import java.util.List;
 

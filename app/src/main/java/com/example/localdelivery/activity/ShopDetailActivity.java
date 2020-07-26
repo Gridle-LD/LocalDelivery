@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.R;
@@ -49,8 +50,10 @@ public class ShopDetailActivity extends AppCompatActivity {
     private ConstraintLayout constraint_layout_order_type;
     private TextView textViewPickup;
     private TextView textViewDelivery;
+    private TextView textViewReadMoreReviews;
     private ImageView imageViewBackButton;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private int flag = 0;
     public static final int position = 0;
     private NearbyShopsViewModel viewModel;
@@ -75,6 +78,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         setView();
         getShopDetails();
         setClickListeners();
+        progressBar.setVisibility(View.GONE);
     }
 
     private void checkNetwork() {
@@ -121,14 +125,16 @@ public class ShopDetailActivity extends AppCompatActivity {
         textViewShopType = findViewById(R.id.textViewShopTypeDetail);
         textViewShopAddress = findViewById(R.id.textViewShopAddressDetail);
         textViewRating = findViewById(R.id.textViewShopRatingDetail);
+        textViewReadMoreReviews = findViewById(R.id.textViewReadMoreReviews);
         cardViewRating = findViewById(R.id.card_view_rating_box_shop_detail);
         imageViewBackButton = findViewById(R.id.imageViewBackButton);
         recyclerView = findViewById(R.id.recycler_view_reviews);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
                 false));
         recyclerView.setHasFixedSize(true);
+        progressBar = findViewById(R.id.progressBar);
         if(shop!=null) {
-            reviewAdapter = new ReviewAdapter(shop.getReviewList());
+            reviewAdapter = new ReviewAdapter(shop.getReviewList(), false);
             recyclerView.setAdapter(reviewAdapter);
         }
     }
@@ -146,8 +152,11 @@ public class ShopDetailActivity extends AppCompatActivity {
                     textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
                     phoneNumber = shop.getPhoneNumber();
                     if(shop!=null) {
-                        reviewAdapter = new ReviewAdapter(shop.getReviewList());
+                        reviewAdapter = new ReviewAdapter(shop.getReviewList(), false);
                         recyclerView.setAdapter(reviewAdapter);
+                        if(shop.getReviewList().size()<4) {
+                            textViewReadMoreReviews.setVisibility(View.GONE);
+                        }
                         reviewAdapter.setOnItemClickListener(new ReviewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
@@ -178,8 +187,8 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewModel.fav(getIntent().getIntExtra(String.valueOf(position),0), 1);
-                    imageViewFavLike.setVisibility(View.VISIBLE);
-                    imageViewFavUnlike.setVisibility(View.GONE);
+                imageViewFavLike.setVisibility(View.VISIBLE);
+                imageViewFavUnlike.setVisibility(View.GONE);
             }
         });
 
@@ -187,8 +196,8 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewModel.fav(getIntent().getIntExtra(String.valueOf(position),0), 0);
-                    imageViewFavLike.setVisibility(View.GONE);
-                    imageViewFavUnlike.setVisibility(View.VISIBLE);
+                imageViewFavLike.setVisibility(View.GONE);
+                imageViewFavUnlike.setVisibility(View.VISIBLE);
             }
         });
 
@@ -203,7 +212,15 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new ReviewFragment(shop.get_id())).addToBackStack(null).commit();
+                        new ReviewFragment(shop.get_id(), shop.getReviewList())).addToBackStack(null).commit();
+            }
+        });
+
+        textViewReadMoreReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                        new ReviewFragment(shop.get_id(), shop.getReviewList())).addToBackStack(null).commit();
             }
         });
 

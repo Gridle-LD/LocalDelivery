@@ -10,288 +10,372 @@
     android:clickable="true"
     android:focusable="true">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_top_bar_review"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:translationY="-8dp"
-        app:cardCornerRadius="12sp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageViewBackButtonReview"
-                android:layout_width="32dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/back_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="24dp"
-                android:fontFamily="@font/montserrat_semi_bold"
-                android:text="Review"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageViewFavLikeReview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/fav_like"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageViewFavUnlikeReview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/fav_unlike"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_review_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="12sp"
-        app:layout_constraintTop_toBottomOf="@id/card_view_top_bar_review">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_view_profile_image_review"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="40dp"
-                android:backgroundTint="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/textViewNameAlphabetReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T"
-                    android:textColor="@android:color/black"
-                    android:textSize="40sp"
-                    android:layout_gravity="center" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewNameReview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/montserrat_semi_bold"
-                android:text="Shyam"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_profile_image_review" />
-
-            <ImageView
-                android:id="@+id/imageViewStarClear1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/star_clear"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
-
-            <ImageView
-                android:id="@+id/imageViewStarClear2"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/star_clear"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear3"
-                app:layout_constraintStart_toEndOf="@+id/imageViewStarClear1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
-
-            <ImageView
-                android:id="@+id/imageViewStarClear3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/star_clear"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear4"
-                app:layout_constraintStart_toEndOf="@+id/imageViewStarClear2"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
-
-            <ImageView
-                android:id="@+id/imageViewStarClear4"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/star_clear"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear5"
-                app:layout_constraintStart_toEndOf="@+id/imageViewStarClear3"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
-
-            <ImageView
-                android:id="@+id/imageViewStarClear5"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="100dp"
-                android:src="@drawable/star_clear"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewStarClear4"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
-
-            <ImageView
-                android:id="@+id/imageViewStarFill2"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/star_fill"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear2"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear2"
-                app:layout_constraintStart_toStartOf="@+id/imageViewStarClear2"
-                app:layout_constraintTop_toTopOf="@+id/imageViewStarClear2" />
-
-            <ImageView
-                android:id="@+id/imageViewStarFill3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/star_fill"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear3"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear3"
-                app:layout_constraintStart_toStartOf="@+id/imageViewStarClear3"
-                app:layout_constraintTop_toTopOf="@+id/imageViewStarClear3"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <ImageView
-                android:id="@+id/imageViewStarFill4"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/star_fill"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear4"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear4"
-                app:layout_constraintStart_toStartOf="@+id/imageViewStarClear4"
-                app:layout_constraintTop_toTopOf="@+id/imageViewStarClear4" />
-
-            <ImageView
-                android:id="@+id/imageViewStarFill5"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/star_fill"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear5"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear5"
-                app:layout_constraintStart_toStartOf="@+id/imageViewStarClear5"
-                app:layout_constraintTop_toTopOf="@+id/imageViewStarClear5" />
-
-            <ImageView
-                android:id="@+id/imageViewStarFill1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/star_fill"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear1"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear1"
-                app:layout_constraintStart_toStartOf="@+id/imageViewStarClear1"
-                app:layout_constraintTop_toTopOf="@+id/imageViewStarClear1" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewEditTextReview"
+                android:id="@+id/card_view_top_bar_review"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="56dp"
-                android:layout_marginEnd="48dp"
+                android:layout_height="wrap_content"
+                android:translationY="-8dp"
                 app:cardCornerRadius="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameReview">
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible">
 
-                <EditText
-                    android:id="@+id/editTextReview"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@android:color/white"
-                    android:ems="10"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:gravity="start"
-                    android:hint="Type Here"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:minLines="5"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageViewBackButtonReview"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="24dp"
+                        android:src="@drawable/back_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewTitleReview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="24dp"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:text="Review"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imageViewFavLikeReview"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="32dp"-->
+<!--                        android:layout_marginEnd="16dp"-->
+<!--                        android:layout_marginBottom="24dp"-->
+<!--                        android:src="@drawable/fav_like"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imageViewFavUnlikeReview"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="32dp"-->
+<!--                        android:layout_marginEnd="16dp"-->
+<!--                        android:layout_marginBottom="24dp"-->
+<!--                        android:src="@drawable/fav_unlike"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textViewPostReview"
-                style="?borderlessButtonStyle"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_review_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="12sp"
+                app:layout_constraintTop_toBottomOf="@id/card_view_top_bar_review">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_view_profile_image_review"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="40dp"
+                        android:backgroundTint="@color/colorAccent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textViewNameAlphabetReview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="T"
+                            android:textColor="@android:color/black"
+                            android:textSize="40sp"
+                            android:layout_gravity="center" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textViewNameReview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:text="Shyam"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/card_view_profile_image_review" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarClear1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/star_clear"
+                        app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarClear2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/star_clear"
+                        app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear3"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewStarClear1"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarClear3"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/star_clear"
+                        app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear4"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewStarClear2"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarClear4"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/star_clear"
+                        app:layout_constraintEnd_toStartOf="@+id/imageViewStarClear5"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewStarClear3"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarClear5"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="100dp"
+                        android:src="@drawable/star_clear"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewStarClear4"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarFill2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/star_fill"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear2"
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear2"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewStarClear2"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewStarClear2" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarFill3"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/star_fill"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear3"
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear3"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewStarClear3"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewStarClear3"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarFill4"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/star_fill"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear4"
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear4"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewStarClear4"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewStarClear4" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarFill5"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/star_fill"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear5"
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear5"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewStarClear5"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewStarClear5" />
+
+                    <ImageView
+                        android:id="@+id/imageViewStarFill1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/star_fill"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewStarClear1"
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewStarClear1"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewStarClear1"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewStarClear1" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewEditTextReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="64dp"
+                        android:layout_marginEnd="48dp"
+                        app:cardCornerRadius="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview">
+
+                        <EditText
+                            android:id="@+id/editTextReview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@android:color/white"
+                            android:ems="10"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:gravity="start"
+                            android:hint="Type Here"
+                            android:imeOptions="actionDone"
+                            android:inputType="textMultiLine"
+                            android:minLines="5"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textViewPostReview"
+                        style="?borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:text="Post"
+                        android:textAllCaps="false"
+                        android:textColor="#BCB7B9"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardViewEditTextReview" />
+
+                    <TextView
+                        android:id="@+id/textViewRated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="rated"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/black"
+                        android:fontFamily="@font/montserrat_light"
+                        app:layout_constraintBottom_toTopOf="@+id/imageViewStarClear1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/textViewFeedback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your feedback is very precious."
+                        android:textSize="14sp"
+                        android:textColor="#FD0054"
+                        android:fontFamily="@font/montserrat_regular"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/imageViewStarClear1"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/textViewAndSays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="and says"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/black"
+                        android:fontFamily="@font/montserrat_light"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageViewStarClear1"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/textViewComment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="48dp"
+                        android:layout_marginBottom="24dp"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewAndSays"
+                        android:visibility="gone"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <ProgressBar
+                android:id="@+id/progressBarReview"
+                style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/card_view_review_box"
+                app:layout_constraintEnd_toEndOf="@+id/card_view_review_box"
+                app:layout_constraintStart_toStartOf="@+id/card_view_review_box"
+                app:layout_constraintTop_toTopOf="@+id/card_view_review_box"
+                android:visibility="gone"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_reviews_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/montserrat_semi_bold"
-                android:text="Post"
-                android:textAllCaps="false"
-                android:textColor="#BCB7B9"
-                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewEditTextReview" />
+                app:layout_constraintTop_toBottomOf="@+id/card_view_review_box" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <ProgressBar
-        android:id="@+id/progressBarReview"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/card_view_review_box"
-        app:layout_constraintEnd_toEndOf="@+id/card_view_review_box"
-        app:layout_constraintStart_toStartOf="@+id/card_view_review_box"
-        app:layout_constraintTop_toTopOf="@+id/card_view_review_box"
-        android:visibility="gone"/>
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

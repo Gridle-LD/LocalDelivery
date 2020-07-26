@@ -44,9 +44,6 @@ public class PrefUtils {
     public void logoutUser(){
         editor.clear();
         editor.commit();
-
-//        Intent i = new Intent(ctx, SignUpLoginActivity.class);
-//        ctx.startActivity(i);
     }
 
     public void setLatitude(String latitude) {

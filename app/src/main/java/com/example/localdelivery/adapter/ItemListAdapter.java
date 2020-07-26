@@ -54,7 +54,12 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
 
     @Override
     public int getItemCount() {
-        return stocksDataList.size();
+        if(stocksDataList!=null) {
+            return stocksDataList.size();
+        }
+        else {
+            return 0;
+        }
     }
 
     public static class ItemListViewHolder extends RecyclerView.ViewHolder {
