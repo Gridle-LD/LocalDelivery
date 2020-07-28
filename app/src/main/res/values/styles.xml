@@ -30,4 +30,9 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

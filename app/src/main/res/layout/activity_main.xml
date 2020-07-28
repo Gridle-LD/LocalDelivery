@@ -12,7 +12,7 @@
         android:id="@+id/card_view_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:translationY="-8dp"
+        android:translationY="-12dp"
         app:cardCornerRadius="12sp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -96,5 +96,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu"
+        android:theme="@style/Widget.BottomNavigationView"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

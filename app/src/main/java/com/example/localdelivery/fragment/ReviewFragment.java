@@ -2,6 +2,8 @@ package com.example.localdelivery.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -9,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
+import com.example.localdelivery.activity.MainActivity;
+import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.adapter.ReviewAdapter;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.PlaceOrderData;
@@ -59,6 +65,7 @@ public class ReviewFragment extends Fragment {
     private TextView textViewAndSays;
     private TextView textViewComment;
     private TextView textViewFeedback;
+    private ImageView imageViewBackButton;
 
     private CompositeDisposable disposable = new CompositeDisposable();
     private JsonApiHolder jsonApiHolder;
@@ -136,9 +143,14 @@ public class ReviewFragment extends Fragment {
         textViewAndSays = view.findViewById(R.id.textViewAndSays);
         textViewComment = view.findViewById(R.id.textViewComment);
         textViewFeedback = view.findViewById(R.id.textViewFeedback);
+        imageViewBackButton = view.findViewById(R.id.imageViewBackButtonReview);
         recyclerView = view.findViewById(R.id.recycler_view_reviews_detail);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL,
-                false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         recyclerView.setHasFixedSize(true);
         reviewAdapter = new ReviewAdapter(reviewList, true);
         recyclerView.setAdapter(reviewAdapter);
@@ -168,7 +180,11 @@ public class ReviewFragment extends Fragment {
         }
         else {
             textViewRated.setVisibility(View.VISIBLE);
-            textViewAndSays.setVisibility(View.VISIBLE);
+
+            //It is only visible when their is any comment
+            if(comment.length()>0) {
+                textViewAndSays.setVisibility(View.VISIBLE);
+            }
             textViewComment.setVisibility(View.VISIBLE);
             textViewComment.setText(comment);
             cardView.setVisibility(View.GONE);
@@ -212,6 +228,27 @@ public class ReviewFragment extends Fragment {
             }
         });
 
+        if(post) {
+            editTextReview.addTextChangedListener( new TextWatcher() {
+
+                public void afterTextChanged(Editable s) {
+                }
+
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                public void onTextChanged(CharSequence s, int start, int before,
+                                          int count) {
+                    if(editTextReview.getText().toString().trim().length() == 0) {
+                        textViewPost.setTextColor(Color.argb(255, 188, 183, 185));
+                    }
+                    else {
+                        textViewPost.setTextColor(Color.argb(255, 253, 0, 84));
+                    }
+                }
+            });
+        }
+
         textViewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,6 +262,13 @@ public class ReviewFragment extends Fragment {
                                 .show();
                     }
                 }
+            }
+        });
+
+        imageViewBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().popBackStack();
             }
         });
     }

@@ -21,7 +21,7 @@
                 android:id="@+id/card_view_top_bar_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:translationY="-8dp"
+                android:translationY="-12dp"
                 app:cardCornerRadius="12sp"
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="visible">
@@ -57,29 +57,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imageViewFavLikeReview"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="32dp"-->
-<!--                        android:layout_marginEnd="16dp"-->
-<!--                        android:layout_marginBottom="24dp"-->
-<!--                        android:src="@drawable/fav_like"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imageViewFavUnlikeReview"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="32dp"-->
-<!--                        android:layout_marginEnd="16dp"-->
-<!--                        android:layout_marginBottom="24dp"-->
-<!--                        android:src="@drawable/fav_unlike"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

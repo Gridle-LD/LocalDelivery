@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
@@ -63,15 +64,25 @@ public class OrderFragment extends Fragment {
     private Context mContext;
     private Activity mActivity;
     private String shopId;
+    private String shopName;
     private PrefUtils prefUtils;
-    private ImageButton imageViewPlaceOrder;
+    private ImageView imageViewPlaceOrder;
+    private TextView textViewShopName;
+    private boolean isPickup;
+    private TextView textViewPickup;
+    private TextView textViewDelivery;
+    private View dividerPickup;
+    private View dividerDelivery;
 
     private Integer ActivityRequestCode = 200;
 
-    public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId) {
+    public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId, String shopName,
+                         boolean isPickup) {
         this.shop = shop;
         this.cartList = cartList;
         this.shopId = shopId;
+        this.shopName = shopName;
+        this.isPickup = isPickup;
     }
 
     @Override
@@ -106,6 +117,22 @@ public class OrderFragment extends Fragment {
         textViewTotalBill = view.findViewById(R.id.textViewBillTotal);
         textViewAddAnotherItem = view.findViewById(R.id.textViewAddAnotherItem);
         imageViewPlaceOrder = view.findViewById(R.id.imageButtonPlaceOrder);
+        textViewShopName = view.findViewById(R.id.textViewShopNameTitleOrder);
+        textViewPickup = view.findViewById(R.id.textViewPickupOrderType);
+        textViewDelivery = view.findViewById(R.id.textViewDeliveryOrderType);
+        dividerPickup = view.findViewById(R.id.dividerPickup);
+        dividerDelivery = view.findViewById(R.id.dividerDelivery);
+
+        textViewShopName.setText(shopName);
+
+        if(isPickup) {
+            dividerPickup.setVisibility(View.VISIBLE);
+            dividerDelivery.setVisibility(View.GONE);
+        }
+        else {
+            dividerPickup.setVisibility(View.GONE);
+            dividerDelivery.setVisibility(View.VISIBLE);
+        }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
@@ -122,6 +149,25 @@ public class OrderFragment extends Fragment {
     }
 
     private void setClickListeners() {
+
+        textViewPickup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPickup = true;
+                dividerPickup.setVisibility(View.VISIBLE);
+                dividerDelivery.setVisibility(View.GONE);
+            }
+        });
+
+        textViewDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPickup = false;
+                dividerPickup.setVisibility(View.GONE);
+                dividerDelivery.setVisibility(View.VISIBLE);
+            }
+        });
+
         orderItemAdapter.setOnItemClickListener(new OrderItemAdapter.OnItemClickListener() {
             @Override
             public void onAddClick(int position, TextView textView) {
@@ -152,7 +198,7 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new StocksFragment(shop, shopId)).commit();
+                        new StocksFragment(shop, shopId, shopName, isPickup)).commit();
             }
         });
 

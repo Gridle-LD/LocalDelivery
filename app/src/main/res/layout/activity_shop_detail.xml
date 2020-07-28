@@ -25,7 +25,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="12dp"
-                            android:translationY="-8dp"
+                            android:translationY="-12dp"
                             app:layout_constraintTop_toTopOf="parent">
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,24 +50,20 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginEnd="16dp"
-                                            android:layout_marginTop="32dp"
-                                            android:layout_marginBottom="24dp"
                                             android:src="@drawable/fav_like"
                                             android:visibility="gone"
-                                            app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_top_bar_shop_detail"
+                                            app:layout_constraintBottom_toBottomOf="@+id/imageViewBackButton"
                                             app:layout_constraintEnd_toEndOf="@+id/constraint_layout_top_bar_shop_detail"
-                                            app:layout_constraintTop_toTopOf="@+id/constraint_layout_top_bar_shop_detail" />
+                                            app:layout_constraintTop_toTopOf="@+id/imageViewBackButton" />
 
                                         <ImageView
                                             android:id="@+id/imageViewFavUnlike"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginEnd="16dp"
-                                            android:layout_marginTop="32dp"
-                                            android:layout_marginBottom="24dp"
-                                            app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_top_bar_shop_detail"
+                                            app:layout_constraintBottom_toBottomOf="@+id/imageViewBackButton"
                                             app:layout_constraintEnd_toEndOf="@+id/constraint_layout_top_bar_shop_detail"
-                                            app:layout_constraintTop_toTopOf="@+id/constraint_layout_top_bar_shop_detail"
+                                            app:layout_constraintTop_toTopOf="@+id/imageViewBackButton"
                                             app:srcCompat="@drawable/fav_unlike" />
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
@@ -94,7 +90,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraint_layout_shop_description"
                             android:layout_width="match_parent"
-                            android:layout_height="125dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:background="#FBF9FA"
                             app:layout_constraintTop_toBottomOf="@+id/cardViewShopImage"
@@ -151,12 +147,12 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
+                                    android:layout_marginTop="8dp"
                                     android:layout_marginEnd="16dp"
                                     android:fontFamily="@font/montserrat_light"
                                     android:text="Shop Type : Grocery"
-                                    android:textSize="12sp"
                                     android:textColor="@android:color/black"
-                                    app:layout_constraintBottom_toTopOf="@+id/textView10"
+                                    android:textSize="12sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/textViewShopNameDetail" />
@@ -166,12 +162,12 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
+                                    android:layout_marginTop="8dp"
                                     android:layout_marginEnd="16dp"
                                     android:fontFamily="@font/montserrat_light"
                                     android:text="9:00 AM - 9:00 PM"
-                                    android:textSize="12sp"
                                     android:textColor="@android:color/black"
-                                    app:layout_constraintBottom_toTopOf="@+id/textViewShopAddressDetail"
+                                    android:textSize="12sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/textViewShopTypeDetail" />
@@ -181,12 +177,13 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
+                                    android:layout_marginTop="8dp"
                                     android:layout_marginEnd="16dp"
                                     android:layout_marginBottom="16dp"
                                     android:fontFamily="@font/montserrat_light"
                                     android:text="MIG 1 C Block Shyam Nagar Kanpur"
-                                    android:textSize="12sp"
                                     android:textColor="@android:color/black"
+                                    android:textSize="12sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -198,9 +195,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textViewLocation"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_shop_description"
+                            app:layout_constraintTop_toTopOf="@+id/textViewLocation"
                             app:srcCompat="@drawable/tick" />
 
                         <TextView
@@ -208,24 +205,24 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:text="Delivering to : MIG 1 C Block Shyam Nagar Kanpur"
                             android:textColor="#2B2024"
                             android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView25"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/imageView25"
-                            app:layout_constraintTop_toTopOf="@+id/imageView25" />
+                            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_shop_description" />
 
                         <ImageView
                             android:id="@+id/imageView26"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView16"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imageView25"
+                            app:layout_constraintTop_toTopOf="@+id/textView16"
                             app:srcCompat="@drawable/tick" />
 
                         <TextView
@@ -233,15 +230,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:text="Currently preparing order for pickup"
                             android:textColor="#2B2024"
                             android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView26"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/imageView26"
-                            app:layout_constraintTop_toTopOf="@+id/imageView26" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraint_layout_review_shop_detail"
@@ -268,8 +265,12 @@
                                     android:id="@+id/recycler_view_reviews"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    app:layout_constraintTop_toBottomOf="@id/textView19"/>
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="16dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/textView19" />
 
                                 <TextView
                                     android:id="@+id/textViewReadMoreReviews"

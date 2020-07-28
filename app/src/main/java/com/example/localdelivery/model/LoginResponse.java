@@ -4,10 +4,12 @@ public class LoginResponse {
 
     private String token;
     private String userId;
+    private String name;
 
-    public LoginResponse(String token, String userId) {
+    public LoginResponse(String token, String userId, String name) {
         this.token = token;
         this.userId = userId;
+        this.name = name;
     }
 
     public String getToken() {
@@ -24,5 +26,13 @@ public class LoginResponse {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

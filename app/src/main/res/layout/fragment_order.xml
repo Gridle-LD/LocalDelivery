@@ -13,7 +13,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/imageButtonPlaceOrder">
 
@@ -26,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12sp"
-                android:translationY="-8dp"
+                android:translationY="-12dp"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +35,7 @@
 
                     <ImageView
                         android:id="@+id/imageViewBackButtonOrder"
-                        android:layout_width="wrap_content"
+                        android:layout_width="32dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="32dp"
@@ -64,12 +63,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginBottom="24dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewBackButtonOrder"
                         app:layout_constraintEnd_toEndOf="@+id/constraint_layout_top_bar_order"
-                        app:layout_constraintTop_toTopOf="@+id/constraint_layout_top_bar_order"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewBackButtonOrder"
                         app:srcCompat="@drawable/fav_unlike" />
+
+                    <TextView
+                        android:id="@+id/textViewShopNameTitleOrder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:text="TextView"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewBackButtonOrder"
+                        app:layout_constraintEnd_toStartOf="@+id/imageViewFavUnlikeOrder"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewBackButtonOrder"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewBackButtonOrder" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -78,14 +93,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewToolBarOrder"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_customer_details"
+                tools:layout_editor_absoluteX="0dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_order_item_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewOrderItem" />
 
                 <TextView
@@ -94,10 +114,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Add another item +"
-                    android:textSize="12sp"
-                    android:textColor="#FD0054"
                     android:fontFamily="@font/montserrat_light"
+                    android:text="Add another item +"
+                    android:textColor="#FD0054"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@id/constraint_layout_order_items_list"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_view_order_item_list" />
 
@@ -134,79 +154,82 @@
                 android:id="@+id/constraint_layout_customer_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/constraint_layout_order_items_list"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewToolBarOrder">
 
                 <TextView
-                    android:id="@+id/textViewCustomerDetails"
+                    android:id="@+id/textViewOrderType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/montserrat_light"
-                    android:text="Customer Details"
+                    android:text="Order Type"
                     android:textColor="#FD0054"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/editTextCustomerName"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textViewPickupOrderType"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="Name"
-                    android:fontFamily="@font/montserrat_regular"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="24dp"
+                    android:text="Pickup"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewDeliveryOrderType"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewCustomerDetails" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOrderType" />
 
-                <EditText
-                    android:id="@+id/editTextCustomerContact"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textViewDeliveryOrderType"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="Contact Number"
-                    android:fontFamily="@font/montserrat_regular"
+                    android:layout_marginTop="24dp"
+                    android:text="Delivery"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextCustomerName" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewPickupOrderType"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOrderType" />
 
-                <EditText
-                    android:id="@+id/editTextCustomerAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                <View
+                    android:id="@+id/dividerPickup"
+                    android:layout_width="50dp"
+                    android:layout_height="4dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="Address"
-                    android:fontFamily="@font/montserrat_regular"
+                    android:background="#FD0054"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextCustomerContact" />
+                    app:layout_constraintEnd_toEndOf="@+id/textViewPickupOrderType"
+                    app:layout_constraintStart_toStartOf="@+id/textViewPickupOrderType"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPickupOrderType" />
+
+                <View
+                    android:id="@+id/dividerDelivery"
+                    android:layout_width="50dp"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#FD0054"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewDeliveryOrderType"
+                    app:layout_constraintStart_toStartOf="@+id/textViewDeliveryOrderType"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewDeliveryOrderType" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonPlaceOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/place_order_button"
         android:scaleType="centerCrop"
-        android:translationY="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>

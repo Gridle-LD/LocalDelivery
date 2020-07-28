@@ -34,15 +34,20 @@ public class StocksFragment extends Fragment {
     private ImageView imageViewViewCart;
     private List<StocksData> cartList;
     private String shopId;
+    private String shopName;
+    private TextView textViewShopName;
+    private boolean isPickup;
 
     public StocksFragment() {
         // Required empty public constructor
     }
 
-    public StocksFragment(List<StocksData> shop, String shopId) {
+    public StocksFragment(List<StocksData> shop, String shopId, String shopName, boolean isPickup) {
         cartList = new ArrayList<>();
-        this.shop = shop;
+        StocksFragment.shop = shop;
         this.shopId = shopId;
+        this.shopName = shopName;
+        this.isPickup = isPickup;
     }
 
     @Override
@@ -73,6 +78,9 @@ public class StocksFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayoutStocks);
         viewPager = view.findViewById(R.id.viewPager);
         imageViewViewCart = view.findViewById(R.id.imageViewViewCart);
+        textViewShopName = view.findViewById(R.id.textViewShopNameTitle);
+
+        textViewShopName.setText(shopName);
     }
 
     private void setSearchView() {
@@ -124,7 +132,7 @@ public class StocksFragment extends Fragment {
                 }
                 if(cartList.size()>0) {
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                            new OrderFragment(shop, cartList, shopId)).commit();
+                            new OrderFragment(shop, cartList, shopId, shopName, isPickup)).commit();
                 }
                 else {
                     Toast.makeText(mContext, "You haven't selected any Item !", Toast.LENGTH_LONG).show();

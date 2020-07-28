@@ -20,7 +20,7 @@
                 android:id="@+id/card_view_top_bar_confirmed_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:translationY="-8dp"
+                android:translationY="-12dp"
                 app:cardCornerRadius="12sp"
                 app:layout_constraintTop_toTopOf="parent">
 

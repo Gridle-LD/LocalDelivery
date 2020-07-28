@@ -74,6 +74,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         else if(rating == 4) {
             holder.imageViewStar5.setVisibility(View.INVISIBLE);
         }
+
+        if(!flag) {
+            holder.divider.setVisibility(View.VISIBLE);
+            holder.cardViewReview.setRadius(0);
+        }
     }
 
     @Override
@@ -101,6 +106,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         private ImageView imageViewStar3;
         private ImageView imageViewStar4;
         private ImageView imageViewStar5;
+        private View divider;
+        private CardView cardViewReview;
 
         public ReviewViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -113,6 +120,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             imageViewStar3 = itemView.findViewById(R.id.imageViewStarFillReview3);
             imageViewStar4 = itemView.findViewById(R.id.imageViewStarFillReview4);
             imageViewStar5 = itemView.findViewById(R.id.imageViewStarFillReview5);
+            divider = itemView.findViewById(R.id.divider16);
+            cardViewReview = itemView.findViewById(R.id.card_view_review);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

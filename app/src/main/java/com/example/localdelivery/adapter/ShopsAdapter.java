@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.localdelivery.R;
 import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.NearbyShopsResponse;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +47,16 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
     @Override
     public void onBindViewHolder(@NonNull NearbyShopsViewHolder holder, int position) {
         ShopsEntity nearbyShopsObject = nearbyShopsResponses.get(position);
-        holder.textViewShopName.setText(nearbyShopsObject.getShopName());
+        String name = nearbyShopsObject.getShopName();
+        String shopName = "";
+        int firstAscii = (int)name.charAt(0);
+        if(firstAscii >= 97 && firstAscii <= 122) {
+            shopName = (char)(firstAscii - 32) + name.substring(1);
+        }
+        else {
+            shopName = name;
+        }
+        holder.textViewShopName.setText(shopName);
         holder.textViewShopType.setText(nearbyShopsObject.getShopType());
         holder.textViewShopRating.setText(calculateRating(nearbyShopsObject.getReviewList()));
 

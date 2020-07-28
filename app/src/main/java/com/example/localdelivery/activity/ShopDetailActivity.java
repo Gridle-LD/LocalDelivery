@@ -146,9 +146,9 @@ public class ShopDetailActivity extends AppCompatActivity {
             public void onChanged(List<ShopsEntity> shopsEntities) {
                 if(shopsEntities.size()!=0) {
                     shop = shopsEntities.get(getIntent().getIntExtra(String.valueOf(position), 0));
-                    textViewShopName.setText(shop.getShopName());
+                    textViewShopName.setText(getShopName());
                     textViewShopType.setText("Shop Type : " + shop.getShopType());
-                    textViewShopAddress.setText(shop.getAddress());
+                    textViewShopAddress.setText("Shop Address : " + shop.getAddress());
                     textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
                     phoneNumber = shop.getPhoneNumber();
                     if(shop!=null) {
@@ -180,6 +180,19 @@ public class ShopDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private String getShopName() {
+        String name = shop.getShopName();
+        String shopName = "";
+        int firstAscii = (int)name.charAt(0);
+        if(firstAscii >= 97 && firstAscii <= 122) {
+            shopName = (char)(firstAscii - 32) + name.substring(1);
+        }
+        else {
+            shopName = name;
+        }
+        return shopName;
     }
 
     private void setClickListeners() {
@@ -234,7 +247,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailActivity.this, "Pickup",
                                 Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop.getStock(), shop.get_id())).commit();
+                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), true)).commit();
                     }
                 });
 
@@ -244,7 +257,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailActivity.this, "Delivery",
                                 Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop.getStock(), shop.get_id())).commit();
+                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), false)).commit();
                     }
                 });
             }
