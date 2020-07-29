@@ -17,11 +17,11 @@ import java.util.Random;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>{
 
-    private List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList;
+    private List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList;
     private OnItemClickListener mListener;
     private boolean flag;
 
-    public ReviewAdapter(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList, boolean flag) {
+    public ReviewAdapter(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList, boolean flag) {
         this.reviewList = reviewList;
         this.flag = flag;
     }
@@ -44,7 +44,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        NearbyShopsResponse.NearbyShopsObject.ReviewObject reviewObject = reviewList.get(position);
+        NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject reviewObject = reviewList.get(position);
 
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),

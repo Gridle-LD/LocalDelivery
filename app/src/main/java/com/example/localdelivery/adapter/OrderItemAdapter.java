@@ -1,5 +1,6 @@
 package com.example.localdelivery.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         int price = stocksData.getQuantity() * Integer.parseInt(stocksData.getPrice());
         holder.textViewItemTotalPrice.setText("Rs. " + price);
         holder.textViewItemQuantity.setText(String.valueOf(stocksData.getQuantity()));
+        holder.divider.setBackgroundColor(Color.argb(255, 188, 183, 185));
     }
 
     @Override
@@ -70,6 +72,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         private ImageView imageViewAdd;
         private ImageView imageViewRemove;
         private TextView textViewItemQuantity;
+        private View divider;
 
         public OrderAdapterViewHolder(@NonNull View itemView, final OrderItemAdapter.OnItemClickListener listener) {
             super(itemView);
@@ -81,6 +84,8 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
             imageViewAdd = itemView.findViewById(R.id.imageViewAddItemOrder);
             imageViewRemove = itemView.findViewById(R.id.imageViewRemoveItemOrder);
             textViewItemQuantity = itemView.findViewById(R.id.textViewItemQuantityOrder);
+            imageViewItem = itemView.findViewById(R.id.imageViewItemImageOrder);
+            divider = itemView.findViewById(R.id.divider2Order);
 
             imageViewAdd.setOnClickListener(new View.OnClickListener() {
                 @Override

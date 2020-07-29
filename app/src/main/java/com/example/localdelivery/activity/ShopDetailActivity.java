@@ -66,6 +66,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private String phoneNumber;
     private int mRequestCode = 1;
     private ReviewAdapter reviewAdapter;
+    private int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         prefUtils = new PrefUtils(ShopDetailActivity.this);
 
+        pos = getIntent().getIntExtra(String.valueOf(position),0);
         checkNetwork();
         setView();
         getShopDetails();
@@ -145,13 +147,22 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<ShopsEntity> shopsEntities) {
                 if(shopsEntities.size()!=0) {
-                    shop = shopsEntities.get(getIntent().getIntExtra(String.valueOf(position), 0));
+                    shop = shopsEntities.get(pos);
                     textViewShopName.setText(getShopName());
                     textViewShopType.setText("Shop Type : " + shop.getShopType());
                     textViewShopAddress.setText("Shop Address : " + shop.getAddress());
                     textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
                     phoneNumber = shop.getPhoneNumber();
                     if(shop!=null) {
+                        if(shop.isFavourite()) {
+                            imageViewFavLike.setVisibility(View.VISIBLE);
+                            imageViewFavUnlike.setVisibility(View.GONE);
+                        }
+                        else {
+                            imageViewFavLike.setVisibility(View.GONE);
+                            imageViewFavUnlike.setVisibility(View.VISIBLE);
+                        }
+
                         reviewAdapter = new ReviewAdapter(shop.getReviewList(), false);
                         recyclerView.setAdapter(reviewAdapter);
                         if(shop.getReviewList().size()<4) {
@@ -199,7 +210,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         imageViewFavUnlike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.fav(getIntent().getIntExtra(String.valueOf(position),0), 1);
+                viewModel.fav(pos, 1);
                 imageViewFavLike.setVisibility(View.VISIBLE);
                 imageViewFavUnlike.setVisibility(View.GONE);
             }
@@ -208,7 +219,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         imageViewFavLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.fav(getIntent().getIntExtra(String.valueOf(position),0), 0);
+                viewModel.fav(pos, 0);
                 imageViewFavLike.setVisibility(View.GONE);
                 imageViewFavUnlike.setVisibility(View.VISIBLE);
             }
@@ -247,7 +258,8 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailActivity.this, "Pickup",
                                 Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), true)).commit();
+                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), true,
+                                        shop.isFavourite(), pos)).addToBackStack(null).commit();
                     }
                 });
 
@@ -257,7 +269,8 @@ public class ShopDetailActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailActivity.this, "Delivery",
                                 Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), false)).commit();
+                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), false,
+                                        shop.isFavourite(), pos)).addToBackStack(null).commit();
                     }
                 });
             }
@@ -301,10 +314,10 @@ public class ShopDetailActivity extends AppCompatActivity {
     }
 
     @SuppressLint("DefaultLocale")
-    private String calculateRating(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
+    private String calculateRating(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {
         int ratingSum = 0;
         double ratingAverage;
-        for(NearbyShopsResponse.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
+        for(NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
             ratingSum += reviewObject.getRating();
         }
         ratingAverage = ((double) ratingSum)/reviewList.size();

@@ -9,12 +9,12 @@ import java.util.List;
 
 public class ReviewConverter {
     @TypeConverter
-    public static List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> fromString(String value) {
-        Type listType = new TypeToken<List<NearbyShopsResponse.NearbyShopsObject.ReviewObject>>() {}.getType();
+    public static List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> fromString(String value) {
+        Type listType = new TypeToken<List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
     @TypeConverter
-    public static String fromArrayList(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> list) {
+    public static String fromArrayList(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> list) {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         return json;

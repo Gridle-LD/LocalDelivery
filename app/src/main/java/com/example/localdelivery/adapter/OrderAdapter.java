@@ -42,7 +42,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         String name = orderEntity.getShopName().toUpperCase();
         holder.textViewNameAlphabet.setText(String.valueOf(name.charAt(0)));
         holder.textViewUsername.setText(orderEntity.getShopName());
-        holder.textViewPrice.setText("Rs " + orderEntity.getTotalPrice());
+        holder.textViewPrice.setText(": Rs " + orderEntity.getTotalPrice());
         String date = "";
         for(int i=0; i<orderEntity.getCreatedAt().length(); i++) {
             if(orderEntity.getCreatedAt().charAt(i) == 'T') {
@@ -50,7 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             }
             date += orderEntity.getCreatedAt().charAt(i);
         }
-        holder.textViewDate.setText(date);
+        holder.textViewDate.setText(": " + date);
         if(orderEntity.getStatus().equals("Pending")) {
             holder.imageViewPending.setVisibility(View.VISIBLE);
             holder.imageViewCompleted.setVisibility(View.INVISIBLE);

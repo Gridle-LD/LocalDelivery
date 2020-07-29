@@ -2,21 +2,30 @@ package com.example.localdelivery.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.lifecycle.LiveData;
 import com.example.localdelivery.Interface.JsonApiHolder;
+import com.example.localdelivery.activity.MainActivity;
+import com.example.localdelivery.activity.SignUpLoginActivity;
 import com.example.localdelivery.local.Dao.ShopsDao;
 import com.example.localdelivery.local.ShopsDatabase;
 import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.FavData;
 import com.example.localdelivery.model.FavResponse;
+import com.example.localdelivery.model.LoginData;
+import com.example.localdelivery.model.LoginResponse;
 import com.example.localdelivery.model.NearbyShopsData;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -33,7 +42,7 @@ public class NearbyShopsRepository {
     private PrefUtils prefUtils;
     private Context context;
     private CompositeDisposable disposable = new CompositeDisposable();
-    private List<NearbyShopsResponse.NearbyShopsObject> nearbyShops;
+    private List<NearbyShopsResponse.Result.NearbyShopsObject> nearbyShops;
 
     public NearbyShopsRepository(Context context) {
         ShopsDatabase shopDatabase = ShopsDatabase.getInstance(context);
@@ -56,11 +65,13 @@ public class NearbyShopsRepository {
                             @Override
                             public void onSuccess(NearbyShopsResponse nearbyShopsResponse) {
                                 List<ShopsEntity> shopsEntities = new ArrayList<>();
-                                nearbyShops = nearbyShopsResponse.getMessage();
-                                for(NearbyShopsResponse.NearbyShopsObject shopsObject: nearbyShops) {
+                                nearbyShops = nearbyShopsResponse.getMessage().getShop();
+                                int pos = 0;
+                                for(NearbyShopsResponse.Result.NearbyShopsObject shopsObject: nearbyShops) {
                                     ShopsEntity shopsEntity = new ShopsEntity(
                                             shopsObject.getStock(),
                                             shopsObject.getReviews(),
+                                            isFav(nearbyShopsResponse, pos),
                                             shopsObject.get_id(),
                                             shopsObject.getPhoneNumber(),
                                             shopsObject.getName(),
@@ -71,16 +82,28 @@ public class NearbyShopsRepository {
                                             shopsObject.getShopDetails().getShopType()
                                     );
                                     shopsEntities.add(shopsEntity);
+                                    ++pos;
                                 }
                                 add(shopsEntities);
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(context, "An Error Occurred !", Toast.LENGTH_SHORT)
-                                        .show();
+                                if(Objects.equals(e.getMessage(), "JWT is expired")) {
+                                    reLogin();
+                                }
+                                else {
+                                    Toast.makeText(context, "An Error Occurred !", Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                             }
                         }));
+    }
+
+    private boolean isFav(NearbyShopsResponse nearbyShopsResponse, int pos) {
+        List<String> favouriteShopList = nearbyShopsResponse.getMessage().getFavouriteShops();
+        String shopId = nearbyShopsResponse.getMessage().getShop().get(pos).get_id();
+        return favouriteShopList.contains(shopId);
     }
 
     public void fav(int pos, int like) {
@@ -126,6 +149,32 @@ public class NearbyShopsRepository {
         }))
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    private void reLogin() {
+        LoginData loginData = new LoginData(prefUtils.getContactNumber(), prefUtils.getPassword());
+
+        disposable.add(
+                jsonApiHolder.login(loginData)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
+                            @Override
+                            public void onSuccess(LoginResponse loginResponse) {
+                                prefUtils.createLogin("JWT "+loginResponse.getToken());
+                                prefUtils.setUserId(loginResponse.getUserId());
+                                prefUtils.setName(loginResponse.getName());
+                                Intent intent = new Intent(context , MainActivity.class);
+                                context.startActivity(intent);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(context, "Please Re-Login !", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(context, SignUpLoginActivity.class);
+                                context.startActivity(intent);
+                            }
+                        }));
     }
 
     public LiveData<List<ShopsEntity>> getAllShops() {

@@ -63,7 +63,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/add_button" />
+            app:srcCompat="@drawable/add_button"
+            android:visibility="visible"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout_add_item_part"
@@ -80,7 +81,8 @@
                 app:srcCompat="@drawable/add_button_part"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/imageViewRemoveItem"
@@ -91,7 +93,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewAddItemPart"
                 app:layout_constraintEnd_toStartOf="@+id/imageViewAddItemPart"
                 app:layout_constraintTop_toTopOf="@+id/imageViewAddItemPart"
-                app:srcCompat="@drawable/remove_button" />
+                app:srcCompat="@drawable/remove_button"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/textViewItemQuantity"

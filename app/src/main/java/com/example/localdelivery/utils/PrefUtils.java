@@ -1,10 +1,7 @@
 package com.example.localdelivery.utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-
-import com.example.localdelivery.activity.SignUpLoginActivity;
 
 public class PrefUtils {
 
@@ -20,6 +17,7 @@ public class PrefUtils {
     private static final String NAME = "name";
     private static final String CONTACT_NUMBER = "contactNumber";
     private static final String USER_ID = "userId";
+    private static final String PASSWORD = "password";
 
     public PrefUtils(Context context){
         ctx = context;
@@ -92,5 +90,13 @@ public class PrefUtils {
 
     public String getUserId() {
         return sp.getString(USER_ID, null);
+    }
+
+    public void setPassword(String password) {
+        editor.putString(PASSWORD, password);
+    }
+
+    public String getPassword() {
+        return sp.getString(PASSWORD, null);
     }
 }

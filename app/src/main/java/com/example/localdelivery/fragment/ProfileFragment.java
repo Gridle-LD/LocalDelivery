@@ -26,6 +26,7 @@ public class ProfileFragment extends Fragment {
 
     private EditText editTextUsername;
     private TextView textViewContactNumber;
+    private TextView textViewAlphabetName;
     private EditText editTextAddress;
     private CardView cardViewFeedback;
     private CardView cardViewLogout;
@@ -56,10 +57,13 @@ public class ProfileFragment extends Fragment {
     private void setView(View view) {
         editTextUsername = view.findViewById(R.id.editTextNameProfile);
         textViewContactNumber = view.findViewById(R.id.textViewNumberProfile);
+        textViewAlphabetName = view.findViewById(R.id.textViewNameAlphabetProfile);
         editTextAddress = view.findViewById(R.id.editTextAddressProfile);
         cardViewFeedback = view.findViewById(R.id.card_view_feedback);
         cardViewLogout = view.findViewById(R.id.card_view_logout);
 
+        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
+        textViewAlphabetName.setText(firstAlphabet.toUpperCase());
         editTextUsername.setText(prefUtils.getNAME());
         textViewContactNumber.setText(prefUtils.getContactNumber());
         editTextAddress.setText(prefUtils.getAddress());

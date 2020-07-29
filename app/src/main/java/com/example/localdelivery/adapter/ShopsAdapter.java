@@ -82,10 +82,10 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
     }
 
     @SuppressLint("DefaultLocale")
-    private String calculateRating(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
+    private String calculateRating(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {
         int ratingSum = 0;
         double ratingAverage;
-        for(NearbyShopsResponse.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
+        for(NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
             ratingSum += reviewObject.getRating();
         }
         ratingAverage = ((double) ratingSum)/reviewList.size();

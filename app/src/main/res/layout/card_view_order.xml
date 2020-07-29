@@ -118,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Order Amount :"
+            android:text="Order Amount"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:fontFamily="@font/montserrat_light"
@@ -128,14 +128,15 @@
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Date                     :"
+            android:fontFamily="@font/montserrat_light"
+            android:text="Date"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            android:fontFamily="@font/montserrat_light"
             app:layout_constraintBottom_toBottomOf="@+id/textViewDateOrder"
+            app:layout_constraintEnd_toEndOf="@+id/textView9"
             app:layout_constraintStart_toEndOf="@+id/cardViewOrder"
             app:layout_constraintTop_toTopOf="@+id/textViewDateOrder" />
 

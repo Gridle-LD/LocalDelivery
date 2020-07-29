@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
         cardViewProfileImage.setCardBackgroundColor(color);
 
         //set first alphabet of username
-//        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
-//        textViewProfileAlphabet.setText(firstAlphabet.toUpperCase());
+        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
+        textViewProfileAlphabet.setText(firstAlphabet.toUpperCase());
     }
 
     private void setClickListeners() {
@@ -147,5 +147,13 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
         HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().
                 findFragmentById(R.id.frame_layout_shops);
         homeFragment.setFilterClick(isGrocerySelected, isDairySelected, isDeliveryAvailableSelected);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // To exit from the app
+        this.finishAffinity();
     }
 }

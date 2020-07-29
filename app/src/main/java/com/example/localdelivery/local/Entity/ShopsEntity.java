@@ -6,6 +6,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.example.localdelivery.local.Converter.FavouriteConverter;
 import com.example.localdelivery.local.Converter.ReviewConverter;
 import com.example.localdelivery.local.Converter.StocksConverter;
 import com.example.localdelivery.model.NearbyShopsResponse;
@@ -21,7 +22,12 @@ public class ShopsEntity {
     private List<StocksData> stock;
 
     @TypeConverters({ReviewConverter.class})
-    private List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList;
+    private List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList;
+
+//    @TypeConverters({FavouriteConverter.class})
+//    private List<String> favouriteShops;
+
+    private boolean favourite;
 
     private String _id;
     private String phoneNumber;
@@ -35,11 +41,12 @@ public class ShopsEntity {
     @Ignore
     public ShopsEntity() {}
 
-    public ShopsEntity(List<StocksData> stock, List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList,
-                       String _id, String phoneNumber, String name, String address, String latitude, String longitude,
-                       String shopName, String shopType) {
+    public ShopsEntity(List<StocksData> stock, List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList,
+                       boolean favourite, String _id, String phoneNumber, String name, String address,
+                       String latitude, String longitude, String shopName, String shopType) {
         this.stock = stock;
         this.reviewList = reviewList;
+        this.favourite = favourite;
         this._id = _id;
         this.phoneNumber = phoneNumber;
         this.name = name;
@@ -66,12 +73,20 @@ public class ShopsEntity {
         this.stock = stock;
     }
 
-    public List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> getReviewList() {
+    public List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> getReviewList() {
         return reviewList;
     }
 
-    public void setReviewList(List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
+    public void setReviewList(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {
         this.reviewList = reviewList;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public String get_id() {

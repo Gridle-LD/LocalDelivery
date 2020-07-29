@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.StocksTabLayoutAdapter;
 import com.example.localdelivery.model.StocksData;
+import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +34,31 @@ public class StocksFragment extends Fragment {
     private ViewPager viewPager;
     private static List<StocksData> shop;
     private ImageView imageViewViewCart;
+    private ImageView imageViewLike;
+    private ImageView imageViewUnlike;
+    private ImageView imageViewBackButton;
     private List<StocksData> cartList;
     private String shopId;
     private String shopName;
     private TextView textViewShopName;
     private boolean isPickup;
+    private boolean isFav;
+    private int pos;
+    private NearbyShopsViewModel viewModel;
 
     public StocksFragment() {
         // Required empty public constructor
     }
 
-    public StocksFragment(List<StocksData> shop, String shopId, String shopName, boolean isPickup) {
+    public StocksFragment(List<StocksData> shop, String shopId, String shopName, boolean isPickup,
+                          boolean isFav, int pos) {
         cartList = new ArrayList<>();
         StocksFragment.shop = shop;
         this.shopId = shopId;
         this.shopName = shopName;
         this.isPickup = isPickup;
+        this.isFav = isFav;
+        this.pos = pos;
     }
 
     @Override
@@ -78,9 +89,21 @@ public class StocksFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayoutStocks);
         viewPager = view.findViewById(R.id.viewPager);
         imageViewViewCart = view.findViewById(R.id.imageViewViewCart);
+        imageViewLike = view.findViewById(R.id.imageViewFavLikeStocks);
+        imageViewUnlike = view.findViewById(R.id.imageViewFavUnlikeStocks);
+        imageViewBackButton = view.findViewById(R.id.imageViewBackButtonStocks);
         textViewShopName = view.findViewById(R.id.textViewShopNameTitle);
 
         textViewShopName.setText(shopName);
+
+        if(isFav) {
+            imageViewLike.setVisibility(View.VISIBLE);
+            imageViewUnlike.setVisibility(View.GONE);
+        }
+        else {
+            imageViewLike.setVisibility(View.GONE);
+            imageViewUnlike.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setSearchView() {
@@ -122,6 +145,26 @@ public class StocksFragment extends Fragment {
     }
 
     private void setClickListeners() {
+        viewModel = ViewModelProviders.of(StocksFragment.this).get(NearbyShopsViewModel.class);
+
+        imageViewUnlike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.fav(pos, 1);
+                imageViewLike.setVisibility(View.VISIBLE);
+                imageViewUnlike.setVisibility(View.GONE);
+            }
+        });
+
+        imageViewLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.fav(pos, 0);
+                imageViewLike.setVisibility(View.GONE);
+                imageViewUnlike.setVisibility(View.VISIBLE);
+            }
+        });
+
         imageViewViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +175,7 @@ public class StocksFragment extends Fragment {
                 }
                 if(cartList.size()>0) {
                     getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                            new OrderFragment(shop, cartList, shopId, shopName, isPickup)).commit();
+                            new OrderFragment(shop, cartList, shopId, shopName, isPickup, isFav, pos)).commit();
                 }
                 else {
                     Toast.makeText(mContext, "You haven't selected any Item !", Toast.LENGTH_LONG).show();
@@ -154,6 +197,13 @@ public class StocksFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        imageViewBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.onBackPressed();
             }
         });
     }

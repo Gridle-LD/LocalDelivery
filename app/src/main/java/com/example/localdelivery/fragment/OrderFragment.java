@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.provider.Settings;
@@ -32,6 +33,7 @@ import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
+import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.paytm.pgsdk.TransactionManager;
@@ -67,22 +69,30 @@ public class OrderFragment extends Fragment {
     private String shopName;
     private PrefUtils prefUtils;
     private ImageView imageViewPlaceOrder;
+    private ImageView imageViewLike;
+    private ImageView imageViewUnlike;
+    private ImageView imageViewBackButton;
     private TextView textViewShopName;
     private boolean isPickup;
     private TextView textViewPickup;
     private TextView textViewDelivery;
     private View dividerPickup;
     private View dividerDelivery;
+    private boolean isFav;
+    private int pos;
+    private NearbyShopsViewModel viewModel;
 
     private Integer ActivityRequestCode = 200;
 
     public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId, String shopName,
-                         boolean isPickup) {
+                         boolean isPickup,boolean isFav, int pos) {
         this.shop = shop;
         this.cartList = cartList;
         this.shopId = shopId;
         this.shopName = shopName;
         this.isPickup = isPickup;
+        this.isFav = isFav;
+        this.pos = pos;
     }
 
     @Override
@@ -117,6 +127,9 @@ public class OrderFragment extends Fragment {
         textViewTotalBill = view.findViewById(R.id.textViewBillTotal);
         textViewAddAnotherItem = view.findViewById(R.id.textViewAddAnotherItem);
         imageViewPlaceOrder = view.findViewById(R.id.imageButtonPlaceOrder);
+        imageViewLike = view.findViewById(R.id.imageViewFavLikeOrder);
+        imageViewUnlike = view.findViewById(R.id.imageViewFavUnlikeOrder);
+        imageViewBackButton = view.findViewById(R.id.imageViewBackButtonOrder);
         textViewShopName = view.findViewById(R.id.textViewShopNameTitleOrder);
         textViewPickup = view.findViewById(R.id.textViewPickupOrderType);
         textViewDelivery = view.findViewById(R.id.textViewDeliveryOrderType);
@@ -134,6 +147,15 @@ public class OrderFragment extends Fragment {
             dividerDelivery.setVisibility(View.VISIBLE);
         }
 
+        if(isFav) {
+            imageViewLike.setVisibility(View.VISIBLE);
+            imageViewUnlike.setVisibility(View.GONE);
+        }
+        else {
+            imageViewLike.setVisibility(View.GONE);
+            imageViewUnlike.setVisibility(View.VISIBLE);
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
@@ -149,6 +171,26 @@ public class OrderFragment extends Fragment {
     }
 
     private void setClickListeners() {
+
+        viewModel = ViewModelProviders.of(OrderFragment.this).get(NearbyShopsViewModel.class);
+
+        imageViewUnlike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.fav(pos, 1);
+                imageViewLike.setVisibility(View.VISIBLE);
+                imageViewUnlike.setVisibility(View.GONE);
+            }
+        });
+
+        imageViewLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.fav(pos, 0);
+                imageViewLike.setVisibility(View.GONE);
+                imageViewUnlike.setVisibility(View.VISIBLE);
+            }
+        });
 
         textViewPickup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,14 +240,25 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new StocksFragment(shop, shopId, shopName, isPickup)).commit();
+                        new StocksFragment(shop, shopId, shopName, isPickup, isFav, pos)).commit();
             }
         });
 
         imageViewPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getToken();
+                //testing payTm payment gateway
+//                getToken();
+
+                //place order route
+                placeOrder();
+            }
+        });
+
+        imageViewBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.onBackPressed();
             }
         });
     }

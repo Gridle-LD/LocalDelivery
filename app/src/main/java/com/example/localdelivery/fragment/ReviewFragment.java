@@ -65,6 +65,8 @@ public class ReviewFragment extends Fragment {
     private TextView textViewAndSays;
     private TextView textViewComment;
     private TextView textViewFeedback;
+    private TextView textViewAlphabetName;
+    private TextView textViewName;
     private ImageView imageViewBackButton;
 
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -77,7 +79,7 @@ public class ReviewFragment extends Fragment {
     private String shopId = "";
     private boolean post;
     private boolean feedback = false;
-    private List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList = new ArrayList<>();
+    private List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
 
     @Override
@@ -89,7 +91,7 @@ public class ReviewFragment extends Fragment {
         }
     }
 
-    public ReviewFragment(String shopId, List<NearbyShopsResponse.NearbyShopsObject.ReviewObject> reviewList) {
+    public ReviewFragment(String shopId, List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {
         this.shopId = shopId;
         this.reviewList = reviewList;
         clicked = 0;
@@ -143,6 +145,8 @@ public class ReviewFragment extends Fragment {
         textViewAndSays = view.findViewById(R.id.textViewAndSays);
         textViewComment = view.findViewById(R.id.textViewComment);
         textViewFeedback = view.findViewById(R.id.textViewFeedback);
+        textViewAlphabetName = view.findViewById(R.id.textViewNameAlphabetReview);
+        textViewName = view.findViewById(R.id.textViewNameReview);
         imageViewBackButton = view.findViewById(R.id.imageViewBackButtonReview);
         recyclerView = view.findViewById(R.id.recycler_view_reviews_detail);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext) {
@@ -170,6 +174,10 @@ public class ReviewFragment extends Fragment {
         if(clicked == 5) {
             fifthStarSelected();
         }
+
+        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
+        textViewAlphabetName.setText(firstAlphabet.toUpperCase());
+        textViewName.setText(prefUtils.getNAME());
 
         if(post) {
             editTextReview.setText(comment);
