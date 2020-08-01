@@ -4,24 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
 import com.example.localdelivery.activity.ShopDetailActivity;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private SearchView searchView;
+    private EditText editTextSearchView;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private ShopsAdapter shopsAdapter;
@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment {
     private Activity mActivity;
     private List<ShopsEntity> nearbyShops;
     private List<ShopsEntity> nearbyShopsCopy;
+    private List<ShopsEntity> filteredList = new ArrayList<>();
     private PrefUtils prefUtils;
     private NearbyShopsViewModel nearbyShopsViewModel;
     private ConstraintLayout constraintLayoutSort;
@@ -51,7 +52,6 @@ public class HomeFragment extends Fragment {
     private boolean isGrocerySelected = false;
     private boolean isDairySelected = false;
     private boolean isDeliveryAvailableSelected = false;
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,7 +79,6 @@ public class HomeFragment extends Fragment {
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setView(view);
-        setSearchView();
         getNearbyShops();
         setTextListeners();
 
@@ -88,7 +87,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setView(View view) {
-        searchView = view.findViewById(R.id.searchView);
+        editTextSearchView = view.findViewById(R.id.searchView);
         constraintLayoutSort = view.findViewById(R.id.constraint_layout_sort_button);
         constraintLayoutFilter = view.findViewById(R.id.constraint_layout_filter_button);
         recyclerView = view.findViewById(R.id.recycler_view_nearby_shops);
@@ -112,14 +111,42 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setSearchView() {
-        TextView searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        Typeface typeface = ResourcesCompat.getFont(mContext, R.font.montserrat_light);
-        searchText.setTypeface(typeface);
-        searchText.setTextSize(12);
+    private void filter(String text) {
+        filteredList = new ArrayList<>();
 
-        if(!searchView.isFocused()) {
-            searchView.clearFocus();
+        for(ShopsEntity shopsEntity : nearbyShops) {
+            if(shopsEntity.getShopName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(shopsEntity);
+            }
+        }
+        shopsAdapter.filterList(filteredList);
+
+        shopsAdapter.setOnItemClickListener(new ShopsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(mContext, ShopDetailActivity.class);
+
+                //knowing the position of the clicked shop
+                intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private int getPos(int pos) {
+        if(filteredList.size()!=0) {
+            String id = filteredList.get(pos).get_id();
+            int position = 0;
+            for(ShopsEntity shopsEntity : nearbyShops) {
+                if(shopsEntity.get_id().equals(id)) {
+                    break;
+                }
+                ++position;
+            }
+            return position;
+        }
+        else {
+            return pos;
         }
     }
 
@@ -142,7 +169,7 @@ public class HomeFragment extends Fragment {
                                 Intent intent = new Intent(mContext, ShopDetailActivity.class);
 
                                 //knowing the position of the clicked shop
-                                intent.putExtra(String.valueOf(ShopDetailActivity.position), position);
+                                intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position));
                                 startActivity(intent);
                             }
                         });
@@ -152,18 +179,35 @@ public class HomeFragment extends Fragment {
 
     private void setTextListeners() {
 
+        editTextSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+
         constraintLayoutSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isOpened) {
-                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,
                             R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
                             .replace(R.id.frame_layout_sort, new SortFragment()).addToBackStack(null).commit();
                     isOpened = true;
                 }
                 else {
                     isOpened = false;
-                    getFragmentManager().popBackStack();
+                    getParentFragmentManager().popBackStack();
                 }
             }
         });
@@ -172,7 +216,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!isOpened) {
-                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,
                             R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_left)
                             .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected, isDairySelected
                                     ,isDeliveryAvailableSelected)).addToBackStack(null).commit();
@@ -180,7 +224,7 @@ public class HomeFragment extends Fragment {
                 }
                 else {
                     isOpened = false;
-                    getFragmentManager().popBackStack();
+                    getParentFragmentManager().popBackStack();
                 }
             }
         });

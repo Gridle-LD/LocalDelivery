@@ -28,19 +28,23 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/search_box" />
 
-            <androidx.appcompat.widget.SearchView
+            <EditText
                 android:id="@+id/searchView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:focusable="false"
-                app:iconifiedByDefault="false"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView18"
-                app:layout_constraintEnd_toEndOf="@+id/imageView18"
-                app:layout_constraintStart_toStartOf="@+id/imageView18"
-                app:layout_constraintTop_toTopOf="@+id/imageView18"
-                app:queryHint="Search for Stores">
-
-            </androidx.appcompat.widget.SearchView>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="#FBF9FA"
+                android:fontFamily="@font/montserrat_light"
+                android:hint="Search for Stores"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/imageView18"
+                app:layout_constraintEnd_toEndOf="@id/imageView35"
+                app:layout_constraintStart_toStartOf="@id/imageView18"
+                app:layout_constraintTop_toTopOf="@id/imageView18" />
 
             <View
                 android:id="@+id/view_filter_sort"
@@ -168,6 +172,16 @@
                 app:layout_constraintEnd_toEndOf="@+id/constraint_layout_sort_button"
                 app:layout_constraintStart_toStartOf="@+id/constraint_layout_sort_button"
                 app:layout_constraintTop_toBottomOf="@+id/constraint_layout_sort_button" />
+
+            <ImageView
+                android:id="@+id/imageView35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/search"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+                app:layout_constraintEnd_toEndOf="@+id/imageView18"
+                app:layout_constraintTop_toTopOf="@+id/imageView18" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

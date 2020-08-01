@@ -36,6 +36,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private String username;
     private String userId;
     private String mobileNumber;
+    private String password;
     private JsonApiHolder jsonApiHolder;
     private PrefUtils prefUtils;
     private TextView textViewMobileNumber;
@@ -54,10 +55,11 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private CompositeDisposable disposable = new CompositeDisposable();
     private ImageView imageViewOtpVerifyScreen;
 
-    public OtpFragment(String username, String userId, String mobileNumber) {
+    public OtpFragment(String username, String userId, String mobileNumber, String password) {
         this.username = username;
         this.userId = userId;
         this.mobileNumber = mobileNumber;
+        this.password = password;
     }
 
     public OtpFragment() {
@@ -329,6 +331,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                                 prefUtils.setName(username);
                                 prefUtils.setUserId(userId);
                                 prefUtils.setContactNumber(mobileNumber);
+                                prefUtils.setPassword(password);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
                                 Intent intent = new Intent(mContext , MainActivity.class);
                                 startActivity(intent);

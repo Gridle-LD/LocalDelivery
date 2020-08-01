@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
     private void setAlertBox() {
         AlertDialog.Builder builder =new AlertDialog.Builder(mContext);
         builder.setTitle("Logout");
-        builder.setMessage("Logout from this device ?");
+        builder.setMessage("Are you sure you want to logout ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

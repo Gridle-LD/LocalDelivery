@@ -22,6 +22,11 @@ import com.example.localdelivery.model.NearbyShopsData;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
+import com.google.gson.Gson;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +38,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Converter;
 
 public class NearbyShopsRepository {
 
@@ -89,8 +95,23 @@ public class NearbyShopsRepository {
 
                             @Override
                             public void onError(Throwable e) {
-                                if(Objects.equals(e.getMessage(), "JWT is expired")) {
-                                    reLogin();
+                                if (e instanceof HttpException) {
+                                    Converter<ResponseBody, ErrorMessage> errorConverter =
+                                            RetrofitInstance.getRetrofitInstance(context)
+                                                    .responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                                    ErrorMessage errorBody = null;
+                                    try {
+                                        errorBody = errorConverter.convert(((HttpException) e).response().errorBody());
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                    if(errorBody.getError().equals("jwt expired")) {
+                                        reLogin();
+                                    }
+                                    else {
+                                        Toast.makeText(context, "An Error Occurred !", Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
                                 }
                                 else {
                                     Toast.makeText(context, "An Error Occurred !", Toast.LENGTH_SHORT)
@@ -164,15 +185,11 @@ public class NearbyShopsRepository {
                                 prefUtils.createLogin("JWT "+loginResponse.getToken());
                                 prefUtils.setUserId(loginResponse.getUserId());
                                 prefUtils.setName(loginResponse.getName());
-                                Intent intent = new Intent(context , MainActivity.class);
-                                context.startActivity(intent);
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 Toast.makeText(context, "Please Re-Login !", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(context, SignUpLoginActivity.class);
-                                context.startActivity(intent);
                             }
                         }));
     }
@@ -183,5 +200,21 @@ public class NearbyShopsRepository {
 
     public CompositeDisposable getDisposable() {
         return disposable;
+    }
+
+    private static class ErrorMessage {
+        private String error;
+
+        public ErrorMessage(String error) {
+            this.error = error;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        public void setError(String error) {
+            this.error = error;
+        }
     }
 }

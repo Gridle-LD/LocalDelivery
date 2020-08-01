@@ -137,7 +137,7 @@ public class SignUpFragment extends Fragment {
         return true;
     }
 
-    private void signUp(final String name, final String mobileNumber, String password) {
+    private void signUp(final String name, final String mobileNumber, final String password) {
         SignUpData signUpData = new SignUpData(name, password, mobileNumber);
 
         progressBar.setVisibility(View.VISIBLE);
@@ -156,7 +156,7 @@ public class SignUpFragment extends Fragment {
                                 assert getFragmentManager() != null;
                                 assert signUpResponse != null;
                                 getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-                                        new OtpFragment(name, signUpResponse.getUserId(), mobileNumber)).commit();
+                                        new OtpFragment(name, signUpResponse.getUserId(), mobileNumber, password)).commit();
                             }
 
                             @Override
