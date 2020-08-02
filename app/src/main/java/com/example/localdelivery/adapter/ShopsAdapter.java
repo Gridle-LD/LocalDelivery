@@ -20,17 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsViewHolder>  {
+
     private Context context;
     private List<ShopsEntity> nearbyShopsResponses;
-    private List<ShopsEntity> nearbyShopsCopy;
     private OnItemClickListener mListener;
-    List<ShopsEntity> filteredList;
 
     public ShopsAdapter(Context context,
                         List<ShopsEntity> nearbyShopsResponses) {
         this.context = context;
         this.nearbyShopsResponses = new ArrayList<>(nearbyShopsResponses);
-        nearbyShopsCopy = new ArrayList<>(nearbyShopsResponses);
     }
 
     public interface OnItemClickListener {
@@ -96,41 +94,6 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
         ratingAverage = ((double) ratingSum)/reviewList.size();
         return String.format("%.1f", ratingAverage);
     }
-
-//    @Override
-//    public Filter getFilter() {
-//        return filter;
-//    }
-//
-//
-//    private Filter filter = new Filter() {
-//        @Override
-//        protected FilterResults performFiltering(CharSequence constraint) {
-//            filteredList = new ArrayList<>();
-//            if(constraint == null || constraint.length() == 0) {
-//                filteredList.addAll(nearbyShopsCopy);
-//            }
-//            else {
-//                String pattern = constraint.toString().toLowerCase().trim();
-//                for(ShopsEntity shopsEntity: nearbyShopsCopy) {
-//                    if(shopsEntity.getShopName().toLowerCase().startsWith(pattern)) {
-//                        filteredList.add(shopsEntity);
-//                    }
-//                }
-//            }
-//
-//            FilterResults filterResults = new FilterResults();
-//            filterResults.values = filteredList;
-//            return filterResults;
-//        }
-//
-//        @Override
-//        protected void publishResults(CharSequence constraint, FilterResults results) {
-//            nearbyShopsResponses.clear();
-//            nearbyShopsResponses.addAll((List) results.values);
-//            notifyDataSetChanged();
-//        }
-//    };
 
     public void filterList(List<ShopsEntity> shopsEntityList) {
         nearbyShopsResponses = shopsEntityList;

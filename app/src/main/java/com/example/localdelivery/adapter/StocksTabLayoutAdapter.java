@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.localdelivery.fragment.ItemListFragment;
 import com.example.localdelivery.model.StocksData;
-
 import java.util.List;
 
 public class StocksTabLayoutAdapter extends FragmentStatePagerAdapter {
@@ -51,5 +50,10 @@ public class StocksTabLayoutAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NoOfTabs;
+    }
+
+    public void filterList(List<StocksData> stocksDataList, int tabPos) {
+        shop = stocksDataList;
+        notifyDataSetChanged();
     }
 }

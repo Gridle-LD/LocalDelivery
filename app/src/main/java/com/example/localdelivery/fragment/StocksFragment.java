@@ -11,14 +11,19 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.StocksTabLayoutAdapter;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import com.google.android.material.tabs.TabLayout;
@@ -27,12 +32,13 @@ import java.util.List;
 
 public class StocksFragment extends Fragment {
 
-    private SearchView searchView;
+    private EditText searchView;
     private Context mContext;
     private Activity mActivity;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private static List<StocksData> shop;
+    private List<StocksData> filteredList;
     private ImageView imageViewViewCart;
     private ImageView imageViewLike;
     private ImageView imageViewUnlike;
@@ -45,6 +51,8 @@ public class StocksFragment extends Fragment {
     private boolean isFav;
     private int pos;
     private NearbyShopsViewModel viewModel;
+    private StocksTabLayoutAdapter mainPagerAdapter;
+    private int tabPos;
 
     public StocksFragment() {
         // Required empty public constructor
@@ -78,7 +86,7 @@ public class StocksFragment extends Fragment {
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setView(view);
-        setSearchView();
+//        setSearchView();
         setTabLayout();
         setClickListeners();
         return view;
@@ -106,21 +114,21 @@ public class StocksFragment extends Fragment {
         }
     }
 
-    private void setSearchView() {
-        TextView searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        Typeface typeface = ResourcesCompat.getFont(mContext, R.font.montserrat_light);
-        searchText.setTypeface(typeface);
-        searchText.setTextSize(12);
+//    private void setSearchView() {
+//        TextView searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+//        Typeface typeface = ResourcesCompat.getFont(mContext, R.font.montserrat_light);
+//        searchText.setTypeface(typeface);
+//        searchText.setTextSize(12);
+//
+//        if(!searchView.isFocused()) {
+//            searchView.clearFocus();
+//        }
+//    }
 
-        if(!searchView.isFocused()) {
-            searchView.clearFocus();
-        }
-    }
-
-    public static void changeQuantity(String type, int position, int quantity, String name) {
+    public static void changeQuantity(int quantity, String id) {
         int i=0;
         for(StocksData stocksData : shop) {
-            if(stocksData.getType().equals(type) && stocksData.getName().equals(name)) {
+            if(stocksData.get_id().equals(id)) {
                 shop.get(i).setQuantity(quantity);
             }
             ++i;
@@ -138,7 +146,7 @@ public class StocksFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Bathroom & Cleaning"));
         tabLayout.addTab(tabLayout.newTab().setText("Electricals and Electronics"));
 
-        StocksTabLayoutAdapter mainPagerAdapter = new StocksTabLayoutAdapter(getFragmentManager(),
+        mainPagerAdapter = new StocksTabLayoutAdapter(getParentFragmentManager(),
                 tabLayout.getTabCount(), mContext, shop);
         viewPager.setAdapter(mainPagerAdapter);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -165,6 +173,23 @@ public class StocksFragment extends Fragment {
             }
         });
 
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+
         imageViewViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,7 +199,7 @@ public class StocksFragment extends Fragment {
                     }
                 }
                 if(cartList.size()>0) {
-                    getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                    getParentFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
                             new OrderFragment(shop, cartList, shopId, shopName, isPickup, isFav, pos)).commit();
                 }
                 else {
@@ -186,6 +211,7 @@ public class StocksFragment extends Fragment {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                tabPos = tab.getPosition();
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -206,5 +232,17 @@ public class StocksFragment extends Fragment {
                 mActivity.onBackPressed();
             }
         });
+    }
+
+    private void filter(String text) {
+        filteredList = new ArrayList<>();
+
+        for(StocksData stocksData : shop) {
+            if(stocksData.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(stocksData);
+            }
+        }
+        mainPagerAdapter.filterList(filteredList, tabPos);
+        viewPager.setAdapter(mainPagerAdapter);
     }
 }

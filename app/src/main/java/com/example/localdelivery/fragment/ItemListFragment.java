@@ -88,7 +88,7 @@ public class ItemListFragment extends Fragment {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
                 stocksDataList.get(position).setQuantity(++count);
-                StocksFragment.changeQuantity(type, position, count, stocksDataList.get(position).getName());
+                StocksFragment.changeQuantity(count, stocksDataList.get(position).get_id());
                 itemListAdapter.notifyDataSetChanged();
             }
 
@@ -98,7 +98,7 @@ public class ItemListFragment extends Fragment {
                 int count = Integer.parseInt(number);
                 if(count!=0) {
                     stocksDataList.get(position).setQuantity(--count);
-                    StocksFragment.changeQuantity(type, position, count, stocksDataList.get(position).getName());
+                    StocksFragment.changeQuantity(count, stocksDataList.get(position).get_id());
                     itemListAdapter.notifyDataSetChanged();
                 }
             }
