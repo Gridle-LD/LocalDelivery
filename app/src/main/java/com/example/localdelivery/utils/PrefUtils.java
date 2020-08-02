@@ -2,6 +2,7 @@ package com.example.localdelivery.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class PrefUtils {
 
@@ -93,7 +94,7 @@ public class PrefUtils {
     }
 
     public void setPassword(String password) {
-        editor.putString(PASSWORD, password);
+        editor.putString(PASSWORD, password).commit();
     }
 
     public String getPassword() {
