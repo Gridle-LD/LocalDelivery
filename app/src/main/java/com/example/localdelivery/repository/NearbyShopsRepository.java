@@ -174,6 +174,7 @@ public class NearbyShopsRepository {
 
     private void reLogin() {
         LoginData loginData = new LoginData(prefUtils.getContactNumber(), prefUtils.getPassword());
+        Log.e("TAG", "reLogin: " + prefUtils.getContactNumber() + " " + prefUtils.getPassword());
 
         disposable.add(
                 jsonApiHolder.login(loginData)

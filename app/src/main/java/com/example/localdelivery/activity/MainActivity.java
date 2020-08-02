@@ -3,15 +3,13 @@ package com.example.localdelivery.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,6 +24,7 @@ import com.example.localdelivery.fragment.HomeFragment;
 import com.example.localdelivery.fragment.MyOrdersFragment;
 import com.example.localdelivery.fragment.ProfileFragment;
 import com.example.localdelivery.utils.PrefUtils;
+import com.example.localdelivery.utils.ScrollHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Random;
 
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         prefUtils = new PrefUtils(this);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
         cardViewProfileImage = findViewById(R.id.card_view_profile_image);
         textViewProfileAlphabet = findViewById(R.id.text_view_profile_alphabet);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView
+                .getLayoutParams();
+        layoutParams.setBehavior(new ScrollHandler());
 
         //set location in address box
         editTextLocation.setText(prefUtils.getAddress());
