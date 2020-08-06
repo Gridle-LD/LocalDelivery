@@ -1,10 +1,13 @@
 package com.example.localdelivery.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +27,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     public static final int position = 0;
     private int pos;
 
+    private TextView textViewOtp;
     private TextView textViewShopName;
     private TextView textViewShopType;
     private TextView textViewDate;
@@ -37,6 +41,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     private ImageView imageViewPending;
     private ImageView imageViewCancelled;
     private ImageView imageViewBackButton;
+    private ImageView imageViewCancelButton;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private OrderViewModel orderViewModel;
@@ -55,6 +60,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     }
 
     private void setView() {
+        textViewOtp = findViewById(R.id.textViewOrderOtp);
         textViewShopName = findViewById(R.id.textViewShopNameConfirmedOrder);
         textViewShopType = findViewById(R.id.textViewTypeConfirmedOrder);
         textViewDate = findViewById(R.id.textViewDateConfirmedOrder);
@@ -68,6 +74,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         imageViewPending = findViewById(R.id.imageViewPendingConfirmedOrder);
         imageViewCancelled = findViewById(R.id.imageViewCrossConfirmedOrder);
         imageViewBackButton = findViewById(R.id.imageViewBackButtonConfirmedOrder);
+        imageViewCancelButton = findViewById(R.id.imageViewCancelOrderButton);
         progressBar = findViewById(R.id.progressBarConfirmedOrder);
         recyclerView = findViewById(R.id.recycler_view_order_item_confirmed_order);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
@@ -80,6 +87,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     private void placeView() {
         pos = getIntent().getIntExtra(String.valueOf(position), 0);
         OrdersResponse.Result.Orders.Order order = allOrders.get(pos).getOrder().get(0);
+        textViewOtp.setText("OTP : " + order.getOtp());
         textViewStatus.setText("Order " + order.getStatus());
         if(order.getStatus().equals("Completed")) {
             imageViewCompleted.setVisibility(View.VISIBLE);
@@ -122,7 +130,34 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
+    private void setAlertBox(String title, String message) {
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }});
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void setClickListeners() {
+
+        imageViewCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAlertBox("Cancel Order", "Are you sure you want to cancel this order ?");
+            }
+        });
+
         imageViewBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

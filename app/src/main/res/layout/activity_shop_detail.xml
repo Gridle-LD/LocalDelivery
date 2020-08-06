@@ -179,15 +179,39 @@
                                     android:layout_marginStart="16dp"
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="16dp"
-                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginBottom="8dp"
                                     android:fontFamily="@font/montserrat_light"
                                     android:text="MIG 1 C Block Shyam Nagar Kanpur"
                                     android:textColor="@android:color/black"
                                     android:textSize="12sp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@+id/imageView37"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+                                <ImageView
+                                    android:id="@+id/imageView37"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:srcCompat="@drawable/order_quantity_box" />
+
+                                <TextView
+                                    android:id="@+id/textViewNumberOfOrders"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="24dp"
+                                    android:fontFamily="@font/montserrat_light"
+                                    android:maxLines="1"
+                                    android:text="113 Orders Completed"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/imageView37"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/imageView37" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <ImageView

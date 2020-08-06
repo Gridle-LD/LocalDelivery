@@ -62,6 +62,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private TextView textViewShopType;
     private TextView textViewShopAddress;
     private TextView textViewRating;
+    private TextView textViewNumberOfOrders;
     private CardView cardViewRating;
     private String phoneNumber;
     private int mRequestCode = 1;
@@ -127,6 +128,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         textViewShopType = findViewById(R.id.textViewShopTypeDetail);
         textViewShopAddress = findViewById(R.id.textViewShopAddressDetail);
         textViewRating = findViewById(R.id.textViewShopRatingDetail);
+        textViewNumberOfOrders = findViewById(R.id.textViewNumberOfOrders);
         textViewReadMoreReviews = findViewById(R.id.textViewReadMoreReviews);
         cardViewRating = findViewById(R.id.card_view_rating_box_shop_detail);
         imageViewBackButton = findViewById(R.id.imageViewBackButton);
@@ -151,6 +153,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                     textViewShopName.setText(getShopName());
                     textViewShopType.setText("Shop Type : " + shop.getShopType());
                     textViewShopAddress.setText("Shop Address : " + shop.getAddress());
+                    textViewNumberOfOrders.setText(shop.getNumberOfOrders() + " orders completed");
                     textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
                     phoneNumber = shop.getPhoneNumber();
                     if(shop!=null) {

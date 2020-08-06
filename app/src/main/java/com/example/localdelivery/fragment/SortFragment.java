@@ -1,12 +1,18 @@
 package com.example.localdelivery.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.localdelivery.Interface.FilterSortClickListener;
 import com.example.localdelivery.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -23,6 +29,9 @@ public class SortFragment extends Fragment {
     private boolean isHighToLowSelected;
     private boolean isPopularitySelected;
     private boolean isDistanceSelected;
+    private Context mContext;
+    private Activity mActivity;
+    private FilterSortClickListener listener;
 
     public SortFragment() {
         isHighToLowSelected = false;
@@ -34,6 +43,21 @@ public class SortFragment extends Fragment {
         this.isHighToLowSelected = isHighToLowSelected;
         this.isPopularitySelected = isPopularitySelected;
         this.isDistanceSelected = isDistanceSelected;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        try {
+            listener = (FilterSortClickListener)mContext;
+        }
+        catch (ClassCastException castException) {
+            castException.printStackTrace();
+        }
+        if(context instanceof Activity) {
+            mActivity = (Activity) context;
+        }
     }
 
     @Override
@@ -131,6 +155,14 @@ public class SortFragment extends Fragment {
                     imageViewTickDistance.setVisibility(View.INVISIBLE);
                     isDistanceSelected = false;
                 }
+            }
+        });
+
+        materialButtonApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().popBackStack();
+                listener.setSortClick(isHighToLowSelected, isPopularitySelected, isDistanceSelected);
             }
         });
 

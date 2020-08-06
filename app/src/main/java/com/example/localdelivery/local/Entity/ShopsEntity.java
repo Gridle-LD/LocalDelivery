@@ -1,5 +1,7 @@
 package com.example.localdelivery.local.Entity;
 
+import android.annotation.SuppressLint;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
@@ -11,6 +13,8 @@ import com.example.localdelivery.local.Converter.ReviewConverter;
 import com.example.localdelivery.local.Converter.StocksConverter;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.StocksData;
+
+import java.util.Comparator;
 import java.util.List;
 
 @Entity(tableName = "shops_table", indices = {@Index(value = {"_id"}, unique = true)})
@@ -24,9 +28,6 @@ public class ShopsEntity {
     @TypeConverters({ReviewConverter.class})
     private List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList;
 
-//    @TypeConverters({FavouriteConverter.class})
-//    private List<String> favouriteShops;
-
     private boolean favourite;
 
     private String _id;
@@ -37,13 +38,14 @@ public class ShopsEntity {
     private String longitude;
     private String shopName;
     private String shopType;
+    private int numberOfOrders;
 
     @Ignore
     public ShopsEntity() {}
 
     public ShopsEntity(List<StocksData> stock, List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList,
                        boolean favourite, String _id, String phoneNumber, String name, String address,
-                       String latitude, String longitude, String shopName, String shopType) {
+                       String latitude, String longitude, String shopName, String shopType, int numberOfOrders) {
         this.stock = stock;
         this.reviewList = reviewList;
         this.favourite = favourite;
@@ -55,6 +57,7 @@ public class ShopsEntity {
         this.longitude = longitude;
         this.shopName = shopName;
         this.shopType = shopType;
+        this.numberOfOrders = numberOfOrders;
     }
 
     public int getId() {
@@ -151,5 +154,48 @@ public class ShopsEntity {
 
     public void setShopType(String shopType) {
         this.shopType = shopType;
+    }
+
+    public int getNumberOfOrders() {
+        return numberOfOrders;
+    }
+
+    public void setNumberOfOrders(int numberOfOrders) {
+        this.numberOfOrders = numberOfOrders;
+    }
+
+    public static Comparator<ShopsEntity> RatingComparator = new Comparator<ShopsEntity>() {
+
+        @Override
+        public int compare(ShopsEntity o1, ShopsEntity o2) {
+
+            String rating1 = calculateRating(o1.getReviewList());
+            String rating2 = calculateRating(o2.getReviewList());
+
+            return rating2.compareTo(rating1);
+        }
+    };
+
+    public static Comparator<ShopsEntity> PopularityComparator = new Comparator<ShopsEntity>() {
+        @Override
+        public int compare(ShopsEntity o1, ShopsEntity o2) {
+            String reviewList1 = String.valueOf(o1.getNumberOfOrders());
+            String reviewList2 = String.valueOf(o2.getNumberOfOrders());
+
+            return reviewList2.compareTo(reviewList1);
+        }
+    };
+
+    // TODO : Distance Comparator
+
+    @SuppressLint("DefaultLocale")
+    private static String calculateRating(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {
+        int ratingSum = 0;
+        double ratingAverage;
+        for(NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
+            ratingSum += reviewObject.getRating();
+        }
+        ratingAverage = ((double) ratingSum)/reviewList.size();
+        return String.format("%.1f", ratingAverage);
     }
 }

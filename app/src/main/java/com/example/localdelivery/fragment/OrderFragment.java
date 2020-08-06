@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
@@ -78,9 +80,11 @@ public class OrderFragment extends Fragment {
     private TextView textViewDelivery;
     private View dividerPickup;
     private View dividerDelivery;
+    private RadioGroup radioGroup;
     private boolean isFav;
     private int pos;
     private NearbyShopsViewModel viewModel;
+    private String orderType="";
 
     private Integer ActivityRequestCode = 200;
 
@@ -135,6 +139,8 @@ public class OrderFragment extends Fragment {
         textViewDelivery = view.findViewById(R.id.textViewDeliveryOrderType);
         dividerPickup = view.findViewById(R.id.dividerPickup);
         dividerDelivery = view.findViewById(R.id.dividerDelivery);
+        radioGroup = view.findViewById(R.id.radio_group);
+        radioGroup.clearCheck();
 
         textViewShopName.setText(shopName);
 
@@ -210,6 +216,17 @@ public class OrderFragment extends Fragment {
             }
         });
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = group.findViewById(checkedId);
+                if (null != rb) {
+                    Toast.makeText(mContext, rb.getText(), Toast.LENGTH_SHORT).show();
+                    orderType = String.valueOf(rb.getText());
+                }
+            }
+        });
+
         orderItemAdapter.setOnItemClickListener(new OrderItemAdapter.OnItemClickListener() {
             @Override
             public void onAddClick(int position, TextView textView) {
@@ -247,11 +264,17 @@ public class OrderFragment extends Fragment {
         imageViewPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //testing payTm payment gateway
-//                getToken();
-
-                //place order route
-                placeOrder();
+                if(orderType.equals("Cash")) {
+                    //place order route
+                    placeOrder();
+                }
+                else if(orderType.equals("Paytm")) {
+                    //testing payTm payment gateway
+                    getToken();
+                }
+                else {
+                    Toast.makeText(mContext, "Select Order Type !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -278,7 +301,8 @@ public class OrderFragment extends Fragment {
                     String.valueOf(stocksData.getQuantity()), stocksData.get_id());
             itemsList.add(items);
         }
-        PlaceOrderData.Order.Shop shop = new PlaceOrderData.Order.Shop(shopId, itemsList, String.valueOf(price));
+        PlaceOrderData.Order.Shop shop = new PlaceOrderData.Order.Shop(shopId, itemsList, String.valueOf(price),
+                isPickup, orderType);
         PlaceOrderData.Order order = new PlaceOrderData.Order(shop);
         List<PlaceOrderData.Order> orderList = new ArrayList<>();
         orderList.add(order);
@@ -292,7 +316,7 @@ public class OrderFragment extends Fragment {
                             @Override
                             public void onSuccess(ResponseBody responseBody) {
                                 Toast.makeText(mContext, "Placed Order !", Toast.LENGTH_SHORT).show();
-                                mActivity.onBackPressed();
+                                mActivity.finish();
                             }
 
                             @Override
@@ -315,7 +339,7 @@ public class OrderFragment extends Fragment {
 
     private void getToken() {
         final String orderId = getOrderId();
-        PayTmCheckSumData payTmCheckSumData = new PayTmCheckSumData("BGkMJs06905184978035",
+        PayTmCheckSumData payTmCheckSumData = new PayTmCheckSumData("MiIosW26581877503718",
                 orderId, String.valueOf(price));
 
         disposable.add(
@@ -348,9 +372,12 @@ public class OrderFragment extends Fragment {
     }
 
     private void startPayTmPayment(String token, String orderIdString) {
-        String host = "https://securegw-stage.paytm.in/";
-        String callBackUrl = host + "theia/paytmCallback?ORDER_ID="+orderIdString;
-        PaytmOrder paytmOrder = new PaytmOrder(orderIdString, "BGkMJs06905184978035", token, String.valueOf(price),
+//        String host = "https://securegw-stage.paytm.in/";
+//        String callBackUrl = host + "theia/paytmCallback?ORDER_ID="+orderIdString;
+        String host = "https://securegw.paytm.in/";
+        String callBackUrl = host + "theia/api/v1/initiateTransaction?mid=" + "MiIosW26581877503718" +
+                "&orderId=" + orderIdString;
+        PaytmOrder paytmOrder = new PaytmOrder(orderIdString, "MiIosW26581877503718", token, String.valueOf(price),
                 callBackUrl);
         TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback(){
             @Override

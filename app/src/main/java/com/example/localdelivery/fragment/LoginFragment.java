@@ -139,16 +139,25 @@ public class LoginFragment extends Fragment {
                         .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
                             @Override
                             public void onSuccess(LoginResponse loginResponse) {
-                                prefUtils.createLogin("JWT "+loginResponse.getToken());
-                                prefUtils.setUserId(loginResponse.getUserId());
-                                prefUtils.setName(loginResponse.getName());
-                                prefUtils.setContactNumber(mobileNumber);
-                                prefUtils.setPassword(password);
-                                progressBar.setVisibility(View.GONE);
-                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                Intent intent = new Intent(mActivity , MainActivity.class);
-                                startActivity(intent);
-                                Objects.requireNonNull(mActivity).finish();
+                                if(loginResponse.getMessage()!=null) {
+                                    if(loginResponse.getMessage().equals("User is not verified")) {
+                                        getParentFragmentManager().beginTransaction().replace(
+                                                R.id.fragment_sign_up_login, new OtpFragment("Name",
+                                                        loginResponse.getUserId(), mobileNumber, password)).commit();
+                                    }
+                                }
+                                else {
+                                    prefUtils.createLogin("JWT "+loginResponse.getToken());
+                                    prefUtils.setUserId(loginResponse.getUserId());
+                                    prefUtils.setName(loginResponse.getName());
+                                    prefUtils.setContactNumber(mobileNumber);
+                                    prefUtils.setPassword(password);
+                                    progressBar.setVisibility(View.GONE);
+                                    mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    Intent intent = new Intent(mActivity , MainActivity.class);
+                                    startActivity(intent);
+                                    Objects.requireNonNull(mActivity).finish();
+                                }
                             }
 
                             @Override

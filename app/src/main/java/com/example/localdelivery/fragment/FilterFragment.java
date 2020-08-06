@@ -19,15 +19,15 @@ import com.google.android.material.button.MaterialButton;
 public class FilterFragment extends Fragment {
 
     private TextView textViewGrocery;
-    private TextView textViewDairy;
+    private TextView textViewOthers;
     private TextView textViewDeliveryAvailable;
     private MaterialButton materialButtonApply;
     private TextView textViewClearAll;
     private ImageView imageViewTickGrocery;
-    private ImageView imageViewTickDairy;
+    private ImageView imageViewTickOthers;
     private ImageView imageViewTickDeliveryAvailable;
     private boolean isGrocerySelected;
-    private boolean isDairySelected;
+    private boolean isOthersSelected;
     private boolean isDeliveryAvailableSelected;
     private Context mContext;
     private Activity mActivity;
@@ -36,13 +36,13 @@ public class FilterFragment extends Fragment {
     public FilterFragment() {
         // Required empty public constructor
         isGrocerySelected = false;
-        isDairySelected = false;
+        isOthersSelected = false;
         isDeliveryAvailableSelected = false;
     }
 
-    public FilterFragment(boolean isGrocerySelected, boolean isDairySelected, boolean isDeliveryAvailableSelected) {
+    public FilterFragment(boolean isGrocerySelected, boolean isOthersSelected, boolean isDeliveryAvailableSelected) {
         this.isGrocerySelected = isGrocerySelected;
-        this.isDairySelected = isDairySelected;
+        this.isOthersSelected = isOthersSelected;
         this.isDeliveryAvailableSelected = isDeliveryAvailableSelected;
     }
 
@@ -74,12 +74,12 @@ public class FilterFragment extends Fragment {
 
     private void setView(View view) {
         textViewGrocery = view.findViewById(R.id.text_view_grocery);
-        textViewDairy = view.findViewById(R.id.text_view_dairy);
+        textViewOthers = view.findViewById(R.id.text_view_others);
         textViewDeliveryAvailable = view.findViewById(R.id.text_view_delivery_available);
         materialButtonApply = view.findViewById(R.id.materialButtonApplyFilter);
         textViewClearAll = view.findViewById(R.id.textViewClearFilter);
         imageViewTickGrocery = view.findViewById(R.id.imageViewTickGeneral);
-        imageViewTickDairy = view.findViewById(R.id.imageViewTickDairy);
+        imageViewTickOthers = view.findViewById(R.id.imageViewTickOthers);
         imageViewTickDeliveryAvailable = view.findViewById(R.id.imageViewTickDeliveryAvailable);
 
         if(isGrocerySelected) {
@@ -89,11 +89,11 @@ public class FilterFragment extends Fragment {
             imageViewTickGrocery.setVisibility(View.INVISIBLE);
         }
 
-        if(isDairySelected) {
-            imageViewTickDairy.setVisibility(View.VISIBLE);
+        if(isOthersSelected) {
+            imageViewTickOthers.setVisibility(View.VISIBLE);
         }
         else {
-            imageViewTickDairy.setVisibility(View.INVISIBLE);
+            imageViewTickOthers.setVisibility(View.INVISIBLE);
         }
 
         if(isDeliveryAvailableSelected) {
@@ -119,16 +119,16 @@ public class FilterFragment extends Fragment {
             }
         });
 
-        textViewDairy.setOnClickListener(new View.OnClickListener() {
+        textViewOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isDairySelected) {
-                    imageViewTickDairy.setVisibility(View.VISIBLE);
-                    isDairySelected = true;
+                if(!isOthersSelected) {
+                    imageViewTickOthers.setVisibility(View.VISIBLE);
+                    isOthersSelected = true;
                 }
                 else {
-                    imageViewTickDairy.setVisibility(View.INVISIBLE);
-                    isDairySelected = false;
+                    imageViewTickOthers.setVisibility(View.INVISIBLE);
+                    isOthersSelected = false;
                 }
             }
         });
@@ -151,7 +151,7 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getParentFragmentManager().popBackStack();
-                listener.setFilterClick(isGrocerySelected, isDairySelected, isDeliveryAvailableSelected);
+                listener.setFilterClick(isGrocerySelected, isOthersSelected, isDeliveryAvailableSelected);
             }
         });
 
@@ -159,10 +159,10 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 imageViewTickGrocery.setVisibility(View.INVISIBLE);
-                imageViewTickDairy.setVisibility(View.INVISIBLE);
+                imageViewTickOthers.setVisibility(View.INVISIBLE);
                 imageViewTickDeliveryAvailable.setVisibility(View.INVISIBLE);
                 isGrocerySelected = false;
-                isDairySelected = false;
+                isOthersSelected = false;
                 isDeliveryAvailableSelected = false;
             }
         });

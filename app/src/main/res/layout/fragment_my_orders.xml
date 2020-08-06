@@ -12,17 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyle"
+    <ImageView
+        android:id="@+id/imageViewNoOrders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/no_orders_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="visible"
-        android:elevation="1dp"/>
+        android:visibility="gone"/>
 
     <FrameLayout
         android:id="@+id/frame_layout_order"

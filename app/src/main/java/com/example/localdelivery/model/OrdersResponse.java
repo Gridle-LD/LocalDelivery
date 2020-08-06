@@ -60,6 +60,8 @@ public class OrdersResponse {
             public static class Order {
                 private String status;
                 private boolean pickUp;
+                private String paymentType;
+                private String otp;
                 private String _id;
                 private List<Items> items;
                 private ShopId shopId;
@@ -67,10 +69,12 @@ public class OrdersResponse {
                 private String createdAt;
                 private String updatedAt;
 
-                public Order(String status, boolean pickUp, String _id, List<Items> items, ShopId shopId,
+                public Order(String status, boolean pickUp, String paymentType, String otp, String _id, List<Items> items, ShopId shopId,
                              String totalPrice, String createdAt, String updatedAt) {
                     this.status = status;
                     this.pickUp = pickUp;
+                    this.paymentType = paymentType;
+                    this.otp = otp;
                     this._id = _id;
                     this.items = items;
                     this.shopId = shopId;
@@ -93,6 +97,22 @@ public class OrdersResponse {
 
                 public void setPickUp(boolean pickUp) {
                     this.pickUp = pickUp;
+                }
+
+                public String getPaymentType() {
+                    return paymentType;
+                }
+
+                public void setPaymentType(String paymentType) {
+                    this.paymentType = paymentType;
+                }
+
+                public String getOtp() {
+                    return otp;
+                }
+
+                public void setOtp(String otp) {
+                    this.otp = otp;
                 }
 
                 public String get_id() {

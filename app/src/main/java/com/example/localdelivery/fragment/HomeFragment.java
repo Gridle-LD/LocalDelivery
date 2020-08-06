@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
@@ -31,12 +32,12 @@ import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
     private EditText editTextSearchView;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private ShopsAdapter shopsAdapter;
     private JsonApiHolder jsonApiHolder;
     private Context mContext;
@@ -50,8 +51,12 @@ public class HomeFragment extends Fragment {
     private ConstraintLayout constraintLayoutFilter;
     private boolean isOpened = false;
     private boolean isGrocerySelected = false;
-    private boolean isDairySelected = false;
+    private boolean isOthersSelected = false;
     private boolean isDeliveryAvailableSelected = false;
+    private boolean isRatingSelected = false;
+    private boolean isPopularitySelected = false;
+    private boolean isDistanceSelected = false;
+    private ImageView imageViewNoStores;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -81,8 +86,6 @@ public class HomeFragment extends Fragment {
         setView(view);
         getNearbyShops();
         setTextListeners();
-
-        progressBar.setVisibility(View.GONE);
         return view;
     }
 
@@ -91,7 +94,7 @@ public class HomeFragment extends Fragment {
         constraintLayoutSort = view.findViewById(R.id.constraint_layout_sort_button);
         constraintLayoutFilter = view.findViewById(R.id.constraint_layout_filter_button);
         recyclerView = view.findViewById(R.id.recycler_view_nearby_shops);
-        progressBar = view.findViewById(R.id.progressBar3);
+        imageViewNoStores = view.findViewById(R.id.imageViewNoStores);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
@@ -119,23 +122,12 @@ public class HomeFragment extends Fragment {
                 filteredList.add(shopsEntity);
             }
         }
-        shopsAdapter.filterList(filteredList);
-
-        shopsAdapter.setOnItemClickListener(new ShopsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(mContext, ShopDetailActivity.class);
-
-                //knowing the position of the clicked shop
-                intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position));
-                startActivity(intent);
-            }
-        });
+        setAdapter(filteredList);
     }
 
-    private int getPos(int pos) {
-        if(filteredList.size()!=0) {
-            String id = filteredList.get(pos).get_id();
+    private int getPos(int pos, List<ShopsEntity> shopsEntityList) {
+        if(shopsEntityList.size()!=0) {
+            String id = shopsEntityList.get(pos).get_id();
             int position = 0;
             for(ShopsEntity shopsEntity : nearbyShops) {
                 if(shopsEntity.get_id().equals(id)) {
@@ -145,9 +137,7 @@ public class HomeFragment extends Fragment {
             }
             return position;
         }
-        else {
-            return pos;
-        }
+        return pos;
     }
 
     private void getNearbyShops() {
@@ -159,20 +149,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<ShopsEntity> shopsEntities) {
                 nearbyShops = shopsEntities;
-                shopsAdapter = new ShopsAdapter(mContext, shopsEntities);
-                recyclerView.setAdapter(shopsAdapter);
-
-                shopsAdapter.setOnItemClickListener(
-                        new ShopsAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                Intent intent = new Intent(mContext, ShopDetailActivity.class);
-
-                                //knowing the position of the clicked shop
-                                intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position));
-                                startActivity(intent);
-                            }
-                        });
+                setAdapter(nearbyShops);
             }
         });
     }
@@ -202,7 +179,8 @@ public class HomeFragment extends Fragment {
                 if(!isOpened) {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,
                             R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
-                            .replace(R.id.frame_layout_sort, new SortFragment()).addToBackStack(null).commit();
+                            .replace(R.id.frame_layout_sort, new SortFragment(isRatingSelected, isPopularitySelected,
+                                    isDistanceSelected)).addToBackStack(null).commit();
                     isOpened = true;
                 }
                 else {
@@ -218,8 +196,8 @@ public class HomeFragment extends Fragment {
                 if(!isOpened) {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,
                             R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_left)
-                            .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected, isDairySelected
-                                    ,isDeliveryAvailableSelected)).addToBackStack(null).commit();
+                            .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected, isOthersSelected
+                                    , isDeliveryAvailableSelected)).addToBackStack(null).commit();
                     isOpened = true;
                 }
                 else {
@@ -231,18 +209,18 @@ public class HomeFragment extends Fragment {
     }
 
     //called from MainActivity when list is filtered
-    public void setFilterClick(boolean isGrocerySelected, boolean isDairySelected,
+    public void setFilterClick(boolean isGrocerySelected, boolean isOthersSelected,
                                boolean isDeliveryAvailableSelected) {
 
         //TODO : Complete Filter and Sort Section
 
         isOpened = false;
         this.isGrocerySelected = isGrocerySelected;
-        this.isDairySelected = isDairySelected;
+        this.isOthersSelected = isOthersSelected;
         this.isDeliveryAvailableSelected = isDeliveryAvailableSelected;
 
         nearbyShopsCopy = new ArrayList<>();
-        if(!isGrocerySelected && !isDairySelected && !isDeliveryAvailableSelected) {
+        if(!isGrocerySelected && !isOthersSelected && !isDeliveryAvailableSelected) {
             nearbyShopsCopy.addAll(nearbyShops);
         }
         else {
@@ -250,15 +228,61 @@ public class HomeFragment extends Fragment {
                 for(ShopsEntity shopsEntity : nearbyShops) {
                     if(shopsEntity.getShopType()!=null){
                         if(shopsEntity.getShopType().equals("Grocery")) {
-                            nearbyShopsCopy.add(shopsEntity);
+                            if(!nearbyShopsCopy.contains(shopsEntity)) {
+                                nearbyShopsCopy.add(shopsEntity);
+                            }
+                        }
+                    }
+                }
+            }
+            if(isOthersSelected) {
+                for(ShopsEntity shopsEntity : nearbyShops) {
+                    if(shopsEntity.getShopType()!=null){
+                        if(shopsEntity.getShopType().equals("Others")) {
+                            if(!nearbyShopsCopy.contains(shopsEntity)) {
+                                nearbyShopsCopy.add(shopsEntity);
+                            }
                         }
                     }
                 }
             }
         }
 
+        setAdapter(nearbyShopsCopy);
+    }
+
+    public void setSortClick(boolean isRatingSelected, boolean isPopularitySelected, boolean isDistanceSelected) {
+        isOpened = false;
+        this.isRatingSelected = isRatingSelected;
+        this.isPopularitySelected = isPopularitySelected;
+        this.isDistanceSelected = isDistanceSelected;
+
+        nearbyShopsCopy = new ArrayList<>(nearbyShops);
+        if(!isRatingSelected && !isPopularitySelected && !isDistanceSelected) {
+            nearbyShopsCopy = nearbyShops;
+        }
+        else {
+            if(isRatingSelected) {
+                Collections.sort(nearbyShopsCopy, ShopsEntity.RatingComparator);
+            }
+            if(isPopularitySelected) {
+                Collections.sort(nearbyShopsCopy, ShopsEntity.PopularityComparator);
+            }
+        }
+
+        setAdapter(nearbyShopsCopy);
+    }
+
+    private void setAdapter(final List<ShopsEntity> nearbyShopsCopy) {
         shopsAdapter = new ShopsAdapter(mContext, nearbyShopsCopy);
         recyclerView.setAdapter(shopsAdapter);
+
+        if(nearbyShopsCopy.size()==0) {
+            imageViewNoStores.setVisibility(View.VISIBLE);
+        }
+        else {
+            imageViewNoStores.setVisibility(View.GONE);
+        }
 
         shopsAdapter.setOnItemClickListener(
                 new ShopsAdapter.OnItemClickListener() {
@@ -267,7 +291,7 @@ public class HomeFragment extends Fragment {
                         Intent intent = new Intent(mContext, ShopDetailActivity.class);
 
                         //knowing the position of the clicked shop
-                        intent.putExtra(String.valueOf(ShopDetailActivity.position), position);
+                        intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position, nearbyShopsCopy));
                         startActivity(intent);
                     }
                 });

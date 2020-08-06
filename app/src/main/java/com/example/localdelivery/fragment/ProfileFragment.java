@@ -62,9 +62,11 @@ public class ProfileFragment extends Fragment {
         cardViewFeedback = view.findViewById(R.id.card_view_feedback);
         cardViewLogout = view.findViewById(R.id.card_view_logout);
 
-        String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
-        textViewAlphabetName.setText(firstAlphabet.toUpperCase());
-        editTextUsername.setText(prefUtils.getNAME());
+        if(prefUtils.getNAME()!=null) {
+            String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
+            textViewAlphabetName.setText(firstAlphabet.toUpperCase());
+            editTextUsername.setText(prefUtils.getNAME());
+        }
         textViewContactNumber.setText(prefUtils.getContactNumber());
         editTextAddress.setText(prefUtils.getAddress());
     }

@@ -44,12 +44,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_view_dairy"
+            android:id="@+id/text_view_others"
             style="?android:borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Dairy"
+            android:text="Others"
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -69,7 +69,7 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_dairy" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_others" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButtonApplyFilter"
@@ -114,14 +114,14 @@
             app:layout_constraintTop_toTopOf="@+id/text_view_grocery" />
 
         <ImageView
-            android:id="@+id/imageViewTickDairy"
+            android:id="@+id/imageViewTickOthers"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:src="@drawable/tick"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_dairy"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_others"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/text_view_dairy" />
+            app:layout_constraintTop_toTopOf="@+id/text_view_others" />
 
         <ImageView
             android:id="@+id/imageViewTickDeliveryAvailable"

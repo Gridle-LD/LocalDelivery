@@ -37,11 +37,15 @@ public class PlaceOrderData {
             private String shopId;
             private List<Items> items;
             private String totalPrice;
+            private boolean pickUp;
+            private String paymentType;
 
-            public Shop(String shopId, List<Items> items, String totalPrice) {
+            public Shop(String shopId, List<Items> items, String totalPrice, boolean pickUp, String paymentType) {
                 this.shopId = shopId;
                 this.items = items;
                 this.totalPrice = totalPrice;
+                this.pickUp = pickUp;
+                this.paymentType = paymentType;
             }
 
             public String getShopId() {
@@ -66,6 +70,22 @@ public class PlaceOrderData {
 
             public void setTotalPrice(String totalPrice) {
                 this.totalPrice = totalPrice;
+            }
+
+            public boolean isPickUp() {
+                return pickUp;
+            }
+
+            public void setPickUp(boolean pickUp) {
+                this.pickUp = pickUp;
+            }
+
+            public String getPaymentType() {
+                return paymentType;
+            }
+
+            public void setPaymentType(String paymentType) {
+                this.paymentType = paymentType;
             }
 
             public static class Items {

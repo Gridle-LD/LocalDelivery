@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.ItemListAdapter;
@@ -28,7 +29,7 @@ public class ItemListFragment extends Fragment {
     private ItemListAdapter itemListAdapter;
     private List<StocksData> stocksDataList;
     private String type;
-    private NearbyShopsViewModel viewModel;
+    private ImageView imageViewNoItem;
 
     public ItemListFragment() {
         // Required empty public constructor
@@ -65,6 +66,7 @@ public class ItemListFragment extends Fragment {
 
     private void setView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_item_list);
+        imageViewNoItem = view.findViewById(R.id.imageViewNoItem);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
@@ -78,6 +80,13 @@ public class ItemListFragment extends Fragment {
             if(stocksData.getType().equals(type)) {
                 stocksDataList.add(stocksData);
             }
+        }
+
+        if(stocksDataList.size()==0) {
+            imageViewNoItem.setVisibility(View.VISIBLE);
+        }
+        else {
+            imageViewNoItem.setVisibility(View.GONE);
         }
     }
 
