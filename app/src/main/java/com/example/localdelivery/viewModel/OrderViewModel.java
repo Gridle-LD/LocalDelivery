@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.localdelivery.local.Entity.OrderEntity;
+import com.example.localdelivery.model.CancelOrderData;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.repository.OrderRepository;
 import java.util.List;
@@ -29,5 +30,9 @@ public class OrderViewModel extends AndroidViewModel {
 
     public OrdersResponse getCompleteOrderList() {
         return orderRepository.getCompleteOrderList();
+    }
+
+    public boolean cancelOrder(CancelOrderData cancelOrderData) {
+        return orderRepository.cancelOrder(cancelOrderData);
     }
 }

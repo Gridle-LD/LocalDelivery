@@ -74,6 +74,13 @@ public class NearbyShopsRepository {
                                 nearbyShops = nearbyShopsResponse.getMessage().getShop();
                                 int pos = 0;
                                 for(NearbyShopsResponse.Result.NearbyShopsObject shopsObject: nearbyShops) {
+                                    int completedOrderSize = 0;
+                                    for(NearbyShopsResponse.Result.NearbyShopsObject.Order order : shopsObject.getOrders()) {
+                                        if(order.getStatus().equals("Completed")) {
+                                            ++completedOrderSize;
+                                        }
+                                    }
+
                                     ShopsEntity shopsEntity = new ShopsEntity(
                                             shopsObject.getStock(),
                                             shopsObject.getReviews(),
@@ -86,8 +93,7 @@ public class NearbyShopsRepository {
                                             shopsObject.getShopDetails().getLongitude(),
                                             shopsObject.getShopDetails().getShopName(),
                                             shopsObject.getShopDetails().getShopType(),
-                                            shopsObject.getOrders().size()
-                                    );
+                                            completedOrderSize);
                                     shopsEntities.add(shopsEntity);
                                     ++pos;
                                 }

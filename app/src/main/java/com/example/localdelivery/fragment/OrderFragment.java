@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -27,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
+import com.example.localdelivery.activity.MainActivity;
+import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.adapter.OrderItemAdapter;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.model.PayTmCheckSumData;
@@ -41,11 +45,14 @@ import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.paytm.pgsdk.TransactionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -85,6 +92,9 @@ public class OrderFragment extends Fragment {
     private int pos;
     private NearbyShopsViewModel viewModel;
     private String orderType="";
+    private ConstraintLayout constraintLayoutAddress;
+    private TextView textViewAddress;
+    private TextView textViewAddressChange;
 
     private Integer ActivityRequestCode = 200;
 
@@ -141,16 +151,23 @@ public class OrderFragment extends Fragment {
         dividerDelivery = view.findViewById(R.id.dividerDelivery);
         radioGroup = view.findViewById(R.id.radio_group);
         radioGroup.clearCheck();
+        constraintLayoutAddress = view.findViewById(R.id.constraintLayoutAddress);
+        textViewAddress = view.findViewById(R.id.textViewAddressOrder);
+        textViewAddressChange = view.findViewById(R.id.textViewChange);
+
+        textViewAddress.setText(prefUtils.getAddress());
 
         textViewShopName.setText(shopName);
 
         if(isPickup) {
             dividerPickup.setVisibility(View.VISIBLE);
             dividerDelivery.setVisibility(View.GONE);
+            constraintLayoutAddress.setVisibility(View.GONE);
         }
         else {
             dividerPickup.setVisibility(View.GONE);
             dividerDelivery.setVisibility(View.VISIBLE);
+            constraintLayoutAddress.setVisibility(View.VISIBLE);
         }
 
         if(isFav) {
@@ -204,6 +221,7 @@ public class OrderFragment extends Fragment {
                 isPickup = true;
                 dividerPickup.setVisibility(View.VISIBLE);
                 dividerDelivery.setVisibility(View.GONE);
+                constraintLayoutAddress.setVisibility(View.GONE);
             }
         });
 
@@ -213,6 +231,15 @@ public class OrderFragment extends Fragment {
                 isPickup = false;
                 dividerPickup.setVisibility(View.GONE);
                 dividerDelivery.setVisibility(View.VISIBLE);
+                constraintLayoutAddress.setVisibility(View.VISIBLE);
+            }
+        });
+
+        textViewAddressChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, MapsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -221,7 +248,6 @@ public class OrderFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = group.findViewById(checkedId);
                 if (null != rb) {
-                    Toast.makeText(mContext, rb.getText(), Toast.LENGTH_SHORT).show();
                     orderType = String.valueOf(rb.getText());
                 }
             }
@@ -273,7 +299,7 @@ public class OrderFragment extends Fragment {
                     getToken();
                 }
                 else {
-                    Toast.makeText(mContext, "Select Order Type !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Select Payment Option !", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -327,10 +353,9 @@ public class OrderFragment extends Fragment {
         );
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String getOrderId() {
-        Calendar c = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy");
-        String date = df.format(c.getTime());
+        String date = new SimpleDateFormat("yyyyMMdd_MMmmss").format(new Date());
         Random rand = new Random();
         int min =1000, max= 9999;
         int randomNum = rand.nextInt((max - min) + 1) + min;
@@ -375,8 +400,9 @@ public class OrderFragment extends Fragment {
 //        String host = "https://securegw-stage.paytm.in/";
 //        String callBackUrl = host + "theia/paytmCallback?ORDER_ID="+orderIdString;
         String host = "https://securegw.paytm.in/";
-        String callBackUrl = host + "theia/api/v1/initiateTransaction?mid=" + "MiIosW26581877503718" +
-                "&orderId=" + orderIdString;
+//        String callBackUrl = host + "theia/api/v1/initiateTransaction?mid=" + "MiIosW26581877503718" +
+//                "&orderId=" + orderIdString;
+        String callBackUrl = host + "theia/paytmCallback?ORDER_ID=" + orderIdString;
         PaytmOrder paytmOrder = new PaytmOrder(orderIdString, "MiIosW26581877503718", token, String.valueOf(price),
                 callBackUrl);
         TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback(){
@@ -455,6 +481,13 @@ public class OrderFragment extends Fragment {
             Log.e("paytm", " payment failed");
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        textViewAddress.setText(prefUtils.getAddress());
     }
 
     @Override

@@ -48,13 +48,13 @@ public class NearbyShopsResponse {
         public static class NearbyShopsObject {
             private ShopDetails shopDetails;
             private List<StocksData> stock;
-            private List<String> orders;
+            private List<Order> orders;
             private List<ReviewObject> reviews;
             private String _id;
             private String phoneNumber;
             private String name;
 
-            public NearbyShopsObject(ShopDetails shopDetails, List<StocksData> stock, List<String> orders,
+            public NearbyShopsObject(ShopDetails shopDetails, List<StocksData> stock, List<Order> orders,
                                      List<ReviewObject> reviews, String _id, String phoneNumber, String name) {
                 this.shopDetails = shopDetails;
                 this.stock = stock;
@@ -81,11 +81,11 @@ public class NearbyShopsResponse {
                 this.stock = stock;
             }
 
-            public List<String> getOrders() {
+            public List<Order> getOrders() {
                 return orders;
             }
 
-            public void setOrders(List<String> orders) {
+            public void setOrders(List<Order> orders) {
                 this.orders = orders;
             }
 
@@ -174,6 +174,33 @@ public class NearbyShopsResponse {
 
                 public void setShopType(String shopType) {
                     this.shopType = shopType;
+                }
+            }
+
+            public static class Order {
+
+                private String status;
+                private String _id;
+
+                public Order(String status, String _id) {
+                    this.status = status;
+                    this._id = _id;
+                }
+
+                public String getStatus() {
+                    return status;
+                }
+
+                public void setStatus(String status) {
+                    this.status = status;
+                }
+
+                public String get_id() {
+                    return _id;
+                }
+
+                public void set_id(String _id) {
+                    this._id = _id;
                 }
             }
 

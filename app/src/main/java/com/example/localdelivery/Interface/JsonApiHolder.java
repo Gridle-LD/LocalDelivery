@@ -1,5 +1,6 @@
 package com.example.localdelivery.Interface;
 
+import com.example.localdelivery.model.CancelOrderData;
 import com.example.localdelivery.model.FavData;
 import com.example.localdelivery.model.FavResponse;
 import com.example.localdelivery.model.LoginData;
@@ -16,8 +17,6 @@ import com.example.localdelivery.model.ResendOtpResponse;
 import com.example.localdelivery.model.ReviewData;
 import com.example.localdelivery.model.SignUpData;
 import com.example.localdelivery.model.SignUpResponse;
-
-import java.util.List;
 
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
@@ -58,4 +57,7 @@ public interface JsonApiHolder {
 
     @PUT("customerAction/fav")
     Single<FavResponse> favourite(@Body FavData favData);
+
+    @PUT("customerAction/changeStatus")
+    Single<ResponseBody> cancelOrder(@Body CancelOrderData cancelOrderData);
 }

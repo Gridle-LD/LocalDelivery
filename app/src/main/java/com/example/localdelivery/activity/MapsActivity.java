@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MapsActivity extends AppCompatActivity {
 
@@ -84,8 +85,6 @@ public class MapsActivity extends AppCompatActivity {
         imageViewProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

@@ -1,6 +1,7 @@
 package com.example.localdelivery.repository;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.local.Dao.OrderDao;
 import com.example.localdelivery.local.Entity.OrderEntity;
 import com.example.localdelivery.local.ShopsDatabase;
+import com.example.localdelivery.model.CancelOrderData;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
@@ -20,6 +22,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class OrderRepository {
 
@@ -71,6 +74,31 @@ public class OrderRepository {
                                 .show();
                             }
                         }));
+    }
+
+    public boolean cancelOrder(CancelOrderData cancelOrderData) {
+        final boolean[] flag = new boolean[1];
+
+        disposable.add(
+                jsonApiHolder.cancelOrder(cancelOrderData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
+                                   @Override
+                                   public void onSuccess(ResponseBody responseBody) {
+                                       flag[0] = true;
+                                       Toast.makeText(context, "Order Cancelled !", Toast.LENGTH_SHORT).show();
+                                   }
+
+                                   @Override
+                                   public void onError(Throwable e) {
+                                       flag[0] = false;
+                                       Toast.makeText(context, "Error Occurred !", Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                ));
+
+        return flag[0];
     }
 
     @SuppressLint("CheckResult")

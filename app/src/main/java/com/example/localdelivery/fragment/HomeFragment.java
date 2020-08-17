@@ -180,7 +180,7 @@ public class HomeFragment extends Fragment {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,
                             R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
                             .replace(R.id.frame_layout_sort, new SortFragment(isRatingSelected, isPopularitySelected,
-                                    isDistanceSelected)).addToBackStack(null).commit();
+                                    isDistanceSelected), "sort").addToBackStack(null).commit();
                     isOpened = true;
                 }
                 else {
@@ -197,7 +197,7 @@ public class HomeFragment extends Fragment {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,
                             R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_left)
                             .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected, isOthersSelected
-                                    , isDeliveryAvailableSelected)).addToBackStack(null).commit();
+                                    , isDeliveryAvailableSelected), "filter").addToBackStack(null).commit();
                     isOpened = true;
                 }
                 else {
@@ -288,11 +288,22 @@ public class HomeFragment extends Fragment {
                 new ShopsAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
-                        Intent intent = new Intent(mContext, ShopDetailActivity.class);
+                        Fragment fragmentFilter = getParentFragmentManager().findFragmentByTag("filter");
+                        Fragment fragmentSort = getParentFragmentManager().findFragmentByTag("sort");
 
-                        //knowing the position of the clicked shop
-                        intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position, nearbyShopsCopy));
-                        startActivity(intent);
+                        //to remove filter or sort fragment when clicked
+                        if((fragmentFilter!=null && fragmentFilter.isVisible()) ||
+                                (fragmentSort!=null && fragmentSort.isVisible())) {
+                            mActivity.onBackPressed();
+                            isOpened = false;
+                        }
+                        else {
+                            Intent intent = new Intent(mContext, ShopDetailActivity.class);
+
+                            //knowing the position of the clicked shop
+                            intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position, nearbyShopsCopy));
+                            startActivity(intent);
+                        }
                     }
                 });
     }

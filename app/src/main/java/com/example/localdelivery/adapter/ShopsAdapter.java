@@ -52,12 +52,14 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
         ShopsEntity nearbyShopsObject = nearbyShopsResponses.get(position);
         String name = nearbyShopsObject.getShopName();
         String shopName = "";
-        int firstAscii = (int)name.charAt(0);
-        if(firstAscii >= 97 && firstAscii <= 122) {
-            shopName = (char)(firstAscii - 32) + name.substring(1);
-        }
-        else {
-            shopName = name;
+        if(name!=null) {
+            int firstAscii = (int)name.charAt(0);
+            if(firstAscii >= 97 && firstAscii <= 122) {
+                shopName = (char)(firstAscii - 32) + name.substring(1);
+            }
+            else {
+                shopName = name;
+            }
         }
         holder.textViewShopName.setText(shopName);
         holder.textViewShopType.setText(nearbyShopsObject.getShopType());

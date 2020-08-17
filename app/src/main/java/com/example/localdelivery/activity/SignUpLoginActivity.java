@@ -52,14 +52,14 @@ public class SignUpLoginActivity extends AppCompatActivity {
                 R.id.fragment_sign_up_login, new SignUpFragment())
                 .commit();
 
-        //for location
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(
-                SignUpLoginActivity.this);
-        prefUtils = new PrefUtils(SignUpLoginActivity.this);
+//        //for location
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(
+//                SignUpLoginActivity.this);
+//        prefUtils = new PrefUtils(SignUpLoginActivity.this);
 
         checkNetwork();
-        getLocation();
-        requestLocationUpdates();
+//        getLocation();
+//        requestLocationUpdates();
     }
 
     private void checkNetwork() {
@@ -90,107 +90,5 @@ public class SignUpLoginActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    //converting lat long to address string
-    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        String strAdd = "";
-        Geocoder geocoder = new Geocoder(SignUpLoginActivity.this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
 
-                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                strAdd = strReturnedAddress.toString();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strAdd;
-    }
-
-    private void getLocation() {
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-
-        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
-            @Override
-            public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                isGPS = isGPSEnable;
-            }
-        });
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        address = getCompleteAddressString(latitude, longitude);
-                        prefUtils.setLatitude(String.valueOf(latitude));
-                        prefUtils.setLongitude(String.valueOf(longitude));
-                        prefUtils.setAddress(address);
-                        if (fusedLocationClient != null) {
-                            fusedLocationClient.removeLocationUpdates(locationCallback);
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    private void requestLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION},
-                    mRequestCode);
-            return;
-        }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if(requestCode == mRequestCode) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                requestLocationUpdates();
-            }
-            else {
-                stopApp();
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GPS_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                    isGPS = true; // flag maintain before get location
-            }
-            else {
-                stopApp();
-            }
-        }
-
-    }
-
-    private void stopApp() {
-        moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
-    }
 }

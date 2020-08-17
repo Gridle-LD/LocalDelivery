@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.OrderItemAdapter;
 import com.example.localdelivery.local.Entity.OrderEntity;
+import com.example.localdelivery.model.CancelOrderData;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.OrderViewModel;
@@ -137,7 +137,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                cancelOrder();
             }});
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
@@ -201,6 +201,17 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
             stocksData.setQuantity(Integer.parseInt(items.getQuantity()));
 
             cartList.add(stocksData);
+        }
+    }
+
+    private void cancelOrder() {
+        CancelOrderData cancelOrderData = new CancelOrderData(allOrders.get(pos).getOrder().get(0).get_id(),
+                "Cancelled");
+        orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
+
+        //order successfully cancelled
+        if(orderViewModel.cancelOrder(cancelOrderData)) {
+            onBackPressed();
         }
     }
 
