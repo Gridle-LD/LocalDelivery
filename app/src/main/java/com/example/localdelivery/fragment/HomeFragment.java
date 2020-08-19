@@ -294,7 +294,7 @@ public class HomeFragment extends Fragment {
                         //to remove filter or sort fragment when clicked
                         if((fragmentFilter!=null && fragmentFilter.isVisible()) ||
                                 (fragmentSort!=null && fragmentSort.isVisible())) {
-                            mActivity.onBackPressed();
+                            getParentFragmentManager().popBackStack();
                             isOpened = false;
                         }
                         else {

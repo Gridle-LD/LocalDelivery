@@ -16,8 +16,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     private List<OrderEntity> allOrders;
     private OnItemClickListener mListener;
 
+    //for checking if its the next day
+    private boolean isNextDay;
+
     public OrderAdapter(List<OrderEntity> allOrders) {
         this.allOrders = allOrders;
+        isNextDay = false;
     }
 
     public interface OnItemClickListener {
@@ -43,9 +47,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.textViewNameAlphabet.setText(String.valueOf(name.charAt(0)));
         holder.textViewUsername.setText(orderEntity.getShopName());
         holder.textViewPrice.setText(": Rs " + orderEntity.getTotalPrice());
-        String date = "";
+        String date = "", time="";
         for(int i=0; i<orderEntity.getCreatedAt().length(); i++) {
             if(orderEntity.getCreatedAt().charAt(i) == 'T') {
+                time = orderEntity.getCreatedAt().substring(i+1, i+6);
                 break;
             }
             date += orderEntity.getCreatedAt().charAt(i);
@@ -76,6 +81,39 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         else {
             return 0;
         }
+    }
+
+    private String getActualTime(String time) {
+        String[] parts = time.split(":");
+        String hours = parts[0];
+        String minutes = parts[1];
+        int hrs = Integer.parseInt(hours);
+        int min = Integer.parseInt(minutes);
+        min = min + 30;
+        if(min>60) {
+            ++hrs;
+            min = min - 60;
+        }
+        hrs = hrs + 5;
+        if(hrs>=24) {
+            hrs = hrs - 24;
+        }
+
+        if(hrs<10) {
+            hours = "0" + hrs;
+        }
+        else {
+            hours = String.valueOf(hrs);
+        }
+
+        if(min<10) {
+            minutes = "0" + min;
+        }
+        else {
+            minutes = String.valueOf(min);
+        }
+
+        return hours + ":" + minutes;
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {

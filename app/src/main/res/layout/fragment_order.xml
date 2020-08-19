@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_payment_option"
+                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_customer_details"
                 tools:layout_editor_absoluteX="0dp">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -233,10 +233,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="24dp"
                         android:layout_marginBottom="16dp"
-                        android:text="Delivering to :"
                         android:fontFamily="@font/montserrat_regular"
+                        android:text="Delivering to :"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -270,66 +270,77 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/divider19"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#FD0054"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_layout_payment_option"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_customer_details">
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/constraint_layout_payment_option"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:background="@android:color/white"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/constraint_layout_customer_details">-->
 
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Payment option"
-                    android:fontFamily="@font/montserrat_light"
-                    android:textColor="#FD0054"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textView7"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:text="Payment option"-->
+<!--                    android:fontFamily="@font/montserrat_light"-->
+<!--                    android:textColor="#FD0054"-->
+<!--                    android:textSize="16sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <RadioGroup
-                    android:id="@+id/radio_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7">
+<!--                <RadioGroup-->
+<!--                    android:id="@+id/radio_group"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="24dp"-->
+<!--                    android:layout_marginBottom="24dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/textView7">-->
 
-                    <RadioButton
-                        android:id="@+id/radio_cash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="Cash"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radio_cash"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginEnd="24dp"-->
+<!--                        android:fontFamily="@font/montserrat_regular"-->
+<!--                        android:text="Cash"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:textSize="16sp" />-->
 
-                    <RadioButton
-                        android:id="@+id/radio_paytm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="Paytm"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                </RadioGroup>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radio_paytm"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="24dp"-->
+<!--                        android:fontFamily="@font/montserrat_regular"-->
+<!--                        android:text="Paytm"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:textSize="16sp" />-->
+<!--                </RadioGroup>-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <ImageView
@@ -341,4 +352,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/blurr_screen_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:alpha="0.5"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

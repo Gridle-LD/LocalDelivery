@@ -121,13 +121,46 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
             date += order.getCreatedAt().charAt(i);
         }
         textViewDate.setText(date);
-        textViewTimePlaced.setText(time);
+        textViewTimePlaced.setText(getActualTime(time));
         //TODO : set shop phone number
         textViewAddress.setText(order.getShopId().getShopDetails().getAddress());
         int price = Integer.parseInt(allOrders.get(pos).getOrder().get(0).getTotalPrice());
         textViewTotalBill.setText("Bill Total : " + price);
 
         progressBar.setVisibility(View.GONE);
+    }
+
+    private String getActualTime(String time) {
+        String[] parts = time.split(":");
+        String hours = parts[0];
+        String minutes = parts[1];
+        int hrs = Integer.parseInt(hours);
+        int min = Integer.parseInt(minutes);
+        min = min + 30;
+        if(min>60) {
+            ++hrs;
+            min = min - 60;
+        }
+        hrs = hrs + 5;
+        if(hrs>=24) {
+            hrs = hrs - 24;
+        }
+
+        if(hrs<10) {
+            hours = "0" + hrs;
+        }
+        else {
+            hours = String.valueOf(hrs);
+        }
+
+        if(min<10) {
+            minutes = "0" + min;
+        }
+        else {
+            minutes = String.valueOf(min);
+        }
+
+        return hours + ":" + minutes;
     }
 
     private void setAlertBox(String title, String message) {

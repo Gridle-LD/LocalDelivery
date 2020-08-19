@@ -96,7 +96,9 @@ public class MyOrdersFragment extends Fragment {
                 @Override
                 public void onClick(int position) {
                     Intent intent = new Intent(mContext, ConfirmedOrderActivity.class);
-                    intent.putExtra(String.valueOf(ConfirmedOrderActivity.position), position);
+
+                    //position is given according to the reversed list
+                    intent.putExtra(String.valueOf(ConfirmedOrderActivity.position), (ordersList.size() -position -1));
                     startActivity(intent);
                 }
             });

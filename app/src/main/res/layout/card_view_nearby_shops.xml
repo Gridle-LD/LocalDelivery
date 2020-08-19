@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="104dp"
+        android:background="#FBF9FA">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -116,7 +117,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#FD0054"
+            android:background="#BCB7B9"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

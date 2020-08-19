@@ -30,7 +30,7 @@ public class ScrollHandler extends CoordinatorLayout.Behavior<BottomNavigationVi
     }
 
     private void hideBottomNavigationView(BottomNavigationView view) {
-        view.animate().translationY(view.getHeight());
+        view.animate().translationY(view.getHeight() + 64);
     }
 
     private void showBottomNavigationView(BottomNavigationView view) {

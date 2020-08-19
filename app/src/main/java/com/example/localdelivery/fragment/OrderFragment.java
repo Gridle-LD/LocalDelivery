@@ -20,9 +20,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -95,6 +97,8 @@ public class OrderFragment extends Fragment {
     private ConstraintLayout constraintLayoutAddress;
     private TextView textViewAddress;
     private TextView textViewAddressChange;
+    private ProgressBar progressBar;
+    private View viewBlurr;
 
     private Integer ActivityRequestCode = 200;
 
@@ -149,11 +153,13 @@ public class OrderFragment extends Fragment {
         textViewDelivery = view.findViewById(R.id.textViewDeliveryOrderType);
         dividerPickup = view.findViewById(R.id.dividerPickup);
         dividerDelivery = view.findViewById(R.id.dividerDelivery);
-        radioGroup = view.findViewById(R.id.radio_group);
-        radioGroup.clearCheck();
+//        radioGroup = view.findViewById(R.id.radio_group);
+//        radioGroup.clearCheck();
         constraintLayoutAddress = view.findViewById(R.id.constraintLayoutAddress);
         textViewAddress = view.findViewById(R.id.textViewAddressOrder);
         textViewAddressChange = view.findViewById(R.id.textViewChange);
+        progressBar = view.findViewById(R.id.progressBar3);
+        viewBlurr = view.findViewById(R.id.blurr_screen_order);
 
         textViewAddress.setText(prefUtils.getAddress());
 
@@ -243,15 +249,15 @@ public class OrderFragment extends Fragment {
             }
         });
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb = group.findViewById(checkedId);
-                if (null != rb) {
-                    orderType = String.valueOf(rb.getText());
-                }
-            }
-        });
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                RadioButton rb = group.findViewById(checkedId);
+//                if (null != rb) {
+//                    orderType = String.valueOf(rb.getText());
+//                }
+//            }
+//        });
 
         orderItemAdapter.setOnItemClickListener(new OrderItemAdapter.OnItemClickListener() {
             @Override
@@ -290,16 +296,22 @@ public class OrderFragment extends Fragment {
         imageViewPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(orderType.equals("Cash")) {
-                    //place order route
+//                if(orderType.equals("Cash")) {
+//                    //place order route
+//                    placeOrder();
+//                }
+//                else if(orderType.equals("Paytm")) {
+//                    //testing payTm payment gateway
+//                    getToken();
+//                }
+//                else {
+//                    Toast.makeText(mContext, "Select Payment Option !", Toast.LENGTH_SHORT).show();
+//                }
+                if(price!=0) {
                     placeOrder();
                 }
-                else if(orderType.equals("Paytm")) {
-                    //testing payTm payment gateway
-                    getToken();
-                }
                 else {
-                    Toast.makeText(mContext, "Select Payment Option !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Bill can't be of 0 rupees", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -321,6 +333,11 @@ public class OrderFragment extends Fragment {
     }
 
     private void placeOrder() {
+        progressBar.setVisibility(View.VISIBLE);
+        viewBlurr.setVisibility(View.VISIBLE);
+        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
         List<PlaceOrderData.Order.Shop.Items> itemsList = new ArrayList<>();
         for(StocksData stocksData : cartList) {
             PlaceOrderData.Order.Shop.Items items = new PlaceOrderData.Order.Shop.Items(
@@ -341,13 +358,20 @@ public class OrderFragment extends Fragment {
                         .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
                             @Override
                             public void onSuccess(ResponseBody responseBody) {
-                                Toast.makeText(mContext, "Placed Order !", Toast.LENGTH_SHORT).show();
-                                mActivity.finish();
+//                                Toast.makeText(mContext, "Placed Order !", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                                viewBlurr.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                getParentFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                                        new RequestSentFragment()).commit();
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                                viewBlurr.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                             }
                         })
         );

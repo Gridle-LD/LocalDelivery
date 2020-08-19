@@ -346,6 +346,8 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
                     new HomeFragment()).commit();
         } else {
             super.onBackPressed();
+
+            this.finishAffinity();
         }
     }
 }
