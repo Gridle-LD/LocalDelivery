@@ -413,28 +413,32 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView38"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_otp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                        app:cardCornerRadius="12dp"
+                        app:cardBackgroundColor="#FBF9FA"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView17"
-                        app:srcCompat="@drawable/order_quantity_box" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="#FD0054"
+                        app:strokeWidth="1dp">
 
-                    <TextView
-                        android:id="@+id/textViewOrderOtp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="OTP : "
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:fontFamily="@font/montserrat_semi_bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView38"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView38"
-                        app:layout_constraintStart_toStartOf="@+id/imageView38"
-                        app:layout_constraintTop_toTopOf="@+id/imageView38" />
+                        <TextView
+                            android:id="@+id/textViewOrderOtp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/montserrat_semi_bold"
+                            android:text="OTP : ????"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.card.MaterialCardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

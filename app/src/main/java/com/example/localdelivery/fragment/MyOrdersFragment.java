@@ -11,9 +11,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -21,9 +25,11 @@ import com.example.localdelivery.R;
 import com.example.localdelivery.activity.ConfirmedOrderActivity;
 import com.example.localdelivery.adapter.OrderAdapter;
 import com.example.localdelivery.local.Entity.OrderEntity;
+import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.viewModel.OrderViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,12 +37,14 @@ public class MyOrdersFragment extends Fragment {
 
     private OrderViewModel orderViewModel;
     private List<OrderEntity> allOrders;
+    private List<OrderEntity> filteredList;
     private List<OrdersResponse.Result.Orders> ordersList;
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
     private Context mContext;
     private Activity mActivity;
     private ImageView imageViewNoOrders;
+    private EditText editTextSearch;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,6 +63,7 @@ public class MyOrdersFragment extends Fragment {
 
         setView(view);
         getOrders();
+        setClickListeners();
         return view;
     }
 
@@ -64,6 +73,7 @@ public class MyOrdersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
+        editTextSearch = view.findViewById(R.id.searchViewOrders);
     }
 
     private void getOrders() {
@@ -73,22 +83,53 @@ public class MyOrdersFragment extends Fragment {
             public void onChanged(List<OrderEntity> orderEntities) {
                 allOrders = orderEntities;
                 Collections.reverse(allOrders);
-                orderAdapter = new OrderAdapter(allOrders);
-                recyclerView.setAdapter(orderAdapter);
-
-                if(allOrders.size()==0) {
-                    imageViewNoOrders.setVisibility(View.VISIBLE);
-                }
-                else {
-                    imageViewNoOrders.setVisibility(View.GONE);
-                }
-
-                setClickListeners();
+                setAdapter(allOrders);
             }
         });
     }
 
     private void setClickListeners() {
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+        filteredList = new ArrayList<>();
+
+        for(OrderEntity orderEntity : allOrders) {
+            if(orderEntity.getShopName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(orderEntity);
+            }
+        }
+        setAdapter(filteredList);
+    }
+
+    private void setAdapter(final List<OrderEntity> allOrders) {
+        orderAdapter = new OrderAdapter(allOrders);
+        recyclerView.setAdapter(orderAdapter);
+
+        if(allOrders.size()==0) {
+            imageViewNoOrders.setVisibility(View.VISIBLE);
+        }
+        else {
+            imageViewNoOrders.setVisibility(View.GONE);
+        }
+
         if(orderViewModel.getCompleteOrderList()!=null) {
             ordersList = orderViewModel.getCompleteOrderList().getResult().getOrders();
 
@@ -98,11 +139,27 @@ public class MyOrdersFragment extends Fragment {
                     Intent intent = new Intent(mContext, ConfirmedOrderActivity.class);
 
                     //position is given according to the reversed list
-                    intent.putExtra(String.valueOf(ConfirmedOrderActivity.position), (ordersList.size() -position -1));
+                    intent.putExtra(String.valueOf(ConfirmedOrderActivity.position), (ordersList.size()
+                            -getPos(position, allOrders) -1));
                     startActivity(intent);
                 }
             });
         }
+    }
+
+    private int getPos(int pos, List<OrderEntity> orderEntityList) {
+        if(orderEntityList.size()!=0) {
+            String id = orderEntityList.get(pos).get_id();
+            int position = 0;
+            for(OrderEntity orderEntity : allOrders) {
+                if(orderEntity.get_id().equals(id)) {
+                    break;
+                }
+                ++position;
+            }
+            return position;
+        }
+        return pos;
     }
 
     @Override

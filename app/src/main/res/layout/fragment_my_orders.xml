@@ -5,22 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.MyOrdersFragment"
-    android:layout_marginTop="8dp">
+    android:background="#E6DFE1">
+
+    <ImageView
+        android:id="@+id/imageViewSearchOrders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/search_box" />
+
+    <EditText
+        android:id="@+id/searchViewOrders"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="2dp"
+        android:background="#FBF9FA"
+        android:fontFamily="@font/montserrat_light"
+        android:hint="Search for Orders"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewSearchOrders"
+        app:layout_constraintEnd_toEndOf="@id/imageViewSearchIcon"
+        app:layout_constraintStart_toStartOf="@id/imageViewSearchOrders"
+        app:layout_constraintTop_toTopOf="@id/imageViewSearchOrders" />
+
+    <ImageView
+        android:id="@+id/imageViewSearchIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/search"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewSearchOrders"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewSearchOrders"
+        app:layout_constraintTop_toTopOf="@+id/imageViewSearchOrders" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_order"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/imageViewSearchOrders"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/imageViewNoOrders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/no_orders_image"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/recycler_view_order"
         android:visibility="gone"/>
 
     <FrameLayout
