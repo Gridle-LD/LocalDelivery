@@ -268,7 +268,8 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
                     mRequestCode);
             return;
         }
-        editTextLocation.setText(prefUtils.getAddress());
+//        editTextLocation.setText(prefUtils.getAddress());
+        Log.e("TAG", "requestLocationUpdates: " + prefUtils.getAddress() );
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
@@ -331,6 +332,8 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
         isEditTextChanged = false;
 
         editTextLocation.setText(prefUtils.getAddress());
+
+        Log.e("TAG", "onResume: " + prefUtils.getAddress());
     }
 
     @Override

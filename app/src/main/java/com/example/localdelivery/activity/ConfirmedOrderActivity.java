@@ -80,7 +80,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
                 false));
         recyclerView.setHasFixedSize(true);
-        orderItemAdapter = new OrderItemAdapter(cartList);
+        orderItemAdapter = new OrderItemAdapter(cartList, ConfirmedOrderActivity.this);
         recyclerView.setAdapter(orderItemAdapter);
     }
 
@@ -210,7 +210,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
                     getStocks();
 
                     //set stocks list
-                    orderItemAdapter = new OrderItemAdapter(cartList);
+                    orderItemAdapter = new OrderItemAdapter(cartList, ConfirmedOrderActivity.this);
                     recyclerView.setAdapter(orderItemAdapter);
                 }
             }

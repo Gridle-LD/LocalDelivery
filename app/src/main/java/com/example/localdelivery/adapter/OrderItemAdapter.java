@@ -1,5 +1,7 @@
 package com.example.localdelivery.adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.localdelivery.R;
 import com.example.localdelivery.model.StocksData;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.List;
 
@@ -19,8 +22,9 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
     private List<StocksData> cartList;
     private OrderItemAdapter.OnItemClickListener mListener;
 
-    public OrderItemAdapter(List<StocksData> cartList) {
+    public OrderItemAdapter(List<StocksData> cartList, Context context) {
         this.cartList = cartList;
+        Fresco.initialize(context);
     }
 
     public interface OnItemClickListener {
@@ -43,6 +47,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
     @Override
     public void onBindViewHolder(@NonNull OrderAdapterViewHolder holder, int position) {
         StocksData stocksData = cartList.get(position);
+        holder.imageViewItem.setImageURI(Uri.parse(stocksData.getImage()));
         holder.textViewItemName.setText(stocksData.getName());
         holder.textViewItemType.setText("Type : " + stocksData.getType());
         holder.textViewItemPrice.setText("Price : Rs " + stocksData.getPrice());

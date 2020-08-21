@@ -26,12 +26,14 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12sp"
                 android:translationY="-12dp"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardElevation="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraint_layout_top_bar_order"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="#FBF9FA">
 
                     <ImageView
                         android:id="@+id/imageViewBackButtonOrder"
@@ -72,18 +74,17 @@
                         android:id="@+id/textViewShopNameTitleOrder"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="64dp"
+                        android:layout_marginEnd="64dp"
                         android:ellipsize="end"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text="TextView"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageViewBackButtonOrder"
-                        app:layout_constraintEnd_toStartOf="@+id/imageViewFavUnlikeOrder"
-                        app:layout_constraintStart_toEndOf="@+id/imageViewBackButtonOrder"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageViewBackButtonOrder" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -93,9 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@android:color/white"
                 app:layout_constraintTop_toBottomOf="@+id/constraint_layout_customer_details"
-                tools:layout_editor_absoluteX="0dp">
+                android:background="#FBF9FA">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_order_item_list"
@@ -154,8 +154,8 @@
                 android:id="@+id/constraint_layout_customer_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewToolBarOrder">
+                app:layout_constraintTop_toBottomOf="@+id/cardViewToolBarOrder"
+                android:background="#FBF9FA">
 
                 <TextView
                     android:id="@+id/textViewOrderType"

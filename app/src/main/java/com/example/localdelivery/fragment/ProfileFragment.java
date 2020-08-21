@@ -33,6 +33,9 @@ public class ProfileFragment extends Fragment {
     private PrefUtils prefUtils;
     private Context mContext;
     private Activity mActivity;
+    private TextView textViewEdit;
+    private TextView textViewDone;
+    private View viewBlurr;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,6 +64,9 @@ public class ProfileFragment extends Fragment {
         editTextAddress = view.findViewById(R.id.editTextAddressProfile);
         cardViewFeedback = view.findViewById(R.id.card_view_feedback);
         cardViewLogout = view.findViewById(R.id.card_view_logout);
+        textViewEdit = view.findViewById(R.id.textViewEdit);
+        textViewDone = view.findViewById(R.id.textViewDone);
+        viewBlurr = view.findViewById(R.id.blurr_screen_profile);
 
         if(prefUtils.getNAME()!=null) {
             String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
@@ -69,9 +75,34 @@ public class ProfileFragment extends Fragment {
         }
         textViewContactNumber.setText(prefUtils.getContactNumber());
         editTextAddress.setText(prefUtils.getAddress());
+
+        editTextUsername.setEnabled(false);
+        editTextAddress.setEnabled(false);
     }
 
     private void setClickListeners() {
+        textViewEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextUsername.setEnabled(true);
+                editTextAddress.setEnabled(true);
+                textViewEdit.setVisibility(View.GONE);
+                textViewDone.setVisibility(View.VISIBLE);
+                viewBlurr.setVisibility(View.VISIBLE);
+            }
+        });
+
+        textViewDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextUsername.setEnabled(false);
+                editTextAddress.setEnabled(false);
+                textViewEdit.setVisibility(View.VISIBLE);
+                textViewDone.setVisibility(View.GONE);
+                viewBlurr.setVisibility(View.GONE);
+            }
+        });
+
         cardViewFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

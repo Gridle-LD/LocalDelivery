@@ -44,7 +44,11 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.facebook.fresco:fresco:2.3.0'
+    implementation 'com.facebook.fresco:animated-webp:2.3.0'
+    implementation 'com.facebook.fresco:webpsupport:2.3.0'
+
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'

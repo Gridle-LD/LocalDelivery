@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#FBF9FA">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_profile_image_all_reviews"
@@ -24,7 +25,8 @@
             app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardElevation="0dp">
 
             <TextView
                 android:id="@+id/text_view_profile_alphabet_all_reviews"

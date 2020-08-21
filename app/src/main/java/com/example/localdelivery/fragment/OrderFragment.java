@@ -188,7 +188,7 @@ public class OrderFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        orderItemAdapter = new OrderItemAdapter(cartList);
+        orderItemAdapter = new OrderItemAdapter(cartList, mContext);
         recyclerView.setAdapter(orderItemAdapter);
     }
 

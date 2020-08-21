@@ -24,11 +24,13 @@
                 android:translationY="-12dp"
                 app:cardCornerRadius="12sp"
                 app:layout_constraintTop_toTopOf="parent"
-                android:visibility="visible">
+                android:visibility="visible"
+                app:cardElevation="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="#FBF9FA">
 
                     <ImageView
                         android:id="@+id/imageViewBackButtonReview"
@@ -68,11 +70,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:cardCornerRadius="12sp"
-                app:layout_constraintTop_toBottomOf="@id/card_view_top_bar_review">
+                app:layout_constraintTop_toBottomOf="@id/card_view_top_bar_review"
+                app:cardElevation="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="#FBF9FA">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/card_view_profile_image_review"
@@ -83,7 +87,8 @@
                         android:backgroundTint="@color/colorAccent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:cardElevation="0dp">
 
                         <TextView
                             android:id="@+id/textViewNameAlphabetReview"
@@ -226,7 +231,8 @@
                         app:cardCornerRadius="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview">
+                        app:layout_constraintTop_toBottomOf="@+id/textViewNameReview"
+                        app:cardElevation="0dp">
 
                         <EditText
                             android:id="@+id/editTextReview"
@@ -236,7 +242,7 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="8dp"
-                            android:background="@android:color/white"
+                            android:background="#FBF9FA"
                             android:ems="10"
                             android:fontFamily="@font/montserrat_regular"
                             android:gravity="start"

@@ -3,6 +3,7 @@ package com.example.localdelivery.Interface;
 import com.example.localdelivery.model.CancelOrderData;
 import com.example.localdelivery.model.FavData;
 import com.example.localdelivery.model.FavResponse;
+import com.example.localdelivery.model.FeedbackData;
 import com.example.localdelivery.model.LoginData;
 import com.example.localdelivery.model.LoginResponse;
 import com.example.localdelivery.model.NearbyShopsData;
@@ -48,6 +49,9 @@ public interface JsonApiHolder {
 
     @POST("customerAction/postReview")
     Single<ResponseBody> postReview(@Body ReviewData reviewData);
+
+    @POST("customerAction/postFeedback")
+    Single<ResponseBody> postFeedback(@Body FeedbackData feedbackData);
 
     @GET("customerAction/getOrders")
     Single<OrdersResponse> getOrders();

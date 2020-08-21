@@ -2,6 +2,7 @@ package com.example.localdelivery.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.localdelivery.R;
 import com.example.localdelivery.model.StocksData;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
     public ItemListAdapter(Context context, List<StocksData> stocksDataList) {
         this.context = context;
         this.stocksDataList = stocksDataList;
+        Fresco.initialize(context);
     }
 
     public interface OnItemClickListener {
@@ -48,6 +52,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
     @Override
     public void onBindViewHolder(@NonNull ItemListViewHolder holder, int position) {
         StocksData stocksData = stocksDataList.get(position);
+        holder.imageViewItem.setImageURI(Uri.parse(stocksData.getImage()));
         holder.textViewName.setText(stocksData.getName());
         holder.textViewPrice.setText("Price - Rs " + stocksData.getPrice());
         holder.textViewQuantity.setText(String.valueOf(stocksData.getQuantity()));
@@ -64,7 +69,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
     }
 
     public static class ItemListViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageViewItem;
+        private SimpleDraweeView imageViewItem;
         private TextView textViewName;
         private TextView textViewPrice;
         private TextView textViewQuantity;

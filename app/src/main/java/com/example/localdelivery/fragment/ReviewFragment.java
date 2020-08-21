@@ -27,6 +27,7 @@ import com.example.localdelivery.R;
 import com.example.localdelivery.activity.MainActivity;
 import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.adapter.ReviewAdapter;
+import com.example.localdelivery.model.FeedbackData;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.model.PlaceOrderData;
 import com.example.localdelivery.model.ReviewData;
@@ -106,6 +107,7 @@ public class ReviewFragment extends Fragment {
 
     public ReviewFragment(boolean feedback) {
         this.feedback = feedback;
+        post = false;
     }
 
     @Override
@@ -270,6 +272,16 @@ public class ReviewFragment extends Fragment {
                                 .show();
                     }
                 }
+                if(feedback) {
+                        comment = editTextReview.getText().toString().trim();
+                        if(clicked!=0 && comment.equals("")) {
+                            postFeedback();
+                        }
+                        else {
+                            Toast.makeText(mContext, "Please give the rating !", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                }
             }
         });
 
@@ -290,7 +302,7 @@ public class ReviewFragment extends Fragment {
             public void onItemClick(int position) {
                 int rating = reviewList.get(position).getRating();
                 String comment = reviewList.get(position).getComment();
-                getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                getParentFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
                         new ReviewFragment(rating, comment)).addToBackStack(null).commit();
             }
         });
@@ -322,6 +334,35 @@ public class ReviewFragment extends Fragment {
                                 Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
                             }
                         })
+        );
+    }
+
+    private void postFeedback() {
+        progressBar.setVisibility(View.VISIBLE);
+        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        disposable.add(
+                jsonApiHolder.postFeedback(new FeedbackData(clicked, comment))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody responseBody) {
+                        progressBar.setVisibility(View.GONE);
+                        mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        Toast.makeText(mContext, "Feedback Posted Successfully !", Toast.LENGTH_SHORT)
+                                .show();
+                        getParentFragmentManager().popBackStack();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressBar.setVisibility(View.GONE);
+                        mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
+                    }
+                })
         );
     }
 

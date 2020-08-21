@@ -86,7 +86,6 @@ public class StocksFragment extends Fragment {
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setView(view);
-//        setSearchView();
         setTabLayout();
         setClickListeners();
         return view;
@@ -113,17 +112,6 @@ public class StocksFragment extends Fragment {
             imageViewUnlike.setVisibility(View.VISIBLE);
         }
     }
-
-//    private void setSearchView() {
-//        TextView searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-//        Typeface typeface = ResourcesCompat.getFont(mContext, R.font.montserrat_light);
-//        searchText.setTypeface(typeface);
-//        searchText.setTextSize(12);
-//
-//        if(!searchView.isFocused()) {
-//            searchView.clearFocus();
-//        }
-//    }
 
     public static void changeQuantity(int quantity, String id) {
         int i=0;

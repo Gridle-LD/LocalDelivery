@@ -43,6 +43,7 @@ public class LoginFragment extends Fragment {
     private Context mContext;
     private Activity mActivity;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private View viewBlurr;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -76,6 +77,7 @@ public class LoginFragment extends Fragment {
         imageViewButtonLogin = view.findViewById(R.id.buttonLogin);
         textViewSignUp = view.findViewById(R.id.textViewSignUpLogin);
         progressBar = view.findViewById(R.id.progressBarLogin);
+        viewBlurr = view.findViewById(R.id.blurr_screen_login);
     }
 
     private void setClickListeners() {
@@ -99,8 +101,7 @@ public class LoginFragment extends Fragment {
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assert getFragmentManager() != null;
-                getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login ,
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login ,
                         new SignUpFragment()).commit();
             }
         });
@@ -129,6 +130,7 @@ public class LoginFragment extends Fragment {
     private void login(final String mobileNumber, final String password) {
         final LoginData loginData = new LoginData(mobileNumber, password);
         progressBar.setVisibility(View.VISIBLE);
+        viewBlurr.setVisibility(View.VISIBLE);
         mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
@@ -153,6 +155,7 @@ public class LoginFragment extends Fragment {
                                     prefUtils.setContactNumber(mobileNumber);
                                     prefUtils.setPassword(password);
                                     progressBar.setVisibility(View.GONE);
+                                    viewBlurr.setVisibility(View.GONE);
                                     mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     Intent intent = new Intent(mActivity , MainActivity.class);
                                     startActivity(intent);
@@ -163,6 +166,7 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onError(Throwable e) {
                                 progressBar.setVisibility(View.GONE);
+                                viewBlurr.setVisibility(View.GONE);
                                 mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 if(e.getMessage().equals("Wrong password!")) {
                                     Toast.makeText(mContext, "Wrong password!", Toast.LENGTH_SHORT).show();
