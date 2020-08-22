@@ -111,18 +111,39 @@
                     android:layout_height="match_parent"
                     android:background="#FBF9FA">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/order_details_top_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textViewOrderDetailsTopBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <TextView
                         android:id="@+id/textView17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:text="Order Details"
                         android:fontFamily="@font/montserrat_light"
-                        android:textSize="16sp"
+                        android:text="Order Details"
                         android:textColor="#FD0054"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/order_details_top_bar" />
 
                     <TextView
                         android:id="@+id/textView18"
@@ -423,10 +444,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
-                        app:cardCornerRadius="12dp"
                         app:cardBackgroundColor="#FBF9FA"
+                        app:cardCornerRadius="12dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/order_details_top_bar"
                         app:strokeColor="#FD0054"
                         app:strokeWidth="1dp">
 

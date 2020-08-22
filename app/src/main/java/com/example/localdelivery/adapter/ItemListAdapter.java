@@ -35,6 +35,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
     public interface OnItemClickListener {
         void onAddClick(int position, TextView textView);
         void onRemoveClick(int position, TextView textView);
+        void onImageClick(int position);
     }
 
     public void setOnItemClickListener(ItemListAdapter.OnItemClickListener listener){
@@ -106,6 +107,18 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
                             listener.onRemoveClick(position, textViewQuantity);
+                        }
+                    }
+                }
+            });
+
+            imageViewItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            listener.onImageClick(position);
                         }
                     }
                 }

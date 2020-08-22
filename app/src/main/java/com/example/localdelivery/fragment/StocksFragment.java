@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,11 +23,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.localdelivery.Interface.ImageClickListener;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.StocksTabLayoutAdapter;
 import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +59,12 @@ public class StocksFragment extends Fragment {
     private NearbyShopsViewModel viewModel;
     private StocksTabLayoutAdapter mainPagerAdapter;
     private int tabPos;
+
+    private View viewBlurr;
+    private CardView cardViewImageMaximize;
+    private SimpleDraweeView simpleDraweeViewImageMaximize;
+    private ImageView imageViewCloseButton;
+    private TextView textViewItemNameImageMaximize;
 
     public StocksFragment() {
         // Required empty public constructor
@@ -82,6 +94,7 @@ public class StocksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Fresco.initialize(mContext);
         View view = inflater.inflate(R.layout.fragment_stocks, container, false);
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -100,6 +113,11 @@ public class StocksFragment extends Fragment {
         imageViewUnlike = view.findViewById(R.id.imageViewFavUnlikeStocks);
         imageViewBackButton = view.findViewById(R.id.imageViewBackButtonStocks);
         textViewShopName = view.findViewById(R.id.textViewShopNameTitle);
+        viewBlurr = view.findViewById(R.id.blurr_screen_stocks);
+        cardViewImageMaximize = view.findViewById(R.id.card_view_image_maximize);
+        simpleDraweeViewImageMaximize = view.findViewById(R.id.simpleDraweeViewImageMaximize);
+        imageViewCloseButton = view.findViewById(R.id.imageViewCloseButton);
+        textViewItemNameImageMaximize = view.findViewById(R.id.textViewItemNameImageMaximize);
 
         textViewShopName.setText(shopName);
 
@@ -220,6 +238,14 @@ public class StocksFragment extends Fragment {
                 mActivity.onBackPressed();
             }
         });
+
+        imageViewCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardViewImageMaximize.setVisibility(View.GONE);
+                viewBlurr.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void filter(String text) {
@@ -232,5 +258,12 @@ public class StocksFragment extends Fragment {
         }
         mainPagerAdapter.filterList(filteredList, tabPos);
         viewPager.setAdapter(mainPagerAdapter);
+    }
+
+    public void setImageClick(String imageUrl, String itemName) {
+        viewBlurr.setVisibility(View.VISIBLE);
+        cardViewImageMaximize.setVisibility(View.VISIBLE);
+        simpleDraweeViewImageMaximize.setImageURI(Uri.parse(imageUrl));
+        textViewItemNameImageMaximize.setText(itemName);
     }
 }

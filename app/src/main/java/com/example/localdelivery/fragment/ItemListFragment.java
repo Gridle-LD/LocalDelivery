@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.localdelivery.Interface.FilterSortClickListener;
+import com.example.localdelivery.Interface.ImageClickListener;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.ItemListAdapter;
 import com.example.localdelivery.model.StocksData;
@@ -31,14 +34,19 @@ public class ItemListFragment extends Fragment {
     private String type;
     private ImageView imageViewNoItem;
 
+    //for image maximize
+    private ImageClickListener listener;
+    private Context contextStocksFragment;
+
     public ItemListFragment() {
         // Required empty public constructor
     }
 
-    public ItemListFragment(int position, List<StocksData> shop, String type) {
+    public ItemListFragment(int position, List<StocksData> shop, String type, Context context) {
         this.position = position;
         this.shop = shop;
         this.type = type;
+        contextStocksFragment = context;
         stocksDataList = new ArrayList<>();
     }
 
@@ -46,6 +54,12 @@ public class ItemListFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+        try {
+            listener = (ImageClickListener) context;
+        }
+        catch (ClassCastException castException) {
+            castException.printStackTrace();
+        }
         if(context instanceof Activity) {
             mActivity = (Activity) context;
         }
@@ -110,6 +124,13 @@ public class ItemListFragment extends Fragment {
                     StocksFragment.changeQuantity(count, stocksDataList.get(position).get_id());
                     itemListAdapter.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void onImageClick(int position) {
+                String imageUrl = stocksDataList.get(position).getImage();
+                String itemName = stocksDataList.get(position).getName();
+                listener.setImageClick(imageUrl, itemName);
             }
         });
     }

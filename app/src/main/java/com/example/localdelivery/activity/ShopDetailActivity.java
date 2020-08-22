@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.localdelivery.Interface.ImageClickListener;
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.ReviewAdapter;
 import com.example.localdelivery.fragment.ReviewFragment;
@@ -36,7 +38,7 @@ import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import java.util.List;
 
-public class ShopDetailActivity extends AppCompatActivity {
+public class ShopDetailActivity extends AppCompatActivity implements ImageClickListener {
 
     private ImageView imageViewFavLike;
     private ImageView imageViewFavUnlike;
@@ -345,5 +347,14 @@ public class ShopDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void setImageClick(String imageUrl, String itemName) {
+        StocksFragment stocksFragment = (StocksFragment) getSupportFragmentManager().
+                findFragmentById(R.id.frame_layout_visit_store);
+
+        assert stocksFragment != null;
+        stocksFragment.setImageClick(imageUrl, itemName);
     }
 }

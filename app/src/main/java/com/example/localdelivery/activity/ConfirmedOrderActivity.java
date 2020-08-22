@@ -2,16 +2,20 @@ package com.example.localdelivery.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.localdelivery.R;
 import com.example.localdelivery.adapter.OrderItemAdapter;
 import com.example.localdelivery.local.Entity.OrderEntity;
@@ -48,6 +52,8 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     private List<OrdersResponse.Result.Orders> allOrders;
     private List<StocksData> cartList;
     private OrderItemAdapter orderItemAdapter;
+    private ConstraintLayout constraintLayoutTopBar;
+    private TextView textViewTopBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         imageViewCancelButton = findViewById(R.id.imageViewCancelOrderButton);
         progressBar = findViewById(R.id.progressBarConfirmedOrder);
         recyclerView = findViewById(R.id.recycler_view_order_item_confirmed_order);
+        constraintLayoutTopBar = findViewById(R.id.order_details_top_bar);
+        textViewTopBar = findViewById(R.id.textViewOrderDetailsTopBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
                 false));
         recyclerView.setHasFixedSize(true);
@@ -90,19 +98,13 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         textViewOtp.setText("OTP : " + order.getOtp());
         textViewStatus.setText("Order " + order.getStatus());
         if(order.getStatus().equals("Completed")) {
-            imageViewCompleted.setVisibility(View.VISIBLE);
-            imageViewPending.setVisibility(View.GONE);
-            imageViewCancelled.setVisibility(View.GONE);
+            setCompletedView();
         }
         if(order.getStatus().equals("Cancelled")) {
-            imageViewCompleted.setVisibility(View.GONE);
-            imageViewPending.setVisibility(View.GONE);
-            imageViewCancelled.setVisibility(View.VISIBLE);
+            setCancelledView();
         }
         if(order.getStatus().equals("Pending")) {
-            imageViewCompleted.setVisibility(View.GONE);
-            imageViewPending.setVisibility(View.VISIBLE);
-            imageViewCancelled.setVisibility(View.GONE);
+            setPendingView();
         }
         textViewShopName.setText(order.getShopId().getShopDetails().getShopName());
         if(order.isPickUp()) {
@@ -246,6 +248,42 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         if(orderViewModel.cancelOrder(cancelOrderData)) {
             onBackPressed();
         }
+        else {
+            Toast.makeText(this, "An Error Occurred !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setCompletedView() {
+        imageViewCompleted.setVisibility(View.VISIBLE);
+        imageViewPending.setVisibility(View.GONE);
+        imageViewCancelled.setVisibility(View.GONE);
+
+        constraintLayoutTopBar.setBackgroundColor(Color.argb(255, 17, 168, 0));
+        textViewTopBar.setText("This order has been completed.");
+
+        constraintLayoutTopBar.setVisibility(View.VISIBLE);
+        imageViewCancelButton.setVisibility(View.GONE);
+    }
+
+    private void setCancelledView() {
+        imageViewCompleted.setVisibility(View.GONE);
+        imageViewPending.setVisibility(View.GONE);
+        imageViewCancelled.setVisibility(View.VISIBLE);
+
+        constraintLayoutTopBar.setBackgroundColor(Color.argb(255, 255, 0, 0));
+        textViewTopBar.setText("This order has been cancelled.");
+
+        constraintLayoutTopBar.setVisibility(View.VISIBLE);
+        imageViewCancelButton.setVisibility(View.GONE);
+    }
+
+    private void setPendingView() {
+        imageViewCompleted.setVisibility(View.GONE);
+        imageViewPending.setVisibility(View.VISIBLE);
+        imageViewCancelled.setVisibility(View.GONE);
+
+        constraintLayoutTopBar.setVisibility(View.GONE);
+        imageViewCancelButton.setVisibility(View.VISIBLE);
     }
 
     @Override
