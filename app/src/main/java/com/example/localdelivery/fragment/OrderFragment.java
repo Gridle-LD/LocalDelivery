@@ -93,7 +93,7 @@ public class OrderFragment extends Fragment {
     private boolean isFav;
     private int pos;
     private NearbyShopsViewModel viewModel;
-    private String orderType="";
+    private String orderType="cash";
     private ConstraintLayout constraintLayoutAddress;
     private TextView textViewAddress;
     private TextView textViewAddressChange;

@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.localdelivery.R;
 import com.example.localdelivery.activity.MainActivity;
+import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.activity.ShopDetailActivity;
 import com.example.localdelivery.activity.SignUpLoginActivity;
 import com.example.localdelivery.utils.PrefUtils;
@@ -36,6 +40,7 @@ public class ProfileFragment extends Fragment {
     private TextView textViewEdit;
     private TextView textViewDone;
     private View viewBlurr;
+    private boolean isEditTextChanged = true;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,6 +62,15 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //for not calling maps activity in edit text changed listener
+        isEditTextChanged = false;
+
+        editTextAddress.setText(prefUtils.getAddress());
+    }
+
     private void setView(View view) {
         editTextUsername = view.findViewById(R.id.editTextNameProfile);
         textViewContactNumber = view.findViewById(R.id.textViewNumberProfile);
@@ -74,7 +88,6 @@ public class ProfileFragment extends Fragment {
             editTextUsername.setText(prefUtils.getNAME());
         }
         textViewContactNumber.setText(prefUtils.getContactNumber());
-        editTextAddress.setText(prefUtils.getAddress());
 
         editTextUsername.setEnabled(false);
         editTextAddress.setEnabled(false);
@@ -100,6 +113,33 @@ public class ProfileFragment extends Fragment {
                 textViewEdit.setVisibility(View.VISIBLE);
                 textViewDone.setVisibility(View.GONE);
                 viewBlurr.setVisibility(View.GONE);
+            }
+        });
+
+        editTextAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(isEditTextChanged) {
+
+                    int originalLength = prefUtils.getAddress().length();
+                    int newLength = s.toString().length();
+                    //to not open maps more than once
+                    if(originalLength == (newLength-1) || (originalLength == (newLength+1))) {
+                        Intent intent = new Intent(mContext, MapsActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                isEditTextChanged = true;
             }
         });
 

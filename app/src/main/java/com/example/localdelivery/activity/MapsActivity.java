@@ -65,8 +65,6 @@ public class MapsActivity extends AppCompatActivity {
         @SuppressLint("MissingPermission")
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            Log.e("Maps Fragment", "onMapReady: " + prefUtils.getLatitude() + "KK  " +
-                    prefUtils.getLongitude());
             LatLng yourLocation = new LatLng(Double.parseDouble(prefUtils.getLatitude()),
                     Double.parseDouble(prefUtils.getLongitude()));
             googleMap.addMarker(new MarkerOptions().position(yourLocation).title("GPS Location"));

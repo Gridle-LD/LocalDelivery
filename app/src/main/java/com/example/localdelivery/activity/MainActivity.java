@@ -23,13 +23,16 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.localdelivery.Interface.FilterSortClickListener;
 import com.example.localdelivery.R;
@@ -48,6 +51,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements FilterSortClickListener {
@@ -57,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
     private CardView cardViewProfileImage;
     private TextView textViewProfileAlphabet;
     private PrefUtils prefUtils;
+    private View viewBlurr;
+    private ProgressBar progressBar;
     private boolean isEditTextChanged = true;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -86,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
                 new HomeFragment()).commit();
 
         editTextLocation = findViewById(R.id.editTextLocation);
+        viewBlurr = findViewById(R.id.blurr_screen_main);
+        progressBar = findViewById(R.id.progressBarMain);
 
         checkNetwork();
         getLocation();
@@ -170,8 +178,14 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
                     if(isEditTextChanged) {
-                        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                        startActivity(intent);
+
+                        int originalLength = prefUtils.getAddress().length();
+                        int newLength = s.toString().length();
+                        //to not open maps more than once
+                        if(originalLength == (newLength-1) || (originalLength == (newLength+1))) {
+                            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                            startActivity(intent);
+                        }
                     }
                     isEditTextChanged = true;
             }
@@ -268,10 +282,27 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
                     mRequestCode);
             return;
         }
-//        editTextLocation.setText(prefUtils.getAddress());
-        Log.e("TAG", "requestLocationUpdates: " + prefUtils.getAddress() );
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+        viewBlurr.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        //for waiting gps to find location
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isEditTextChanged = false;
+                editTextLocation.setText(prefUtils.getAddress());
+
+                viewBlurr.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            }
+        }, 3000);
     }
 
     @Override
@@ -332,8 +363,6 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
         isEditTextChanged = false;
 
         editTextLocation.setText(prefUtils.getAddress());
-
-        Log.e("TAG", "onResume: " + prefUtils.getAddress());
     }
 
     @Override
