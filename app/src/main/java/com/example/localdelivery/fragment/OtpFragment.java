@@ -1,15 +1,20 @@
 package com.example.localdelivery.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
+import com.example.localdelivery.utils.OtpReceiver;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.R;
 import com.example.localdelivery.utils.RetrofitInstance;
@@ -54,6 +60,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private TextView resend_otp_text;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ImageView imageViewOtpVerifyScreen;
+    private int otpRequestCode = 10;
 
     public OtpFragment(String username, String userId, String mobileNumber, String password) {
         this.username = username;
@@ -110,6 +117,8 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
 
         //initially hiding the resend otp button
         resend_otp_button.setVisibility(View.INVISIBLE);
+
+        requestSmsPermission();
     }
 
     private void setClickListeners() {
@@ -314,6 +323,17 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
             }
         }
         return false;
+    }
+
+    private void requestSmsPermission() {
+        if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.RECEIVE_SMS) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.RECEIVE_SMS},
+                    otpRequestCode);
+            return;
+        }
+
+        new OtpReceiver().setEditText(editText1, editText2, editText3, editText4);
     }
 
     private void verifyOtp(String otp) {

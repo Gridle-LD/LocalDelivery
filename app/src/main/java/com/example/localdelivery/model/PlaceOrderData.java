@@ -39,13 +39,16 @@ public class PlaceOrderData {
             private String totalPrice;
             private boolean pickUp;
             private String paymentType;
+            private String time;
 
-            public Shop(String shopId, List<Items> items, String totalPrice, boolean pickUp, String paymentType) {
+            public Shop(String shopId, List<Items> items, String totalPrice, boolean pickUp, String paymentType,
+                        String time) {
                 this.shopId = shopId;
                 this.items = items;
                 this.totalPrice = totalPrice;
                 this.pickUp = pickUp;
                 this.paymentType = paymentType;
+                this.time = time;
             }
 
             public String getShopId() {
@@ -86,6 +89,14 @@ public class PlaceOrderData {
 
             public void setPaymentType(String paymentType) {
                 this.paymentType = paymentType;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
             }
 
             public static class Items {

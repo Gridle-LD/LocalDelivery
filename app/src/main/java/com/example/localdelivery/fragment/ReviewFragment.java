@@ -373,6 +373,7 @@ public class ReviewFragment extends Fragment {
         imageViewStarFill4.setVisibility(View.INVISIBLE);
         imageViewStarFill5.setVisibility(View.INVISIBLE);
         clicked = 1;
+        textViewPost.setTextColor(Color.argb(255, 253, 0, 84));
     }
 
     private void secondStarSelected() {
@@ -382,6 +383,7 @@ public class ReviewFragment extends Fragment {
         imageViewStarFill4.setVisibility(View.INVISIBLE);
         imageViewStarFill5.setVisibility(View.INVISIBLE);
         clicked = 2;
+        textViewPost.setTextColor(Color.argb(255, 253, 0, 84));
     }
 
     private void thirdStarSelected() {
@@ -391,6 +393,7 @@ public class ReviewFragment extends Fragment {
         imageViewStarFill4.setVisibility(View.INVISIBLE);
         imageViewStarFill5.setVisibility(View.INVISIBLE);
         clicked = 3;
+        textViewPost.setTextColor(Color.argb(255, 253, 0, 84));
     }
 
     private void fourthStarSelected() {
@@ -400,6 +403,7 @@ public class ReviewFragment extends Fragment {
         imageViewStarFill4.setVisibility(View.VISIBLE);
         imageViewStarFill5.setVisibility(View.INVISIBLE);
         clicked = 4;
+        textViewPost.setTextColor(Color.argb(255, 253, 0, 84));
     }
 
     private void fifthStarSelected() {
@@ -409,5 +413,6 @@ public class ReviewFragment extends Fragment {
         imageViewStarFill4.setVisibility(View.VISIBLE);
         imageViewStarFill5.setVisibility(View.VISIBLE);
         clicked = 5;
+        textViewPost.setTextColor(Color.argb(255, 253, 0, 84));
     }
 }

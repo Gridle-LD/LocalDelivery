@@ -135,8 +135,12 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
         cardViewRating = findViewById(R.id.card_view_rating_box_shop_detail);
         imageViewBackButton = findViewById(R.id.imageViewBackButton);
         recyclerView = findViewById(R.id.recycler_view_reviews);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
-                false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         recyclerView.setHasFixedSize(true);
         progressBar = findViewById(R.id.progressBar);
         if(shop!=null) {

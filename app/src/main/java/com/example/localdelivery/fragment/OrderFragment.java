@@ -332,6 +332,7 @@ public class OrderFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void placeOrder() {
         progressBar.setVisibility(View.VISIBLE);
         viewBlurr.setVisibility(View.VISIBLE);
@@ -344,8 +345,10 @@ public class OrderFragment extends Fragment {
                     String.valueOf(stocksData.getQuantity()), stocksData.get_id());
             itemsList.add(items);
         }
+
+        String currentTime = new SimpleDateFormat("HH:mm:ss_dd-MM-yyyy").format(new Date());
         PlaceOrderData.Order.Shop shop = new PlaceOrderData.Order.Shop(shopId, itemsList, String.valueOf(price),
-                isPickup, orderType);
+                isPickup, orderType, currentTime);
         PlaceOrderData.Order order = new PlaceOrderData.Order(shop);
         List<PlaceOrderData.Order> orderList = new ArrayList<>();
         orderList.add(order);

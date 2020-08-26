@@ -66,11 +66,10 @@ public class OrdersResponse {
                 private List<Items> items;
                 private ShopId shopId;
                 private String totalPrice;
-                private String createdAt;
-                private String updatedAt;
+                private String time;
 
                 public Order(String status, boolean pickUp, String paymentType, String otp, String _id, List<Items> items, ShopId shopId,
-                             String totalPrice, String createdAt, String updatedAt) {
+                             String totalPrice, String time) {
                     this.status = status;
                     this.pickUp = pickUp;
                     this.paymentType = paymentType;
@@ -79,8 +78,7 @@ public class OrdersResponse {
                     this.items = items;
                     this.shopId = shopId;
                     this.totalPrice = totalPrice;
-                    this.createdAt = createdAt;
-                    this.updatedAt = updatedAt;
+                    this.time = time;
                 }
 
                 public String getStatus() {
@@ -147,20 +145,12 @@ public class OrdersResponse {
                     this.totalPrice = totalPrice;
                 }
 
-                public String getCreatedAt() {
-                    return createdAt;
+                public String getTime() {
+                    return time;
                 }
 
-                public void setCreatedAt(String createdAt) {
-                    this.createdAt = createdAt;
-                }
-
-                public String getUpdatedAt() {
-                    return updatedAt;
-                }
-
-                public void setUpdatedAt(String updatedAt) {
-                    this.updatedAt = updatedAt;
+                public void setTime(String time) {
+                    this.time = time;
                 }
 
                 public static class Items {

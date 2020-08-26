@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.localdelivery.R;
+import com.example.localdelivery.fragment.LoginFragment;
 import com.example.localdelivery.fragment.SignUpFragment;
 import com.example.localdelivery.utils.GpsUtils;
 import com.example.localdelivery.utils.PrefUtils;
@@ -49,17 +50,10 @@ public class SignUpLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportFragmentManager().beginTransaction().replace(
-                R.id.fragment_sign_up_login, new SignUpFragment())
+                R.id.fragment_sign_up_login, new LoginFragment())
                 .commit();
 
-//        //for location
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(
-//                SignUpLoginActivity.this);
-//        prefUtils = new PrefUtils(SignUpLoginActivity.this);
-
         checkNetwork();
-//        getLocation();
-//        requestLocationUpdates();
     }
 
     private void checkNetwork() {

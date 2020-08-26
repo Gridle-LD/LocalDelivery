@@ -61,7 +61,7 @@ public class OrderRepository {
                                             response.getOrder().get(0).isPickUp(),
                                             response.getOrder().get(0).getShopId().getShopDetails().getShopName(),
                                             response.getOrder().get(0).getTotalPrice(),
-                                            response.getOrder().get(0).getCreatedAt()
+                                            response.getOrder().get(0).getTime()
                                     );
                                     orderEntityList.add(orderEntity);
                                 }

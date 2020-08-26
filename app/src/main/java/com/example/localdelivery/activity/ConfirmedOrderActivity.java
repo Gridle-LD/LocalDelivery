@@ -95,7 +95,9 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     private void placeView() {
         pos = getIntent().getIntExtra(String.valueOf(position), 0);
         OrdersResponse.Result.Orders.Order order = allOrders.get(pos).getOrder().get(0);
-        textViewOtp.setText("OTP : " + order.getOtp());
+        if(!order.getStatus().equals("Pending")) {
+            textViewOtp.setText("OTP : " + order.getOtp());
+        }
         textViewStatus.setText("Order " + order.getStatus());
         if(order.getStatus().equals("Completed")) {
             setCompletedView();
@@ -114,55 +116,16 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
             textViewShopType.setText("Delivery");
         }
 
-        String date = "", time ="";
-        for(int i=0; i<order.getCreatedAt().length(); i++) {
-            if(order.getCreatedAt().charAt(i) == 'T') {
-                time = order.getCreatedAt().substring(i+1, i+6);
-                break;
-            }
-            date += order.getCreatedAt().charAt(i);
-        }
+        String time = order.getTime().substring(0, 5);
+        String date = order.getTime().substring(9, 19);
         textViewDate.setText(date);
-        textViewTimePlaced.setText(getActualTime(time));
+        textViewTimePlaced.setText(time);
         //TODO : set shop phone number
         textViewAddress.setText(order.getShopId().getShopDetails().getAddress());
         int price = Integer.parseInt(allOrders.get(pos).getOrder().get(0).getTotalPrice());
         textViewTotalBill.setText("Bill Total : " + price);
 
         progressBar.setVisibility(View.GONE);
-    }
-
-    private String getActualTime(String time) {
-        String[] parts = time.split(":");
-        String hours = parts[0];
-        String minutes = parts[1];
-        int hrs = Integer.parseInt(hours);
-        int min = Integer.parseInt(minutes);
-        min = min + 30;
-        if(min>60) {
-            ++hrs;
-            min = min - 60;
-        }
-        hrs = hrs + 5;
-        if(hrs>=24) {
-            hrs = hrs - 24;
-        }
-
-        if(hrs<10) {
-            hours = "0" + hrs;
-        }
-        else {
-            hours = String.valueOf(hrs);
-        }
-
-        if(min<10) {
-            minutes = "0" + min;
-        }
-        else {
-            minutes = String.valueOf(min);
-        }
-
-        return hours + ":" + minutes;
     }
 
     private void setAlertBox(String title, String message) {

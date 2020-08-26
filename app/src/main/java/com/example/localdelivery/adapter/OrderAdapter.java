@@ -46,17 +46,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         String name = orderEntity.getShopName().toUpperCase();
         holder.textViewNameAlphabet.setText(String.valueOf(name.charAt(0)));
         holder.textViewUsername.setText(orderEntity.getShopName());
+        holder.textViewStatus.setText(": " + orderEntity.getStatus());
         holder.textViewPrice.setText(": Rs " + orderEntity.getTotalPrice());
-        String date = "", time="";
-        for(int i=0; i<orderEntity.getCreatedAt().length(); i++) {
-            if(orderEntity.getCreatedAt().charAt(i) == 'T') {
-                time = orderEntity.getCreatedAt().substring(i+1, i+6);
-                break;
-            }
-            date += orderEntity.getCreatedAt().charAt(i);
+        if(orderEntity.getCreatedAt()!=null) {
+            String date = orderEntity.getCreatedAt().substring(9, 19);
+            holder.textViewDate.setText(": " + date);
         }
-        holder.textViewDate.setText(": " + date);
-        if(orderEntity.getStatus().equals("Pending")) {
+
+        if(orderEntity.getStatus().equals("Pending") || orderEntity.getStatus().equals("Confirmed")) {
             holder.imageViewPending.setVisibility(View.VISIBLE);
             holder.imageViewCompleted.setVisibility(View.INVISIBLE);
             holder.imageViewCancelled.setVisibility(View.INVISIBLE);
@@ -83,42 +80,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
     }
 
-    private String getActualTime(String time) {
-        String[] parts = time.split(":");
-        String hours = parts[0];
-        String minutes = parts[1];
-        int hrs = Integer.parseInt(hours);
-        int min = Integer.parseInt(minutes);
-        min = min + 30;
-        if(min>60) {
-            ++hrs;
-            min = min - 60;
-        }
-        hrs = hrs + 5;
-        if(hrs>=24) {
-            hrs = hrs - 24;
-        }
-
-        if(hrs<10) {
-            hours = "0" + hrs;
-        }
-        else {
-            hours = String.valueOf(hrs);
-        }
-
-        if(min<10) {
-            minutes = "0" + min;
-        }
-        else {
-            minutes = String.valueOf(min);
-        }
-
-        return hours + ":" + minutes;
-    }
-
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewNameAlphabet;
         private TextView textViewUsername;
+        private TextView textViewStatus;
         private TextView textViewPrice;
         private TextView textViewDate;
         private ImageView imageViewPending;
@@ -129,6 +94,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             super(itemView);
             textViewNameAlphabet = itemView.findViewById(R.id.text_view_name_alphabet_order);
             textViewUsername = itemView.findViewById(R.id.text_view_name_order);
+            textViewStatus = itemView.findViewById(R.id.text_view_status_order);
             textViewPrice = itemView.findViewById(R.id.text_view_price_order);
             textViewDate = itemView.findViewById(R.id.textViewDateOrder);
             imageViewPending = itemView.findViewById(R.id.imageViewPendingOrder);
