@@ -93,7 +93,10 @@ public class NearbyShopsRepository {
                                             shopsObject.getShopDetails().getLongitude(),
                                             shopsObject.getShopDetails().getShopName(),
                                             shopsObject.getShopDetails().getShopType(),
-                                            completedOrderSize);
+                                            completedOrderSize,
+                                            calculateDistance(Double.parseDouble(shopsObject.getShopDetails().getLatitude()),
+                                                    Double.parseDouble(shopsObject.getShopDetails().getLongitude())));
+
                                     shopsEntities.add(shopsEntity);
                                     ++pos;
                                 }
@@ -108,6 +111,7 @@ public class NearbyShopsRepository {
                                                     .responseBodyConverter(ErrorMessage.class, new Annotation[0]);
                                     ErrorMessage errorBody = null;
                                     try {
+                                        assert ((HttpException) e).response().errorBody() != null;
                                         errorBody = errorConverter.convert(((HttpException) e).response().errorBody());
                                     } catch (IOException ex) {
                                         ex.printStackTrace();
@@ -223,5 +227,31 @@ public class NearbyShopsRepository {
         public void setError(String error) {
             this.error = error;
         }
+    }
+
+    private double calculateDistance(double latitude, double longitude) {
+        double myLat = Double.parseDouble(prefUtils.getLatitude());
+        double myLong = Double.parseDouble(prefUtils.getLongitude());
+
+        myLong = Math.toRadians(myLong);
+        longitude = Math.toRadians(longitude);
+        myLat = Math.toRadians(myLat);
+        latitude = Math.toRadians(latitude);
+
+        // Haversine formula
+        double dlon = longitude - myLong;
+        double dlat = latitude - myLat;
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(myLat) * Math.cos(latitude)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles
+        double r = 6371;
+
+        // calculate the result
+        return(c * r);
     }
 }

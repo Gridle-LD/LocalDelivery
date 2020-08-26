@@ -63,6 +63,8 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
         }
         holder.textViewShopName.setText(shopName);
         holder.textViewShopType.setText(nearbyShopsObject.getShopType());
+        double distance = Math.round(nearbyShopsObject.getDistance() * 100.0) / 100.0;
+        holder.textViewShopDistance.setText(distance + " km");
         holder.textViewShopRating.setText(calculateRating(nearbyShopsObject.getReviewList()));
 
         if(Double.parseDouble(calculateRating(nearbyShopsObject.getReviewList())) >= 4.0) {

@@ -64,11 +64,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_light"
             android:text="0.2 kms"
             android:textColor="#2B2024"
-            android:fontFamily="@font/montserrat_light"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toEndOf="@+id/imageView39"
             app:layout_constraintTop_toBottomOf="@+id/textViewShopType" />
 
         <androidx.cardview.widget.CardView
@@ -122,6 +122,16 @@
             android:layout_height="1dp"
             android:background="#BCB7B9"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView39"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewShopDistance"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/textViewShopDistance"
+            app:srcCompat="@drawable/location" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

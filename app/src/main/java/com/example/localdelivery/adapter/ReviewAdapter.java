@@ -88,6 +88,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 return Math.min(reviewList.size(), 4);
             }
             else {
+                Log.e("TAG", "getItemCount: " + reviewList.size() );
                 return reviewList.size();
             }
         }

@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -36,6 +37,9 @@ import com.example.localdelivery.local.Entity.ShopsEntity;
 import com.example.localdelivery.model.NearbyShopsResponse;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ShopDetailActivity extends AppCompatActivity implements ImageClickListener {
@@ -70,6 +74,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
     private int mRequestCode = 1;
     private ReviewAdapter reviewAdapter;
     private int pos;
+    private List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,10 +148,13 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
         });
         recyclerView.setHasFixedSize(true);
         progressBar = findViewById(R.id.progressBar);
-        if(shop!=null) {
-            reviewAdapter = new ReviewAdapter(shop.getReviewList(), false);
-            recyclerView.setAdapter(reviewAdapter);
-        }
+//        if(shop!=null) {
+//
+//            reviewList = shop.getReviewList();
+//            Collections.reverse(reviewList);
+//            reviewAdapter = new ReviewAdapter(reviewList, false);
+//            recyclerView.setAdapter(reviewAdapter);
+//        }
     }
 
     private void getShopDetails() {
@@ -171,8 +179,9 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                             imageViewFavLike.setVisibility(View.GONE);
                             imageViewFavUnlike.setVisibility(View.VISIBLE);
                         }
-
-                        reviewAdapter = new ReviewAdapter(shop.getReviewList(), false);
+                        reviewList = shop.getReviewList();
+                        Collections.reverse(reviewList);
+                        reviewAdapter = new ReviewAdapter(reviewList, false);
                         recyclerView.setAdapter(reviewAdapter);
                         if(shop.getReviewList().size()<4) {
                             textViewReadMoreReviews.setVisibility(View.GONE);
@@ -180,10 +189,11 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                         reviewAdapter.setOnItemClickListener(new ReviewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
+                                String name = shop.getReviewList().get(position).getUserId().getUsername();
                                 int rating = shop.getReviewList().get(position).getRating();
                                 String comment = shop.getReviewList().get(position).getComment();
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                        new ReviewFragment(rating, comment)).addToBackStack(null).commit();
+                                        new ReviewFragment(name, rating, comment)).addToBackStack(null).commit();
                             }
                         });
                         textViewRating.setText(calculateRating(shop.getReviewList()));
@@ -245,7 +255,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new ReviewFragment(shop.get_id(), shop.getReviewList())).addToBackStack(null).commit();
+                        new ReviewFragment(shop.get_id(), reviewList)).addToBackStack(null).commit();
             }
         });
 
@@ -253,7 +263,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new ReviewFragment(shop.get_id(), shop.getReviewList())).addToBackStack(null).commit();
+                        new ReviewFragment(shop.get_id(), reviewList)).addToBackStack(null).commit();
             }
         });
 

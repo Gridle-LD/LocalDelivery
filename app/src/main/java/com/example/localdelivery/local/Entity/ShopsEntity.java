@@ -39,13 +39,15 @@ public class ShopsEntity {
     private String shopName;
     private String shopType;
     private int numberOfOrders;
+    private double distance;
 
     @Ignore
     public ShopsEntity() {}
 
     public ShopsEntity(List<StocksData> stock, List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList,
                        boolean favourite, String _id, String phoneNumber, String name, String address,
-                       String latitude, String longitude, String shopName, String shopType, int numberOfOrders) {
+                       String latitude, String longitude, String shopName, String shopType, int numberOfOrders,
+                       double distance) {
         this.stock = stock;
         this.reviewList = reviewList;
         this.favourite = favourite;
@@ -58,6 +60,7 @@ public class ShopsEntity {
         this.shopName = shopName;
         this.shopType = shopType;
         this.numberOfOrders = numberOfOrders;
+        this.distance = distance;
     }
 
     public int getId() {
@@ -164,6 +167,14 @@ public class ShopsEntity {
         this.numberOfOrders = numberOfOrders;
     }
 
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
     public static Comparator<ShopsEntity> RatingComparator = new Comparator<ShopsEntity>() {
 
         @Override
@@ -186,7 +197,15 @@ public class ShopsEntity {
         }
     };
 
-    // TODO : Distance Comparator
+    public static Comparator<ShopsEntity> DistanceComparator = new Comparator<ShopsEntity>() {
+        @Override
+        public int compare(ShopsEntity o1, ShopsEntity o2) {
+            String dist1 = String.valueOf(o1.getDistance());
+            String dist2 = String.valueOf(o2.getDistance());
+
+            return dist1.compareTo(dist2);
+        }
+    };
 
     @SuppressLint("DefaultLocale")
     private static String calculateRating(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {

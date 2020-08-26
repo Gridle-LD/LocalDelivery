@@ -35,6 +35,7 @@ import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.RetrofitInstance;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -76,6 +77,7 @@ public class ReviewFragment extends Fragment {
     private Context mContext;
     private Activity mActivity;
     private int clicked;
+    private String name = "";
     private String comment = "";
     private String shopId = "";
     private boolean post;
@@ -97,9 +99,11 @@ public class ReviewFragment extends Fragment {
         this.reviewList = reviewList;
         clicked = 0;
         post = true;
+//        Collections.reverse(reviewList);
     }
 
-    public ReviewFragment(int clicked, String comment) {
+    public ReviewFragment(String name, int clicked, String comment) {
+        this.name = name;
         this.clicked = clicked;
         this.comment = comment;
         post = false;
@@ -195,6 +199,7 @@ public class ReviewFragment extends Fragment {
             if(comment.length()>0) {
                 textViewAndSays.setVisibility(View.VISIBLE);
             }
+            textViewName.setText(name);
             textViewComment.setVisibility(View.VISIBLE);
             textViewComment.setText(comment);
             cardView.setVisibility(View.GONE);
@@ -300,10 +305,11 @@ public class ReviewFragment extends Fragment {
         reviewAdapter.setOnItemClickListener(new ReviewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                String name = reviewList.get(position).getUserId().getUsername();
                 int rating = reviewList.get(position).getRating();
                 String comment = reviewList.get(position).getComment();
                 getParentFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new ReviewFragment(rating, comment)).addToBackStack(null).commit();
+                        new ReviewFragment(name, rating, comment)).addToBackStack(null).commit();
             }
         });
     }

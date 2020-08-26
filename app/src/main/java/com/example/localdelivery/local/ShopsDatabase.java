@@ -10,7 +10,7 @@ import com.example.localdelivery.local.Dao.ShopsDao;
 import com.example.localdelivery.local.Entity.OrderEntity;
 import com.example.localdelivery.local.Entity.ShopsEntity;
 
-@Database(entities = {ShopsEntity.class, OrderEntity.class}, version = 4, exportSchema = false)
+@Database(entities = {ShopsEntity.class, OrderEntity.class}, version = 5, exportSchema = false)
 public abstract class ShopsDatabase extends RoomDatabase {
 
     private static ShopsDatabase instance;

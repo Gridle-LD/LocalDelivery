@@ -268,6 +268,9 @@ public class HomeFragment extends Fragment {
             if(isPopularitySelected) {
                 Collections.sort(nearbyShopsCopy, ShopsEntity.PopularityComparator);
             }
+            if(isDistanceSelected) {
+                Collections.sort(nearbyShopsCopy, ShopsEntity.DistanceComparator);
+            }
         }
 
         setAdapter(nearbyShopsCopy);
