@@ -14,6 +14,7 @@ import com.example.localdelivery.model.OtpResponse;
 import com.example.localdelivery.model.PayTmCheckSumData;
 import com.example.localdelivery.model.PayTmCheckSumResponse;
 import com.example.localdelivery.model.PlaceOrderData;
+import com.example.localdelivery.model.ProfileData;
 import com.example.localdelivery.model.ResendOtpResponse;
 import com.example.localdelivery.model.ReviewData;
 import com.example.localdelivery.model.SignUpData;
@@ -64,4 +65,7 @@ public interface JsonApiHolder {
 
     @PUT("customerAction/changeStatus")
     Single<ResponseBody> cancelOrder(@Body CancelOrderData cancelOrderData);
+
+    @PUT("user/editPersonalData")
+    Single<ResponseBody> editProfile(@Body ProfileData profileData);
 }

@@ -18,13 +18,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.localdelivery.Interface.JsonApiHolder;
 import com.example.localdelivery.R;
 import com.example.localdelivery.activity.MainActivity;
 import com.example.localdelivery.activity.MapsActivity;
 import com.example.localdelivery.activity.ShopDetailActivity;
 import com.example.localdelivery.activity.SignUpLoginActivity;
+import com.example.localdelivery.model.LoginResponse;
+import com.example.localdelivery.model.ProfileData;
 import com.example.localdelivery.utils.PrefUtils;
+import com.example.localdelivery.utils.RetrofitInstance;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class ProfileFragment extends Fragment {
 
@@ -41,12 +52,14 @@ public class ProfileFragment extends Fragment {
     private TextView textViewDone;
     private View viewBlurr;
     private boolean isEditTextChanged = true;
+    private CompositeDisposable disposable = new CompositeDisposable();
+    private JsonApiHolder jsonApiHolder;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
-        if(context instanceof Activity) {
+        if (context instanceof Activity) {
             mActivity = (Activity) context;
         }
     }
@@ -57,6 +70,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         prefUtils = new PrefUtils(mContext);
+        jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         setView(view);
         setClickListeners();
         return view;
@@ -82,7 +96,7 @@ public class ProfileFragment extends Fragment {
         textViewDone = view.findViewById(R.id.textViewDone);
         viewBlurr = view.findViewById(R.id.blurr_screen_profile);
 
-        if(prefUtils.getNAME()!=null) {
+        if (prefUtils.getNAME() != null) {
             String firstAlphabet = String.valueOf(prefUtils.getNAME().charAt(0));
             textViewAlphabetName.setText(firstAlphabet.toUpperCase());
             editTextUsername.setText(prefUtils.getNAME());
@@ -113,6 +127,7 @@ public class ProfileFragment extends Fragment {
                 textViewEdit.setVisibility(View.VISIBLE);
                 textViewDone.setVisibility(View.GONE);
                 viewBlurr.setVisibility(View.GONE);
+                editAddress();
             }
         });
 
@@ -129,12 +144,12 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(isEditTextChanged) {
+                if (isEditTextChanged) {
 
                     int originalLength = prefUtils.getAddress().length();
                     int newLength = s.toString().length();
                     //to not open maps more than once
-                    if(originalLength == (newLength-1) || (originalLength == (newLength+1))) {
+                    if (originalLength == (newLength - 1) || (originalLength == (newLength + 1))) {
                         Intent intent = new Intent(mContext, MapsActivity.class);
                         startActivity(intent);
                     }
@@ -160,7 +175,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setAlertBox() {
-        AlertDialog.Builder builder =new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -180,5 +195,33 @@ public class ProfileFragment extends Fragment {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void editAddress() {
+
+        final ProfileData profileData = new ProfileData(prefUtils.getAddress(), prefUtils.getLatitude(),
+                prefUtils.getLongitude(), editTextUsername.getText().toString().trim());
+
+        disposable.add(
+                jsonApiHolder.editProfile(profileData)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
+                            @Override
+                            public void onSuccess(ResponseBody responseBody) {
+                                Toast.makeText(mContext, "Profile Updated Successfully !",
+                                        Toast.LENGTH_SHORT).show();
+                                prefUtils.setAddress(profileData.getAddress());
+                                prefUtils.setLatitude(profileData.getLatitude());
+                                prefUtils.setLongitude(profileData.getLongitude());
+                                prefUtils.setName(profileData.getName());
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(mContext, "An Error Occurred !",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }));
     }
 }

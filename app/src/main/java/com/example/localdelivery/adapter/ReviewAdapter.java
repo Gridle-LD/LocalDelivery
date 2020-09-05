@@ -51,6 +51,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 rnd.nextInt(256));
         holder.cardView.setCardBackgroundColor(color);
 
+        Log.e("TAG" ,"onBindViewHolder: "  + reviewObject.getUserId().getUsername());
         String name = reviewObject.getUserId().getUsername();
         holder.textViewUsernameAlphabet.setText(String.valueOf(name.toUpperCase().charAt(0)));
         holder.textViewUsername.setText(name);
@@ -88,7 +89,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 return Math.min(reviewList.size(), 4);
             }
             else {
-                Log.e("TAG", "getItemCount: " + reviewList.size() );
                 return reviewList.size();
             }
         }

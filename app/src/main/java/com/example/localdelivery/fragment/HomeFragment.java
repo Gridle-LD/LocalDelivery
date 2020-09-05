@@ -179,7 +179,8 @@ public class HomeFragment extends Fragment {
                 if(!isOpened) {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,
                             R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right)
-                            .replace(R.id.frame_layout_sort, new SortFragment(isRatingSelected, isPopularitySelected,
+                            .replace(R.id.frame_layout_sort, new SortFragment(isRatingSelected,
+                                    isPopularitySelected,
                                     isDistanceSelected), "sort").addToBackStack(null).commit();
                     isOpened = true;
                 }
@@ -196,7 +197,8 @@ public class HomeFragment extends Fragment {
                 if(!isOpened) {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,
                             R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_left)
-                            .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected, isOthersSelected
+                            .replace(R.id.frame_layout_filter, new FilterFragment(isGrocerySelected,
+                                    isOthersSelected
                                     , isDeliveryAvailableSelected), "filter").addToBackStack(null).commit();
                     isOpened = true;
                 }
@@ -304,7 +306,8 @@ public class HomeFragment extends Fragment {
                             Intent intent = new Intent(mContext, ShopDetailActivity.class);
 
                             //knowing the position of the clicked shop
-                            intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position, nearbyShopsCopy));
+                            intent.putExtra(String.valueOf(ShopDetailActivity.position), getPos(position,
+                                    nearbyShopsCopy));
                             startActivity(intent);
                         }
                     }

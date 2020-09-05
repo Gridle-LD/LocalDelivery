@@ -99,7 +99,6 @@ public class ReviewFragment extends Fragment {
         this.reviewList = reviewList;
         clicked = 0;
         post = true;
-//        Collections.reverse(reviewList);
     }
 
     public ReviewFragment(String name, int clicked, String comment) {

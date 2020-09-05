@@ -2,10 +2,12 @@ package com.example.localdelivery.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -19,17 +21,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.localdelivery.Interface.JsonApiHolder;
+import com.example.localdelivery.repository.NearbyShopsRepository;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.R;
 import com.example.localdelivery.utils.RetrofitInstance;
 import com.example.localdelivery.activity.MainActivity;
 import com.example.localdelivery.model.LoginData;
 import com.example.localdelivery.model.LoginResponse;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Objects;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
 
 public class LoginFragment extends Fragment {
 
@@ -78,6 +87,20 @@ public class LoginFragment extends Fragment {
         textViewSignUp = view.findViewById(R.id.textViewSignUpLogin);
         progressBar = view.findViewById(R.id.progressBarLogin);
         viewBlurr = view.findViewById(R.id.blurr_screen_login);
+    }
+
+    private void alertBox(String title, String message) {
+        AlertDialog.Builder builder =new AlertDialog.Builder(mContext);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void setClickListeners() {
@@ -141,14 +164,6 @@ public class LoginFragment extends Fragment {
                         .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
                             @Override
                             public void onSuccess(LoginResponse loginResponse) {
-                                if(loginResponse.getMessage()!=null) {
-                                    if(loginResponse.getMessage().equals("User is not verified")) {
-                                        getParentFragmentManager().beginTransaction().replace(
-                                                R.id.fragment_sign_up_login, new OtpFragment("Name",
-                                                        loginResponse.getUserId(), mobileNumber, password)).commit();
-                                    }
-                                }
-                                else {
                                     prefUtils.createLogin("JWT "+loginResponse.getToken());
                                     prefUtils.setUserId(loginResponse.getUserId());
                                     prefUtils.setName(loginResponse.getName());
@@ -157,10 +172,8 @@ public class LoginFragment extends Fragment {
                                     progressBar.setVisibility(View.GONE);
                                     viewBlurr.setVisibility(View.GONE);
                                     mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                    Intent intent = new Intent(mActivity , MainActivity.class);
-                                    startActivity(intent);
-                                    Objects.requireNonNull(mActivity).finish();
-                                }
+                                    getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                                        new GpsFragment()).commit();
                             }
 
                             @Override
@@ -168,19 +181,78 @@ public class LoginFragment extends Fragment {
                                 progressBar.setVisibility(View.GONE);
                                 viewBlurr.setVisibility(View.GONE);
                                 mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                if(e.getMessage().equals("Wrong password!")) {
-                                    Toast.makeText(mContext, "Wrong password!", Toast.LENGTH_SHORT).show();
+
+                                if (e instanceof HttpException) {
+                                    Converter<ResponseBody, ErrorMessage> errorConverter =
+                                            RetrofitInstance.getRetrofitInstance(mContext)
+                                                    .responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                                    ErrorMessage errorBody = null;
+                                    try {
+                                        assert ((HttpException) e).response().errorBody() != null;
+                                        errorBody = errorConverter.convert(((HttpException) e).response().errorBody());
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                    Log.e("TAG", "onError: " + ((HttpException) e).code());
+                                    if(errorBody.getError().equals("Wrong password!")) {
+                                        alertBox("Validation Error", "Wrong Password Entered !");
+                                    }
+                                    else if(errorBody.getError().equals("A user with this phone number could not be found.")) {
+                                        alertBox("Validation Error", "Please Sign Up, " +
+                                                "this number does not exists !");
+                                    }
+                                    else if(errorBody.getError().equals("User is not verified")) {
+                                        Log.e("TAG", "onError: " + errorBody.getUserId());
+                                        getFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                                                new OtpFragment("name", errorBody.getUserId(), mobileNumber, password)).commit();
+                                    }
+                                    else {
+                                        Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
                                 }
                                 else {
-                                    Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT)
+                                            .show();
                                 }
                             }
-                        }));
+                            }));
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         disposable.dispose();
+    }
+
+    private static class ErrorMessage {
+        private String error;
+        private String userId;
+
+        public ErrorMessage(String error, String userId) {
+            this.error = error;
+            this.userId = userId;
+        }
+
+        public ErrorMessage(String error) {
+            this.error = error;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        public void setError(String error) {
+            this.error = error;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
     }
 }

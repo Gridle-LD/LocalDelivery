@@ -180,7 +180,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                             imageViewFavUnlike.setVisibility(View.VISIBLE);
                         }
                         reviewList = shop.getReviewList();
-                        Collections.reverse(reviewList);
+//                        Collections.reverse(reviewList);
                         reviewAdapter = new ReviewAdapter(reviewList, false);
                         recyclerView.setAdapter(reviewAdapter);
                         if(shop.getReviewList().size()<4) {

@@ -5,33 +5,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,21 +24,9 @@ import com.example.localdelivery.R;
 import com.example.localdelivery.fragment.HomeFragment;
 import com.example.localdelivery.fragment.MyOrdersFragment;
 import com.example.localdelivery.fragment.ProfileFragment;
-import com.example.localdelivery.utils.GpsUtils;
 import com.example.localdelivery.utils.PrefUtils;
 import com.example.localdelivery.utils.ScrollHandler;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements FilterSortClickListener {
@@ -68,41 +40,22 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
     private ProgressBar progressBar;
     private boolean isEditTextChanged = true;
 
-    private FusedLocationProviderClient fusedLocationClient;
-    private int mRequestCode = 1;
-    private double latitude = 0.0;
-    private double longitude = 0.0;
-    private String address = "";
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private boolean isGPS = false;
-    public static final int GPS_REQUEST = 1001;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         prefUtils = new PrefUtils(this);
 
-        //for location
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(
-                MainActivity.this);
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_shops,
-                new HomeFragment()).commit();
-
         editTextLocation = findViewById(R.id.editTextLocation);
         viewBlurr = findViewById(R.id.blurr_screen_main);
         progressBar = findViewById(R.id.progressBarMain);
 
         checkNetwork();
-        getLocation();
-        requestLocationUpdates();
         setView();
         setClickListeners();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_shops,
+                new HomeFragment()).commit();
     }
 
     private void checkNetwork() {
@@ -215,130 +168,6 @@ public class MainActivity extends AppCompatActivity implements FilterSortClickLi
                 return true;
             }
         });
-    }
-
-    //converting lat long to address string
-    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        String strAdd = "";
-        Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                strAdd = strReturnedAddress.toString();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strAdd;
-    }
-
-    private void getLocation() {
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-
-        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
-            @Override
-            public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                isGPS = isGPSEnable;
-            }
-        });
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        address = getCompleteAddressString(latitude, longitude);
-                        prefUtils.setLatitude(String.valueOf(latitude));
-                        prefUtils.setLongitude(String.valueOf(longitude));
-                        prefUtils.setAddress(address);
-                        if (fusedLocationClient != null) {
-                            fusedLocationClient.removeLocationUpdates(locationCallback);
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    private void requestLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION},
-                    mRequestCode);
-            return;
-        }
-
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-
-        viewBlurr.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-        //for waiting gps to find location
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isEditTextChanged = false;
-                editTextLocation.setText(prefUtils.getAddress());
-
-                viewBlurr.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            }
-        }, 3000);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if(requestCode == mRequestCode) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                requestLocationUpdates();
-            }
-            else {
-                stopApp();
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GPS_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                isGPS = true; // flag maintain before get location
-            }
-            else {
-                stopApp();
-            }
-        }
-
-    }
-
-    private void stopApp() {
-        moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
     }
 
     @Override
