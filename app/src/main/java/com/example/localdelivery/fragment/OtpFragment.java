@@ -61,6 +61,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private CompositeDisposable disposable = new CompositeDisposable();
     private ImageView imageViewOtpVerifyScreen;
     private int otpRequestCode = 10;
+    private static OtpFragment instance;
 
     public OtpFragment(String username, String userId, String mobileNumber, String password) {
         this.username = username;
@@ -97,6 +98,10 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         setClickListeners();
 
         return view;
+    }
+
+    public static OtpFragment getInstance() {
+        return instance;
     }
 
     private void setView(View view) {
@@ -336,7 +341,17 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         new OtpReceiver().setEditText(editText1, editText2, editText3, editText4);
     }
 
-    private void verifyOtp(String otp) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == otpRequestCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new OtpReceiver().setEditText(editText1, editText2, editText3, editText4);
+            }
+        }
+    }
+
+    public void verifyOtp(String otp) {
         OtpData otpData = new OtpData(otp);
 
         disposable.add(

@@ -8,6 +8,8 @@ import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.widget.EditText;
 
+import com.example.localdelivery.fragment.OtpFragment;
+
 public class OtpReceiver extends BroadcastReceiver {
 
     @SuppressLint("StaticFieldLeak")
@@ -40,6 +42,11 @@ public class OtpReceiver extends BroadcastReceiver {
             editText2.setText(String.valueOf(otp.charAt(1)));
             editText3.setText(String.valueOf(otp.charAt(2)));
             editText4.setText(String.valueOf(otp.charAt(3)));
+        }
+
+        //called when otp is detected
+        if(otp.length() == 4) {
+            OtpFragment.getInstance().verifyOtp(otp);
         }
     }
 }

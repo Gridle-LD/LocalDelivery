@@ -94,7 +94,8 @@ public class NearbyShopsRepository {
                                             shopsObject.getShopDetails().getShopName(),
                                             shopsObject.getShopDetails().getShopType(),
                                             completedOrderSize,
-                                            calculateDistance(Double.parseDouble(shopsObject.getShopDetails().getLatitude()),
+                                            calculateDistance(
+                                                    Double.parseDouble(shopsObject.getShopDetails().getLatitude()),
                                                     Double.parseDouble(shopsObject.getShopDetails().getLongitude())));
 
                                     shopsEntities.add(shopsEntity);

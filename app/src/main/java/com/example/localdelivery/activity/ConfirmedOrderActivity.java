@@ -51,6 +51,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     private OrderViewModel orderViewModel;
     private List<OrdersResponse.Result.Orders> allOrders;
     private List<StocksData> cartList;
+    private List<OrdersResponse.Result.Orders.Order.Items> itemsList;
     private OrderItemAdapter orderItemAdapter;
     private ConstraintLayout constraintLayoutTopBar;
     private TextView textViewTopBar;
@@ -184,6 +185,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
 
     private void getStocks() {
         cartList = new ArrayList<>();
+        itemsList = new ArrayList<>();
         for (OrdersResponse.Result.Orders.Order.Items items : allOrders.get(pos).getOrder()
                 .get(0).getItems()) {
             StocksData stocksData = new StocksData(
@@ -200,11 +202,13 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
 
             cartList.add(stocksData);
         }
+
+        itemsList.addAll(allOrders.get(pos).getOrder().get(0).getItems());
     }
 
     private void cancelOrder() {
         CancelOrderData cancelOrderData = new CancelOrderData(allOrders.get(pos).getOrder().get(0).get_id(),
-                "Cancelled");
+                "Cancelled", itemsList, "customer");
         orderViewModel = ViewModelProviders.of(this).get(OrderViewModel.class);
 
         //order successfully cancelled

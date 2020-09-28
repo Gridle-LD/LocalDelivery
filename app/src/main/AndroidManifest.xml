@@ -55,6 +55,16 @@
             android:foregroundServiceType="location"
             tools:ignore="Instantiatable" />
 
+        <service
+            android:name=".services.MyFirebaseInstanceService"
+            android:exported="false"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
         <activity
             android:name=".activity.ShopDetailActivity"
             android:theme="@style/AppTheme.ShopDetail" />

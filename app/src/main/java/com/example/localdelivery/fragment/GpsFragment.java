@@ -195,6 +195,7 @@ public class GpsFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 Intent intent = new Intent(mContext , MainActivity.class);
                 startActivity(intent);
+                mActivity.finish();
             }
         }, 3000);
     }

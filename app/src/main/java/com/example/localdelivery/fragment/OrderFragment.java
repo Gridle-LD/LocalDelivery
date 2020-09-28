@@ -342,7 +342,8 @@ public class OrderFragment extends Fragment {
         List<PlaceOrderData.Order.Shop.Items> itemsList = new ArrayList<>();
         for(StocksData stocksData : cartList) {
             PlaceOrderData.Order.Shop.Items items = new PlaceOrderData.Order.Shop.Items(
-                    String.valueOf(stocksData.getQuantity()), stocksData.get_id());
+                    String.valueOf(stocksData.getQuantity()), stocksData.get_id(), stocksData.getName(),
+                    stocksData.getPrice(), stocksData.getType());
             itemsList.add(items);
         }
 

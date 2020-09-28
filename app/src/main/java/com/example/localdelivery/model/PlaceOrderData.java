@@ -102,11 +102,22 @@ public class PlaceOrderData {
             public static class Items {
                 private String quantity;
                 private String item;
+                private String name;
+                private String price;
+                private String type;
 
-                public Items(String quantity, String item) {
+                public Items(String quantity, String item, String name, String price, String type) {
                     this.quantity = quantity;
                     this.item = item;
+                    this.name = name;
+                    this.price = price;
+                    this.type = type;
                 }
+
+//                public Items(String quantity, String item) {
+//                    this.quantity = quantity;
+//                    this.item = item;
+//                }
 
                 public String getQuantity() {
                     return quantity;
@@ -122,6 +133,30 @@ public class PlaceOrderData {
 
                 public void setItem(String item) {
                     this.item = item;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getPrice() {
+                    return price;
+                }
+
+                public void setPrice(String price) {
+                    this.price = price;
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
                 }
             }
         }

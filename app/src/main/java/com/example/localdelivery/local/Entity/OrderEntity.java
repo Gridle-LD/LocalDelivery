@@ -2,9 +2,10 @@ package com.example.localdelivery.local.Entity;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "order_table")
+@Entity(tableName = "order_table", indices = {@Index(value = {"_id"}, unique = true)})
 public class OrderEntity {
 
     @PrimaryKey(autoGenerate = true)

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Objects;
+
 public class PrefUtils {
 
     private static SharedPreferences sp;
@@ -41,6 +45,9 @@ public class PrefUtils {
     }
 
     public void logoutUser(){
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(
+                Objects.requireNonNull(sp.getString(USER_ID, null)));
+
         editor.clear();
         editor.commit();
     }
@@ -87,6 +94,7 @@ public class PrefUtils {
 
     public void setUserId(String userId) {
         editor.putString(USER_ID, userId);
+        FirebaseMessaging.getInstance().subscribeToTopic(userId);
     }
 
     public String getUserId() {
