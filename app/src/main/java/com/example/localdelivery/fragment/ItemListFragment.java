@@ -21,13 +21,15 @@ import com.example.localdelivery.adapter.ItemListAdapter;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.NearbyShopsViewModel;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ItemListFragment extends Fragment {
-    private int position;
     private Context mContext;
     private Activity mActivity;
     private List<StocksData> shop;
+    private Set<String> stocksCategories;
     private RecyclerView recyclerView;
     private ItemListAdapter itemListAdapter;
     private List<StocksData> stocksDataList;
@@ -36,17 +38,14 @@ public class ItemListFragment extends Fragment {
 
     //for image maximize
     private ImageClickListener listener;
-    private Context contextStocksFragment;
 
     public ItemListFragment() {
         // Required empty public constructor
     }
 
-    public ItemListFragment(int position, List<StocksData> shop, String type, Context context) {
-        this.position = position;
+    public ItemListFragment(List<StocksData> shop, String type) {
         this.shop = shop;
         this.type = type;
-        contextStocksFragment = context;
         stocksDataList = new ArrayList<>();
     }
 

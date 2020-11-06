@@ -9,7 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.localdelivery.R;
 import com.example.localdelivery.local.Entity.OrderEntity;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
@@ -49,7 +54,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.textViewStatus.setText(": " + orderEntity.getStatus());
         holder.textViewPrice.setText(": Rs " + orderEntity.getTotalPrice());
         if(orderEntity.getCreatedAt()!=null) {
-            String date = orderEntity.getCreatedAt().substring(9, 19);
+            String date = getStandardTime(orderEntity.getCreatedAt()).substring(0, 10);
             holder.textViewDate.setText(": " + date);
         }
 
@@ -78,6 +83,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         else {
             return 0;
         }
+    }
+
+    private String getStandardTime(String dateStr) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = df.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+        String formattedDate = df.format(date);
+        return formattedDate;
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {

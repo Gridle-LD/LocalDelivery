@@ -8,13 +8,11 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +35,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyListener, View.OnFocusChangeListener {
+public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyListener, View.OnFocusChangeListener{
 
     private String username;
     private String userId;
@@ -91,6 +89,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         jsonApiHolder = RetrofitInstance.getRetrofitInstance(mContext).create(JsonApiHolder.class);
         prefUtils = new PrefUtils(mContext);
+        instance = this;
 
         setView(view);
         setListeners();
@@ -333,7 +332,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private void requestSmsPermission() {
         if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.RECEIVE_SMS) !=
                 PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.RECEIVE_SMS},
+            requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS},
                     otpRequestCode);
             return;
         }
@@ -368,9 +367,8 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                                 prefUtils.setContactNumber(mobileNumber);
                                 prefUtils.setPassword(password);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
-                                Intent intent = new Intent(mContext , MainActivity.class);
-                                startActivity(intent);
-                                mActivity.finish();
+                                getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                                        new GpsFragment()).commit();
                             }
 
                             @Override

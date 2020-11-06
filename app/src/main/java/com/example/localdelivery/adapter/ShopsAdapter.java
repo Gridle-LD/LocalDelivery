@@ -92,10 +92,15 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
     private String calculateRating(List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList) {
         int ratingSum = 0;
         double ratingAverage;
-        for(NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
-            ratingSum += reviewObject.getRating();
+        if(reviewList.size()!=0) {
+            for(NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject reviewObject : reviewList) {
+                ratingSum += reviewObject.getRating();
+            }
+            ratingAverage = ((double) ratingSum)/reviewList.size();
         }
-        ratingAverage = ((double) ratingSum)/reviewList.size();
+        else {
+            ratingAverage = 3.0;
+        }
         return String.format("%.1f", ratingAverage);
     }
 

@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,10 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class StocksFragment extends Fragment {
 
@@ -65,6 +69,10 @@ public class StocksFragment extends Fragment {
     private SimpleDraweeView simpleDraweeViewImageMaximize;
     private ImageView imageViewCloseButton;
     private TextView textViewItemNameImageMaximize;
+
+    //for storing categories
+    private Set<String> stocksCategoriesSet = new HashSet<>();
+    private List<String> stocksCategoriesList = new ArrayList<>();
 
     public StocksFragment() {
         // Required empty public constructor
@@ -142,18 +150,18 @@ public class StocksFragment extends Fragment {
     }
 
     private void setTabLayout() {
-        tabLayout.addTab(tabLayout.newTab().setText("Grocery"));
-        tabLayout.addTab(tabLayout.newTab().setText("Skincare"));
-        tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
-        tabLayout.addTab(tabLayout.newTab().setText("Bakery"));
-        tabLayout.addTab(tabLayout.newTab().setText("Organic Food"));
-        tabLayout.addTab(tabLayout.newTab().setText("Packed Food"));
-        tabLayout.addTab(tabLayout.newTab().setText("Home & Dining"));
-        tabLayout.addTab(tabLayout.newTab().setText("Bathroom & Cleaning"));
-        tabLayout.addTab(tabLayout.newTab().setText("Electricals and Electronics"));
+
+        for(StocksData stocksData : shop) {
+            stocksCategoriesSet.add(stocksData.getType());
+        }
+
+        for (String stocksCategory : stocksCategoriesSet) {
+            stocksCategoriesList.add(stocksCategory);
+            tabLayout.addTab(tabLayout.newTab().setText(stocksCategory));
+        }
 
         mainPagerAdapter = new StocksTabLayoutAdapter(getParentFragmentManager(),
-                tabLayout.getTabCount(), mContext, shop);
+                tabLayout.getTabCount(), shop, stocksCategoriesList);
         viewPager.setAdapter(mainPagerAdapter);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }

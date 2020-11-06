@@ -66,10 +66,11 @@ public class OrdersResponse {
                 private List<Items> items;
                 private ShopId shopId;
                 private String totalPrice;
-                private String time;
+                private String createdAt;
+                private String updatedAt;
 
-                public Order(String status, boolean pickUp, String paymentType, String otp, String _id, List<Items> items, ShopId shopId,
-                             String totalPrice, String time) {
+                public Order(String status, boolean pickUp, String paymentType, String otp, String _id,
+                             List<Items> items, ShopId shopId, String totalPrice, String createdAt, String updatedAt) {
                     this.status = status;
                     this.pickUp = pickUp;
                     this.paymentType = paymentType;
@@ -78,7 +79,8 @@ public class OrdersResponse {
                     this.items = items;
                     this.shopId = shopId;
                     this.totalPrice = totalPrice;
-                    this.time = time;
+                    this.createdAt = createdAt;
+                    this.updatedAt = updatedAt;
                 }
 
                 public String getStatus() {
@@ -145,22 +147,41 @@ public class OrdersResponse {
                     this.totalPrice = totalPrice;
                 }
 
-                public String getTime() {
-                    return time;
+                public String getCreatedAt() {
+                    return createdAt;
                 }
 
-                public void setTime(String time) {
-                    this.time = time;
+                public void setCreatedAt(String createdAt) {
+                    this.createdAt = createdAt;
+                }
+
+                public String getUpdatedAt() {
+                    return updatedAt;
+                }
+
+                public void setUpdatedAt(String updatedAt) {
+                    this.updatedAt = updatedAt;
                 }
 
                 public static class Items {
                     private Item item;
+                    private String name;
+                    private String price;
                     private String quantity;
+                    private String type;
 
-                    public Items(Item item, String quantity) {
+                    public Items(Item item, String name, String price, String quantity, String type) {
                         this.item = item;
+                        this.name = name;
+                        this.price = price;
                         this.quantity = quantity;
+                        this.type = type;
                     }
+
+//                    public Items(Item item, String quantity) {
+//                        this.item = item;
+//                        this.quantity = quantity;
+//                    }
 
                     public Item getItem() {
                         return item;
@@ -176,6 +197,30 @@ public class OrdersResponse {
 
                     public void setQuantity(String quantity) {
                         this.quantity = quantity;
+                    }
+
+                    public String getName() {
+                        return name;
+                    }
+
+                    public void setName(String name) {
+                        this.name = name;
+                    }
+
+                    public String getPrice() {
+                        return price;
+                    }
+
+                    public void setPrice(String price) {
+                        this.price = price;
+                    }
+
+                    public String getType() {
+                        return type;
+                    }
+
+                    public void setType(String type) {
+                        this.type = type;
                     }
 
                     public static class Item {

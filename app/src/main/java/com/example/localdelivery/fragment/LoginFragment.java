@@ -108,6 +108,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String mobileNumber = editTextMobileNumber.getText().toString().trim();
+                if(mobileNumber.substring(0, 3).equals("+91")) {
+                    int length = mobileNumber.length();
+                    mobileNumber = mobileNumber.substring(3, length);
+                }
+
                 if(!validateMobileNumber(mobileNumber)) {
                     return;
                 }

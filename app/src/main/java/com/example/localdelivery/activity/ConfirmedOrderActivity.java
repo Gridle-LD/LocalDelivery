@@ -23,8 +23,13 @@ import com.example.localdelivery.model.CancelOrderData;
 import com.example.localdelivery.model.OrdersResponse;
 import com.example.localdelivery.model.StocksData;
 import com.example.localdelivery.viewModel.OrderViewModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ConfirmedOrderActivity extends AppCompatActivity {
 
@@ -101,7 +106,8 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         }
         textViewStatus.setText("Order " + order.getStatus());
         if(order.getStatus().equals("Completed")) {
-            setCompletedView();
+            setCompletedView(convertTime(getStandardTime(order.getUpdatedAt()).substring(11, 16)),
+                    getStandardTime(order.getUpdatedAt()).substring(0, 10));
         }
         if(order.getStatus().equals("Cancelled")) {
             setCancelledView();
@@ -117,8 +123,8 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
             textViewShopType.setText("Delivery");
         }
 
-        String time = order.getTime().substring(0, 5);
-        String date = order.getTime().substring(9, 19);
+        String time = convertTime(getStandardTime(order.getCreatedAt()).substring(11, 16));
+        String date = getStandardTime(order.getCreatedAt()).substring(0, 10);
         textViewDate.setText(date);
         textViewTimePlaced.setText(time);
         //TODO : set shop phone number
@@ -220,13 +226,14 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         }
     }
 
-    private void setCompletedView() {
+    private void setCompletedView(String completedTime, String completedDate) {
         imageViewCompleted.setVisibility(View.VISIBLE);
         imageViewPending.setVisibility(View.GONE);
         imageViewCancelled.setVisibility(View.GONE);
 
         constraintLayoutTopBar.setBackgroundColor(Color.argb(255, 17, 168, 0));
         textViewTopBar.setText("This order has been completed.");
+        textViewTimeCompleted.setText(completedTime + "  " + completedDate);
 
         constraintLayoutTopBar.setVisibility(View.VISIBLE);
         imageViewCancelButton.setVisibility(View.GONE);
@@ -251,6 +258,55 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
 
         constraintLayoutTopBar.setVisibility(View.GONE);
         imageViewCancelButton.setVisibility(View.VISIBLE);
+    }
+
+    private String getStandardTime(String dateStr) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = df.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+        String formattedDate = df.format(date);
+        return formattedDate;
+    }
+
+    private String convertTime(String str) {
+
+        String time = "";
+
+        // Get Hours
+        int h1 = (int)str.charAt(0) - '0';
+        int h2 = (int)str.charAt(1)- '0';
+
+        int hh = h1 * 10 + h2;
+
+        // Finding out the Meridien of time
+        // ie. AM or PM
+        String Meridien;
+        if (hh < 12) {
+            Meridien = "AM";
+        }
+        else {
+            Meridien = "PM";
+        }
+        hh %= 12;
+
+        // Handle 00 and 12 case separately
+        if (hh == 0) {
+            time = "12";
+        }
+        else {
+            time = String.valueOf(hh);
+        }
+        for (int i = 2; i < 5; ++i) {
+            time = time + str.charAt(i);
+        }
+        time = time + " " + Meridien;
+        return time;
     }
 
     @Override

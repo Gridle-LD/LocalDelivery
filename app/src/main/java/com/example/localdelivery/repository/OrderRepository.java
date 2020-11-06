@@ -55,15 +55,17 @@ public class OrderRepository {
                                 List<OrderEntity> orderEntityList = new ArrayList<>();
                                 ordersList = ordersResponse;
                                 for(OrdersResponse.Result.Orders response : ordersList.getResult().getOrders()) {
-                                    OrderEntity orderEntity = new OrderEntity(
-                                            response.getOrder().get(0).get_id(),
-                                            response.getOrder().get(0).getStatus(),
-                                            response.getOrder().get(0).isPickUp(),
-                                            response.getOrder().get(0).getShopId().getShopDetails().getShopName(),
-                                            response.getOrder().get(0).getTotalPrice(),
-                                            response.getOrder().get(0).getTime()
-                                    );
-                                    orderEntityList.add(orderEntity);
+                                    if(response.getOrder().size()!=0) {
+                                        OrderEntity orderEntity = new OrderEntity(
+                                                response.getOrder().get(0).get_id(),
+                                                response.getOrder().get(0).getStatus(),
+                                                response.getOrder().get(0).isPickUp(),
+                                                response.getOrder().get(0).getShopId().getShopDetails().getShopName(),
+                                                response.getOrder().get(0).getTotalPrice(),
+                                                response.getOrder().get(0).getCreatedAt()
+                                        );
+                                        orderEntityList.add(orderEntity);
+                                    }
                                 }
                                 add(orderEntityList);
                             }

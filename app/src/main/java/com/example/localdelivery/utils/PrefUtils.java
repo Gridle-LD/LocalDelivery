@@ -73,7 +73,7 @@ public class PrefUtils {
     }
 
     public String getAddress() {
-        return sp.getString(ADDRESS, null);
+        return sp.getString(ADDRESS, "");
     }
 
     public void setName(String name) {
