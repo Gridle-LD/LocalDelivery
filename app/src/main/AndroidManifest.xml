@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.localdelivery">
+    package="com.gridle.localdelivery">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -12,11 +12,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
+<!--    <uses-permission android:name="android.permission.READ_SMS" />-->
+<!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
+<!--    <uses-permission android:name="android.permission.WRITE_SMS"/>-->
 
     <application
         android:allowBackup="true"
@@ -29,15 +27,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
 
-        <receiver android:name=".utils.OtpReceiver">
+        <receiver android:name="com.gridle.localdelivery.utils.OtpReceiver">
 
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.ConfirmedOrderActivity" />
-        <activity android:name=".activity.MapsActivity" />
+        <activity android:name="com.gridle.localdelivery.activity.ConfirmedOrderActivity" />
+        <activity android:name="com.gridle.localdelivery.activity.MapsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -51,12 +49,12 @@
             android:value="@string/google_maps_key" />
 
         <service
-            android:name=".activity.SignUpLoginActivity"
+            android:name="com.gridle.localdelivery.activity.SignUpLoginActivity"
             android:foregroundServiceType="location"
             tools:ignore="Instantiatable" />
 
         <service
-            android:name=".services.MyFirebaseInstanceService"
+            android:name="com.gridle.localdelivery.services.MyFirebaseInstanceService"
             android:exported="false"
             android:stopWithTask="false">
             <intent-filter>
@@ -66,10 +64,10 @@
 
 
         <activity
-            android:name=".activity.ShopDetailActivity"
+            android:name="com.gridle.localdelivery.activity.ShopDetailActivity"
             android:theme="@style/AppTheme.ShopDetail" />
-        <activity android:name=".activity.SignUpLoginActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name="com.gridle.localdelivery.activity.SignUpLoginActivity" />
+        <activity android:name="com.gridle.localdelivery.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.gridle.localdelivery.activity.MainActivity"
             android:theme="@style/AppTheme.ShopDetail" />
     </application>
 

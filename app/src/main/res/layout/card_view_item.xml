@@ -34,14 +34,18 @@
 
         <TextView
             android:id="@+id/textViewItemName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lays - Masala magic"
-            android:textSize="16sp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/montserrat_medium"
+            android:text="Lays - Masala magic"
             android:textColor="#2B2024"
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintBottom_toTopOf="@+id/textViewItemPrice"
+            app:layout_constraintEnd_toStartOf="@+id/constraint_layout_add_item_part"
             app:layout_constraintStart_toEndOf="@+id/cardView2"
             app:layout_constraintTop_toTopOf="parent" />
 

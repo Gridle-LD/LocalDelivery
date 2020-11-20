@@ -162,7 +162,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_image_maximize"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +177,7 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/simpleDraweeViewImageMaximize"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="400dp"
                 android:layout_marginStart="56dp"
                 android:layout_marginTop="56dp"
                 android:layout_marginEnd="56dp"
@@ -189,12 +189,17 @@
 
             <TextView
                 android:id="@+id/textViewItemNameImageMaximize"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_semi_bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="TextView"
+                android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
