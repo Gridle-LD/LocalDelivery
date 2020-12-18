@@ -31,6 +31,14 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 public class GpsFragment extends Fragment{
 
@@ -142,20 +150,46 @@ public class GpsFragment extends Fragment{
     }
 
     private void nextScreen() {
-//        Log.e("TAG", "nextScreen: ");
-//            if(isGPSEnabled && isLocationEnabled) {
-                //for waiting gps to find location
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+
+        Observable<Long> observable = Observable
+                .interval(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .takeWhile(new Predicate<Long>() {
                     @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        Intent intent = new Intent(mContext , MainActivity.class);
-                        startActivity(intent);
-                        mActivity.finish();
+                    public boolean test(Long aLong) throws Exception {
+                        if(aLong>=3 && !prefUtils.getAddress().equals("")) {
+                            progressBar.setVisibility(View.GONE);
+                            Intent intent = new Intent(mContext , MainActivity.class);
+                            startActivity(intent);
+                            mActivity.finish();
+                            return false;
+                        }
+                        return true;
                     }
-                }, 3000);
-//            }
+                });
+
+        observable.subscribe(new Observer<Long>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     private void requestLocationUpdates() {

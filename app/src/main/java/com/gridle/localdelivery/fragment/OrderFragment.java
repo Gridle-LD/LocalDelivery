@@ -182,7 +182,7 @@ public class OrderFragment extends Fragment {
     private void calculateTotalPrice() {
         price = 0;
         for(StocksData stocksData : cartList) {
-            price = price + (stocksData.getQuantity() * Integer.parseInt(stocksData.getPrice()));
+            price = price + (stocksData.getLocalQuantity() * Integer.parseInt(stocksData.getPrice()));
         }
     }
 
@@ -251,7 +251,7 @@ public class OrderFragment extends Fragment {
             public void onAddClick(int position, TextView textView) {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
-                cartList.get(position).setQuantity(++count);
+                cartList.get(position).setLocalQuantity(++count);
                 orderItemAdapter.notifyDataSetChanged();
                 price += Integer.parseInt(cartList.get(position).getPrice());
                 textViewTotalBill.setText("Bill Total : Rs " + price);
@@ -263,7 +263,7 @@ public class OrderFragment extends Fragment {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
                 if(count!=0) {
-                    cartList.get(position).setQuantity(--count);
+                    cartList.get(position).setLocalQuantity(--count);
                     orderItemAdapter.notifyDataSetChanged();
                     price -= Integer.parseInt(cartList.get(position).getPrice());
                     textViewTotalBill.setText("Bill Total : Rs " + price);
@@ -276,7 +276,8 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new StocksFragment(shop, shopId, shopName, isPickup, isFav, pos)).commit();
+                        new StocksFragment(shop, shopId, shopName, isPickup, isFav, pos))
+                        .commit();
             }
         });
 
@@ -329,7 +330,7 @@ public class OrderFragment extends Fragment {
         List<PlaceOrderData.Order.Shop.Items> itemsList = new ArrayList<>();
         for(StocksData stocksData : cartList) {
             PlaceOrderData.Order.Shop.Items items = new PlaceOrderData.Order.Shop.Items(
-                    String.valueOf(stocksData.getQuantity()), stocksData.get_id(), stocksData.getName(),
+                    String.valueOf(stocksData.getLocalQuantity()), stocksData.get_id(), stocksData.getName(),
                     stocksData.getPrice(), stocksData.getType());
             itemsList.add(items);
         }

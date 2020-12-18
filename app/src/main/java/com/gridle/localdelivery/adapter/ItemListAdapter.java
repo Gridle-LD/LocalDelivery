@@ -55,7 +55,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
         holder.imageViewItem.setImageURI(Uri.parse(stocksData.getImage()));
         holder.textViewName.setText(stocksData.getName());
         holder.textViewPrice.setText("Price - Rs " + stocksData.getPrice());
-        holder.textViewQuantity.setText(String.valueOf(stocksData.getQuantity()));
+        holder.textViewQuantity.setText(String.valueOf(stocksData.getLocalQuantity()));
     }
 
     @Override

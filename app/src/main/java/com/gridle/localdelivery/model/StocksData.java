@@ -11,6 +11,7 @@ public class StocksData {
     private String shop;
     private String createdAt;
     private int quantity;
+    private int localQuantity;
 
     public StocksData(String _id, String name, String price, String type,
                       String image, boolean available, String shop, String createdAt) {
@@ -94,5 +95,13 @@ public class StocksData {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getLocalQuantity() {
+        return localQuantity;
+    }
+
+    public void setLocalQuantity(int localQuantity) {
+        this.localQuantity = localQuantity;
     }
 }

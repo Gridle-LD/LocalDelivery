@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import android.telephony.PhoneNumberUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +110,13 @@ public class SignUpFragment extends Fragment {
                 }
 
                 String mobileNumber = editTextMobileNumberSignUp.getText().toString().trim();
+                if(mobileNumber.length()!=0) {
+                    if(mobileNumber.substring(0, 3).equals("+91")) {
+                        int length = mobileNumber.length();
+                        mobileNumber = mobileNumber.substring(3, length);
+                    }
+                }
+
                 if(!validateMobileNumber(mobileNumber)) {
                     return;
                 }
@@ -142,7 +151,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean validateMobileNumber(String mobileNumber) {
-        if(mobileNumber.length()<10) {
+        if(mobileNumber.length()<10 && PhoneNumberUtils.isGlobalPhoneNumber(mobileNumber)) {
             Toast.makeText(mContext, "Wrong Mobile Number entered !", Toast.LENGTH_LONG).show();
             return false;
         }

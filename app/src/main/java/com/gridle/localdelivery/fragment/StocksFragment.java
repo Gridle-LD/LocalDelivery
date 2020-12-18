@@ -203,7 +203,7 @@ public class StocksFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 for(StocksData stocksData : shop) {
-                    if(stocksData.getQuantity()!=0) {
+                    if(stocksData.getLocalQuantity()!=0) {
                         cartList.add(stocksData);
                     }
                 }

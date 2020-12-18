@@ -51,9 +51,9 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         holder.textViewItemName.setText(stocksData.getName());
         holder.textViewItemType.setText("Type : " + stocksData.getType());
         holder.textViewItemPrice.setText("Price : Rs " + stocksData.getPrice());
-        int price = stocksData.getQuantity() * Integer.parseInt(stocksData.getPrice());
+        int price = stocksData.getLocalQuantity() * Integer.parseInt(stocksData.getPrice());
         holder.textViewItemTotalPrice.setText("Rs. " + price);
-        holder.textViewItemQuantity.setText(String.valueOf(stocksData.getQuantity()));
+        holder.textViewItemQuantity.setText(String.valueOf(stocksData.getLocalQuantity()));
     }
 
     @Override
