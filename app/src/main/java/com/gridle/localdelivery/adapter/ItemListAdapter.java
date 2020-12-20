@@ -2,6 +2,7 @@ package com.gridle.localdelivery.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,17 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
         holder.imageViewItem.setImageURI(Uri.parse(stocksData.getImage()));
         holder.textViewName.setText(stocksData.getName());
         holder.textViewPrice.setText("Price - Rs " + stocksData.getPrice());
-        holder.textViewQuantity.setText(String.valueOf(stocksData.getLocalQuantity()));
+        if(stocksData.getQuantity() > 0) {
+            holder.textViewQuantity.setText(String.valueOf(stocksData.getLocalQuantity()));
+            holder.constraintLayout.setVisibility(View.VISIBLE);
+            holder.imageViewAddButton.setVisibility(View.VISIBLE);
+            holder.textViewOutOfStock.setVisibility(View.GONE);
+        }
+        else {
+            holder.constraintLayout.setVisibility(View.GONE);
+            holder.imageViewAddButton.setVisibility(View.GONE);
+            holder.textViewOutOfStock.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -76,6 +87,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
         private ImageView imageViewAddButton;
         private ImageView imageViewRemoveButton;
         private ConstraintLayout constraintLayout;
+        private TextView textViewOutOfStock;
 
         public ItemListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -86,6 +98,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
             imageViewAddButton = itemView.findViewById(R.id.imageViewAddItem);
             imageViewRemoveButton = itemView.findViewById(R.id.imageViewRemoveItem);
             constraintLayout = itemView.findViewById(R.id.constraint_layout_add_item_part);
+            textViewOutOfStock = itemView.findViewById(R.id.textViewOutOfStock);
 
             imageViewAddButton.setOnClickListener(new View.OnClickListener() {
                 @Override

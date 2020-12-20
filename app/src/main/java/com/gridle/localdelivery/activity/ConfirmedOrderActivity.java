@@ -238,7 +238,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
                     items.getItem().getShop(),
                     items.getItem().getCreatedAt()
             );
-            stocksData.setQuantity(Integer.parseInt(items.getQuantity()));
+            stocksData.setLocalQuantity(Integer.parseInt(items.getQuantity()));
 
             cartList.add(stocksData);
         }

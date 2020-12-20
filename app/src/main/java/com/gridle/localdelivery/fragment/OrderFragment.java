@@ -251,11 +251,16 @@ public class OrderFragment extends Fragment {
             public void onAddClick(int position, TextView textView) {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
-                cartList.get(position).setLocalQuantity(++count);
-                orderItemAdapter.notifyDataSetChanged();
-                price += Integer.parseInt(cartList.get(position).getPrice());
-                textViewTotalBill.setText("Bill Total : Rs " + price);
-                changeOriginialList(count, cartList.get(position).get_id());
+                if(count < cartList.get(position).getQuantity()) {
+                    cartList.get(position).setLocalQuantity(++count);
+                    orderItemAdapter.notifyDataSetChanged();
+                    price += Integer.parseInt(cartList.get(position).getPrice());
+                    textViewTotalBill.setText("Bill Total : Rs " + price);
+                    changeOriginialList(count, cartList.get(position).get_id());
+                }
+                else {
+                    Toast.makeText(mContext, "More item not in stock !", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -315,7 +320,7 @@ public class OrderFragment extends Fragment {
     private void changeOriginialList(int count, String id) {
         for(StocksData stocksData : shop) {
             if(stocksData.get_id().equals(id)) {
-                stocksData.setQuantity(count);
+                stocksData.setLocalQuantity(count);
             }
         }
     }

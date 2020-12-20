@@ -7,11 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gridle.localdelivery.Interface.ImageClickListener;
 import com.gridle.localdelivery.R;
@@ -105,9 +108,14 @@ public class ItemListFragment extends Fragment {
             public void onAddClick(int position, TextView textView) {
                 String number = textView.getText().toString();
                 int count = Integer.parseInt(number);
-                stocksDataList.get(position).setLocalQuantity(++count);
-                StocksFragment.changeQuantity(count, stocksDataList.get(position).get_id());
-                itemListAdapter.notifyDataSetChanged();
+                if(count < stocksDataList.get(position).getQuantity()) {
+                    stocksDataList.get(position).setLocalQuantity(++count);
+                    StocksFragment.changeQuantity(count, stocksDataList.get(position).get_id());
+                    itemListAdapter.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(mContext, "More item not in stock !", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

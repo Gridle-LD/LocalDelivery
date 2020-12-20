@@ -138,7 +138,7 @@ public class StocksFragment extends Fragment {
         int i=0;
         for(StocksData stocksData : shop) {
             if(stocksData.get_id().equals(id)) {
-                shop.get(i).setQuantity(quantity);
+                shop.get(i).setLocalQuantity(quantity);
             }
             ++i;
         }
