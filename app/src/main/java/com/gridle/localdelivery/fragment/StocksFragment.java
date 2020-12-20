@@ -20,10 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.view.GenericDraweeView;
 import com.gridle.localdelivery.R;
 import com.gridle.localdelivery.adapter.StocksTabLayoutAdapter;
 import com.gridle.localdelivery.model.StocksData;
@@ -266,9 +262,6 @@ public class StocksFragment extends Fragment {
     public void setImageClick(String imageUrl, String itemName) {
         viewBlurr.setVisibility(View.VISIBLE);
         cardViewImageMaximize.setVisibility(View.VISIBLE);
-        GenericDraweeHierarchy hierarchy = GenericDraweeHierarchyBuilder.newInstance(getResources())
-                .setDesiredAspectRatio(1.33f).build();
-        simpleDraweeViewImageMaximize.setHierarchy(hierarchy);
         simpleDraweeViewImageMaximize.setImageURI(Uri.parse(imageUrl));
         textViewItemNameImageMaximize.setText(itemName);
     }

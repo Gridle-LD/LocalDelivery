@@ -176,13 +176,9 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/simpleDraweeViewImageMaximize"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginTop="56dp"
-                android:layout_marginEnd="56dp"
-                android:layout_marginBottom="64dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:actualImageScaleType="centerInside"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -194,6 +190,8 @@
                 android:fontFamily="@font/montserrat_semi_bold"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
@@ -207,10 +205,8 @@
 
             <ImageView
                 android:id="@+id/imageViewCloseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:src="@drawable/close_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -12,9 +12,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-<!--    <uses-permission android:name="android.permission.READ_SMS" />-->
-<!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-<!--    <uses-permission android:name="android.permission.WRITE_SMS"/>-->
 
     <application
         android:allowBackup="true"
@@ -27,15 +24,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
 
-        <receiver android:name="com.gridle.localdelivery.utils.OtpReceiver">
-
+        <receiver android:name=".utils.OtpReceiver">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.gridle.localdelivery.activity.ConfirmedOrderActivity" />
-        <activity android:name="com.gridle.localdelivery.activity.MapsActivity" />
+        <activity android:name=".activity.ConfirmedOrderActivity" />
+        <activity android:name=".activity.MapsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -49,12 +45,11 @@
             android:value="@string/google_maps_key" />
 
         <service
-            android:name="com.gridle.localdelivery.activity.SignUpLoginActivity"
+            android:name=".activity.SignUpLoginActivity"
             android:foregroundServiceType="location"
             tools:ignore="Instantiatable" />
-
         <service
-            android:name="com.gridle.localdelivery.services.MyFirebaseInstanceService"
+            android:name=".services.MyFirebaseInstanceService"
             android:exported="false"
             android:stopWithTask="false">
             <intent-filter>
@@ -62,12 +57,11 @@
             </intent-filter>
         </service>
 
-
         <activity
-            android:name="com.gridle.localdelivery.activity.ShopDetailActivity"
+            android:name=".activity.ShopDetailActivity"
             android:theme="@style/AppTheme.ShopDetail" />
-        <activity android:name="com.gridle.localdelivery.activity.SignUpLoginActivity" />
-        <activity android:name="com.gridle.localdelivery.activity.SplashActivity">
+        <activity android:name=".activity.SignUpLoginActivity" />
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,7 +69,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gridle.localdelivery.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.ShopDetail" />
     </application>
 
