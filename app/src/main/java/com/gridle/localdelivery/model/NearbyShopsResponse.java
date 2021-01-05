@@ -122,18 +122,64 @@ public class NearbyShopsResponse {
             }
 
             public static class ShopDetails {
+                private String mid;
+                private String mKey;
                 private String address;
+                private String contactNumber;
+                private String image;
                 private String latitude;
                 private String longitude;
                 private String shopName;
                 private String shopType;
+                private String timings;
+                private boolean delivery;
+                private String deliveryPrice;
+                private String deliveryRadius;
+                private boolean onlinePayment;
 
-                public ShopDetails(String address, String latitude, String longitude, String shopName, String shopType) {
+//                public ShopDetails(String address, String latitude, String longitude, String shopName,
+//                                   String shopType) {
+//                    this.address = address;
+//                    this.latitude = latitude;
+//                    this.longitude = longitude;
+//                    this.shopName = shopName;
+//                    this.shopType = shopType;
+//                }
+
+                public ShopDetails(String mid, String mKey, String address, String contactNumber, String image,
+                                   String latitude, String longitude, String shopName, String shopType,
+                                   String timings, boolean delivery, String deliveryPrice, String deliveryRadius,
+                                   boolean onlinePayment) {
+                    this.mid = mid;
+                    this.mKey = mKey;
                     this.address = address;
+                    this.contactNumber = contactNumber;
+                    this.image = image;
                     this.latitude = latitude;
                     this.longitude = longitude;
                     this.shopName = shopName;
                     this.shopType = shopType;
+                    this.timings = timings;
+                    this.delivery = delivery;
+                    this.deliveryPrice = deliveryPrice;
+                    this.deliveryRadius = deliveryRadius;
+                    this.onlinePayment = onlinePayment;
+                }
+
+                public String getMid() {
+                    return mid;
+                }
+
+                public void setMid(String mid) {
+                    this.mid = mid;
+                }
+
+                public String getmKey() {
+                    return mKey;
+                }
+
+                public void setmKey(String mKey) {
+                    this.mKey = mKey;
                 }
 
                 public String getAddress() {
@@ -142,6 +188,22 @@ public class NearbyShopsResponse {
 
                 public void setAddress(String address) {
                     this.address = address;
+                }
+
+                public String getContactNumber() {
+                    return contactNumber;
+                }
+
+                public void setContactNumber(String contactNumber) {
+                    this.contactNumber = contactNumber;
+                }
+
+                public String getImage() {
+                    return image;
+                }
+
+                public void setImage(String image) {
+                    this.image = image;
                 }
 
                 public String getLatitude() {
@@ -174,6 +236,46 @@ public class NearbyShopsResponse {
 
                 public void setShopType(String shopType) {
                     this.shopType = shopType;
+                }
+
+                public String getTimings() {
+                    return timings;
+                }
+
+                public void setTimings(String timings) {
+                    this.timings = timings;
+                }
+
+                public boolean isDelivery() {
+                    return delivery;
+                }
+
+                public void setDelivery(boolean delivery) {
+                    this.delivery = delivery;
+                }
+
+                public String getDeliveryPrice() {
+                    return deliveryPrice;
+                }
+
+                public void setDeliveryPrice(String deliveryPrice) {
+                    this.deliveryPrice = deliveryPrice;
+                }
+
+                public String getDeliveryRadius() {
+                    return deliveryRadius;
+                }
+
+                public void setDeliveryRadius(String deliveryRadius) {
+                    this.deliveryRadius = deliveryRadius;
+                }
+
+                public boolean isOnlinePayment() {
+                    return onlinePayment;
+                }
+
+                public void setOnlinePayment(boolean onlinePayment) {
+                    this.onlinePayment = onlinePayment;
                 }
             }
 
@@ -212,7 +314,8 @@ public class NearbyShopsResponse {
                 private UserId userId;
                 private String createdAt;
 
-                public ReviewObject(String _id, int rating, String comment, String shopId, UserId userId, String createdAt) {
+                public ReviewObject(String _id, int rating, String comment, String shopId, UserId userId,
+                                    String createdAt) {
                     this._id = _id;
                     this.rating = rating;
                     this.comment = comment;

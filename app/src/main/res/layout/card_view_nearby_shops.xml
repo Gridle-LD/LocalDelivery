@@ -25,11 +25,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:cardElevation="0dp">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/imageViewShop"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/no_image_shop" />
+                app:actualImageScaleType="centerInside"
+                app:placeholderImage="@drawable/no_image_shop" />
 
         </androidx.cardview.widget.CardView>
 

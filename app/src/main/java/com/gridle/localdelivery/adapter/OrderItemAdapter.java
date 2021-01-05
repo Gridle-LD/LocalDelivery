@@ -24,7 +24,6 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
 
     public OrderItemAdapter(List<StocksData> cartList, Context context) {
         this.cartList = cartList;
-        Fresco.initialize(context);
     }
 
     public interface OnItemClickListener {

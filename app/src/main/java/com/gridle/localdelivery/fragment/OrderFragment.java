@@ -87,11 +87,13 @@ public class OrderFragment extends Fragment {
     private TextView textViewAddressChange;
     private ProgressBar progressBar;
     private View viewBlurr;
+    private boolean isPickupAvailable;
+    private boolean isDeliveryAvailable;
 
     private Integer ActivityRequestCode = 200;
 
     public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId, String shopName,
-                         boolean isPickup,boolean isFav, int pos) {
+                         boolean isPickup, boolean isFav, int pos, boolean isPickupAvailable, boolean isDeliveryAvailable) {
         this.shop = shop;
         this.cartList = cartList;
         this.shopId = shopId;
@@ -99,6 +101,8 @@ public class OrderFragment extends Fragment {
         this.isPickup = isPickup;
         this.isFav = isFav;
         this.pos = pos;
+        this.isPickupAvailable = isPickupAvailable;
+        this.isDeliveryAvailable = isDeliveryAvailable;
     }
 
     @Override
@@ -163,6 +167,13 @@ public class OrderFragment extends Fragment {
             constraintLayoutAddress.setVisibility(View.VISIBLE);
         }
 
+        if(isDeliveryAvailable) {
+            textViewDelivery.setTextColor(getResources().getColor(R.color.black));
+        }
+        else {
+            textViewDelivery.setTextColor(getResources().getColor(R.color.colorGrey));
+        }
+
         if(isFav) {
             imageViewLike.setVisibility(View.VISIBLE);
             imageViewUnlike.setVisibility(View.GONE);
@@ -221,10 +232,12 @@ public class OrderFragment extends Fragment {
         textViewDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isPickup = false;
-                dividerPickup.setVisibility(View.GONE);
-                dividerDelivery.setVisibility(View.VISIBLE);
-                constraintLayoutAddress.setVisibility(View.VISIBLE);
+                if(isDeliveryAvailable) {
+                    isPickup = false;
+                    dividerPickup.setVisibility(View.GONE);
+                    dividerDelivery.setVisibility(View.VISIBLE);
+                    constraintLayoutAddress.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -281,7 +294,8 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                        new StocksFragment(shop, shopId, shopName, isPickup, isFav, pos))
+                        new StocksFragment(shop, shopId, shopName, isPickup, isFav, pos, isPickupAvailable,
+                                isDeliveryAvailable))
                         .commit();
             }
         });

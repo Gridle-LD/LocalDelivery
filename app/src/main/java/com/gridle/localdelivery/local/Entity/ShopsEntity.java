@@ -37,6 +37,14 @@ public class ShopsEntity {
     private String longitude;
     private String shopName;
     private String shopType;
+    private String image;
+    private String mid;
+    private String mKey;
+    private String timings;
+    private boolean delivery;
+    private String deliveryRadius;
+    private String deliveryRate;
+    private boolean onlinePayment;
     private int numberOfOrders;
     private double distance;
 
@@ -44,9 +52,10 @@ public class ShopsEntity {
     public ShopsEntity() {}
 
     public ShopsEntity(List<StocksData> stock, List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList,
-                       boolean favourite, String _id, String phoneNumber, String name, String address,
-                       String latitude, String longitude, String shopName, String shopType, int numberOfOrders,
-                       double distance) {
+                       boolean favourite, String _id, String phoneNumber, String name, String address, String latitude,
+                       String longitude, String shopName, String shopType, String image, String mid, String mKey,
+                       String timings, boolean delivery, String deliveryRadius, String deliveryRate,
+                       boolean onlinePayment, int numberOfOrders, double distance) {
         this.stock = stock;
         this.reviewList = reviewList;
         this.favourite = favourite;
@@ -58,6 +67,14 @@ public class ShopsEntity {
         this.longitude = longitude;
         this.shopName = shopName;
         this.shopType = shopType;
+        this.image = image;
+        this.mid = mid;
+        this.mKey = mKey;
+        this.timings = timings;
+        this.delivery = delivery;
+        this.deliveryRadius = deliveryRadius;
+        this.deliveryRate = deliveryRate;
+        this.onlinePayment = onlinePayment;
         this.numberOfOrders = numberOfOrders;
         this.distance = distance;
     }
@@ -156,6 +173,70 @@ public class ShopsEntity {
 
     public void setShopType(String shopType) {
         this.shopType = shopType;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public String getMKey() {
+        return mKey;
+    }
+
+    public void setmKey(String mKey) {
+        this.mKey = mKey;
+    }
+
+    public String getTimings() {
+        return timings;
+    }
+
+    public void setTimings(String timings) {
+        this.timings = timings;
+    }
+
+    public boolean isDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(boolean delivery) {
+        this.delivery = delivery;
+    }
+
+    public String getDeliveryRadius() {
+        return deliveryRadius;
+    }
+
+    public void setDeliveryRadius(String deliveryRadius) {
+        this.deliveryRadius = deliveryRadius;
+    }
+
+    public String getDeliveryRate() {
+        return deliveryRate;
+    }
+
+    public void setDeliveryRate(String deliveryRate) {
+        this.deliveryRate = deliveryRate;
+    }
+
+    public boolean isOnlinePayment() {
+        return onlinePayment;
+    }
+
+    public void setOnlinePayment(boolean onlinePayment) {
+        this.onlinePayment = onlinePayment;
     }
 
     public int getNumberOfOrders() {

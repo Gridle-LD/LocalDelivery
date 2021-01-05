@@ -82,11 +82,12 @@
                             app:layout_constraintTop_toBottomOf="@id/cardViewToolBar"
                             app:cardElevation="0dp">
 
-                                <ImageView
+                                <com.facebook.drawee.view.SimpleDraweeView
+                                    android:id="@+id/imageViewShopDetail"
                                     android:layout_width="match_parent"
                                     android:layout_height="160dp"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/shop_image" />
+                                    app:actualImageScaleType="centerCrop"
+                                    app:placeholderImage="@drawable/no_image_shop" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,8 +162,8 @@
                                     app:layout_constraintTop_toBottomOf="@+id/textViewShopNameDetail" />
 
                                 <TextView
-                                    android:id="@+id/textView10"
-                                    android:layout_width="0dp"
+                                    android:id="@+id/textViewShopTimingDetail"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
                                     android:layout_marginTop="8dp"
@@ -171,8 +172,21 @@
                                     android:text="9:00 AM - 9:00 PM"
                                     android:textColor="@android:color/black"
                                     android:textSize="12sp"
-                                    app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textViewShopTypeDetail" />
+
+                                <TextView
+                                    android:id="@+id/textViewShopDayDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="M T W T F S S"
+                                    android:textColor="@android:color/darker_gray"
+                                    android:textSize="12sp"
+                                    app:layout_constraintStart_toEndOf="@id/textViewShopTimingDetail"
                                     app:layout_constraintTop_toBottomOf="@+id/textViewShopTypeDetail" />
 
                                 <TextView
@@ -189,7 +203,7 @@
                                     android:textSize="12sp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textViewShopTimingDetail" />
 
                                 <com.google.android.material.card.MaterialCardView
                                     android:id="@+id/card_view_no_of_orders"
@@ -222,7 +236,7 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <ImageView
-                            android:id="@+id/imageView25"
+                            android:id="@+id/imageViewDelivering"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -243,21 +257,21 @@
                             android:textColor="#2B2024"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView25"
+                            app:layout_constraintStart_toEndOf="@+id/imageViewDelivering"
                             app:layout_constraintTop_toBottomOf="@+id/constraint_layout_shop_description" />
 
                         <ImageView
-                            android:id="@+id/imageView26"
+                            android:id="@+id/imageViewPreparing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                            app:layout_constraintBottom_toBottomOf="@+id/textViewPreparing"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/textView16"
+                            app:layout_constraintTop_toTopOf="@+id/textViewPreparing"
                             app:srcCompat="@drawable/tick" />
 
                         <TextView
-                            android:id="@+id/textView16"
+                            android:id="@+id/textViewPreparing"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -268,7 +282,7 @@
                             android:textColor="#2B2024"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView26"
+                            app:layout_constraintStart_toEndOf="@+id/imageViewPreparing"
                             app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -276,7 +290,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            app:layout_constraintTop_toBottomOf="@id/textView16"
+                            app:layout_constraintTop_toBottomOf="@id/textViewPreparing"
                             android:background="#FBF9FA">
 
                                 <TextView

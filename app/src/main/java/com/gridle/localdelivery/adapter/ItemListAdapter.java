@@ -29,7 +29,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
     public ItemListAdapter(Context context, List<StocksData> stocksDataList) {
         this.context = context;
         this.stocksDataList = stocksDataList;
-        Fresco.initialize(context);
     }
 
     public interface OnItemClickListener {

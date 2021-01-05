@@ -10,7 +10,7 @@ import com.gridle.localdelivery.local.Dao.ShopsDao;
 import com.gridle.localdelivery.local.Entity.OrderEntity;
 import com.gridle.localdelivery.local.Entity.ShopsEntity;
 
-@Database(entities = {ShopsEntity.class, OrderEntity.class}, version = 6, exportSchema = false)
+@Database(entities = {ShopsEntity.class, OrderEntity.class}, version = 7, exportSchema = false)
 public abstract class ShopsDatabase extends RoomDatabase {
 
     private static ShopsDatabase instance;

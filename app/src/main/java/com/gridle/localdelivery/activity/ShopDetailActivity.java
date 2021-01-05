@@ -21,6 +21,9 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -38,15 +41,20 @@ import com.gridle.localdelivery.utils.PrefUtils;
 import com.gridle.localdelivery.viewModel.NearbyShopsViewModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ShopDetailActivity extends AppCompatActivity implements ImageClickListener {
 
     private ImageView imageViewFavLike;
     private ImageView imageViewFavUnlike;
+    private ImageView imageViewShop;
     private ConstraintLayout constraintLayoutCall;
     private ConstraintLayout constraintLayoutReview;
     private TextView textViewLocation;
+    private ImageView imageViewDelivering;
+    private TextView textViewPreparing;
+    private ImageView imageViewPreparing;
     private PrefUtils prefUtils;
     private ConstraintLayout blurr_screen;
     private ImageView order_type_screen;
@@ -65,6 +73,8 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
     private TextView textViewShopName;
     private TextView textViewShopType;
     private TextView textViewShopAddress;
+    private TextView textViewShopTiming;
+    private TextView textViewShopDay;
     private TextView textViewRating;
     private TextView textViewNumberOfOrders;
     private CardView cardViewRating;
@@ -73,6 +83,9 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
     private ReviewAdapter reviewAdapter;
     private int pos;
     private List<NearbyShopsResponse.Result.NearbyShopsObject.ReviewObject> reviewList = new ArrayList<>();
+    private String shopDay = "MTWTFSS";
+    private boolean isDelivery = false;
+    private boolean isPickup = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +133,13 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
     private void setView() {
         imageViewFavLike = findViewById(R.id.imageViewFavLike);
         imageViewFavUnlike = findViewById(R.id.imageViewFavUnlike);
+        imageViewShop = findViewById(R.id.imageViewShopDetail);
         constraintLayoutCall = findViewById(R.id.constraint_layout_call);
         constraintLayoutReview = findViewById(R.id.constraint_layout_review);
         textViewLocation = findViewById(R.id.textViewLocation);
+        imageViewDelivering = findViewById(R.id.imageViewDelivering);
+        textViewPreparing = findViewById(R.id.textViewPreparing);
+        imageViewPreparing = findViewById(R.id.imageViewPreparing);
         blurr_screen = findViewById(R.id.blurr_screen);
         order_type_screen = findViewById(R.id.order_type_screen);
         imageViewVisitStore = findViewById(R.id.imageViewVisitStore);
@@ -132,6 +149,8 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
         textViewShopName = findViewById(R.id.textViewShopNameDetail);
         textViewShopType = findViewById(R.id.textViewShopTypeDetail);
         textViewShopAddress = findViewById(R.id.textViewShopAddressDetail);
+        textViewShopTiming = findViewById(R.id.textViewShopTimingDetail);
+        textViewShopDay = findViewById(R.id.textViewShopDayDetail);
         textViewRating = findViewById(R.id.textViewShopRatingDetail);
         textViewNumberOfOrders = findViewById(R.id.textViewNumberOfOrders);
         textViewReadMoreReviews = findViewById(R.id.textViewReadMoreReviews);
@@ -146,27 +165,37 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
         });
         recyclerView.setHasFixedSize(true);
         progressBar = findViewById(R.id.progressBar);
-//        if(shop!=null) {
-//
-//            reviewList = shop.getReviewList();
-//            Collections.reverse(reviewList);
-//            reviewAdapter = new ReviewAdapter(reviewList, false);
-//            recyclerView.setAdapter(reviewAdapter);
-//        }
     }
 
     private void getShopDetails() {
         viewModel = ViewModelProviders.of(ShopDetailActivity.this).get(NearbyShopsViewModel.class);
         viewModel.getShopsList().observe(ShopDetailActivity.this, new Observer<List<ShopsEntity>>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<ShopsEntity> shopsEntities) {
                 if(shopsEntities.size()!=0) {
                     shop = shopsEntities.get(pos);
+                    if(shop.getImage()!=null) {
+                        imageViewShop.setImageURI(Uri.parse(shop.getImage()));
+                    }
                     textViewShopName.setText(getShopName());
                     textViewShopType.setText("Shop Type : " + shop.getShopType());
                     textViewShopAddress.setText("Shop Address : " + shop.getAddress());
+                    if(shop.getTimings()!=null) {
+                        String openTime = shop.getTimings().split("!")[0].split("-")[0];
+                        String closeTime = shop.getTimings().split("!")[0].split("-")[1];
+                        textViewShopTiming.setText("Shop Timing : " + convertInto12Hour(Integer.parseInt(openTime.split(":")[0]),
+                                Integer.parseInt(openTime.split(":")[1])) + " - " +
+                                convertInto12Hour(Integer.parseInt(closeTime.split(":")[0]),
+                                        Integer.parseInt(closeTime.split(":")[1])));
+                        if(shop.getTimings().length()>11) {
+                            shopDay = shop.getTimings().split("!")[1];
+                            setDay();
+                        }
+                    }
                     textViewNumberOfOrders.setText(shop.getNumberOfOrders() + " orders completed");
-                    textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
+                    setDelivery(shop);
+                    setPreparing(shop);
                     phoneNumber = shop.getPhoneNumber();
                     if(shop!=null) {
                         if(shop.isFavourite()) {
@@ -208,19 +237,6 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                 }
             }
         });
-    }
-
-    private String getShopName() {
-        String name = shop.getShopName();
-        String shopName = "";
-        int firstAscii = (int)name.charAt(0);
-        if(firstAscii >= 97 && firstAscii <= 122) {
-            shopName = (char)(firstAscii - 32) + name.substring(1);
-        }
-        else {
-            shopName = name;
-        }
-        return shopName;
     }
 
     private void setClickListeners() {
@@ -272,22 +288,37 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                 textViewPickup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(ShopDetailActivity.this, "Pickup",
-                                Toast.LENGTH_LONG).show();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), true,
-                                        shop.isFavourite(), pos)).addToBackStack(null).commit();
+                        if(isPickup) {
+                            Toast.makeText(ShopDetailActivity.this, "Pickup",
+                                    Toast.LENGTH_LONG).show();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                                    new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), true,
+                                            shop.isFavourite(), pos, isPickup, isDelivery && isPickup))
+                                    .addToBackStack(null).commit();
+                        }
+                        else {
+                            Toast.makeText(ShopDetailActivity.this, "Pickup Not Available",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 });
 
                 textViewDelivery.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(ShopDetailActivity.this, "Delivery",
-                                Toast.LENGTH_LONG).show();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
-                                new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), false,
-                                        shop.isFavourite(), pos)).addToBackStack(null).commit();
+                        if(isDelivery && isPickup) {
+                            Toast.makeText(ShopDetailActivity.this, "Delivery",
+                                    Toast.LENGTH_LONG).show();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
+                                    new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), false,
+                                            shop.isFavourite(), pos, isPickup, isDelivery && isPickup))
+                                    .addToBackStack(null).commit();
+                        }
+                        else {
+                            Toast.makeText(ShopDetailActivity.this, "Delivery Not Available",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -315,6 +346,149 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                 onBackPressed();
             }
         });
+    }
+
+    @SuppressLint({"SetTextI18n"})
+    private void setDelivery(ShopsEntity shop) {
+        double distance = Math.round (shop.getDistance() * 100.0) / 100.0;
+        if(shop.isDelivery() && Double.parseDouble(shop.getDeliveryRadius()) >= distance) {
+            textViewLocation.setText("Delivering to : " + prefUtils.getAddress());
+            imageViewDelivering.setImageResource(R.drawable.tick);
+            textViewDelivery.setTextColor(getResources().getColor(R.color.black));
+            isDelivery = true;
+        }
+        else {
+            textViewLocation.setText("Not Delivering to : " + prefUtils.getAddress());
+            imageViewDelivering.setImageResource(R.drawable.cross);
+            textViewDelivery.setTextColor(getResources().getColor(R.color.colorGrey));
+            isDelivery = false;
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setPreparing(ShopsEntity shop) {
+
+        if(shop.getTimings().length() > 11) {
+            final Calendar c = Calendar.getInstance();
+            int mHour = c.get(Calendar.HOUR_OF_DAY);
+            int mMinute = c.get(Calendar.MINUTE);
+            int day = c.get(Calendar.DAY_OF_WEEK);
+            String openTime = shop.getTimings().split("!")[0].split("-")[0];
+            String closeTime = shop.getTimings().split("!")[0].split("-")[1];
+            String shopDay = shop.getTimings().split("!")[1];
+            boolean isTimeInRange;
+            boolean isPreparing = false;
+
+            if(mHour > Integer.parseInt(openTime.split(":")[0]) &&
+                    mHour < Integer.parseInt(closeTime.split(":")[0])) {
+                isTimeInRange = true;
+            }
+            else if(mHour == Integer.parseInt(openTime.split(":")[0]) &&
+                    mMinute >= Integer.parseInt(openTime.split(":")[1])) {
+                isTimeInRange = true;
+            }
+            else if(mHour == Integer.parseInt(closeTime.split(":")[0]) &&
+                    mMinute <= Integer.parseInt(closeTime.split(":")[1])) {
+                isTimeInRange = true;
+            }
+            else {
+                isTimeInRange = false;
+            }
+
+            if(isTimeInRange) {
+                switch (day) {
+                    case Calendar.MONDAY :
+                        isPreparing = shopDay.charAt(0) == 'M';
+                        break;
+
+                    case Calendar.TUESDAY:
+                        isPreparing = shopDay.charAt(1) == 'T';
+                        break;
+
+                    case Calendar.WEDNESDAY:
+                        isPreparing = shopDay.charAt(2) == 'W';
+                        break;
+
+                    case Calendar.THURSDAY:
+                        isPreparing = shopDay.charAt(3) == 'T';
+                        break;
+
+                    case Calendar.FRIDAY:
+                        isPreparing = shopDay.charAt(4) == 'F';
+                        break;
+
+                    case Calendar.SATURDAY:
+                        isPreparing = shopDay.charAt(5) == 'S';
+                        break;
+
+                    case Calendar.SUNDAY:
+                        isPreparing = shopDay.charAt(6) == 'S';
+                        break;
+
+                }
+            }
+
+            if(isTimeInRange && isPreparing) {
+                textViewPreparing.setText("Currently preparing order for Pickup");
+                imageViewPreparing.setImageResource(R.drawable.tick);
+                isPickup = true;
+            }
+            else {
+                textViewPreparing.setText("Not preparing order for Pickup");
+                imageViewPreparing.setImageResource(R.drawable.cross);
+                isPickup = false;
+            }
+        }
+    }
+
+    private String getShopName() {
+        String name = shop.getShopName();
+        String shopName = "";
+        int firstAscii = (int)name.charAt(0);
+        if(firstAscii >= 97 && firstAscii <= 122) {
+            shopName = (char)(firstAscii - 32) + name.substring(1);
+        }
+        else {
+            shopName = name;
+        }
+        return shopName;
+    }
+
+    private String convertInto12Hour(int hourOfDay, int minute) {
+        String format;
+        if (hourOfDay == 0) {
+            hourOfDay += 12;
+            format = "AM";
+        }
+        else if (hourOfDay == 12) {
+            format = "PM";
+        }
+        else if (hourOfDay > 12) {
+            hourOfDay -= 12;
+            format = "PM";
+        }
+        else {
+            format = "AM";
+        }
+
+        return hourOfDay + ":" + minute + " " + format;
+    }
+
+    private void setDay() {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        SpannableString redSpannable= new SpannableString("M T W T F S S");
+        boolean[] dayArray = new boolean[]{shopDay.charAt(0) == 'M', shopDay.charAt(1) == 'T',
+                shopDay.charAt(2) == 'W', shopDay.charAt(3) == 'T', shopDay.charAt(4) == 'F',
+                shopDay.charAt(5) == 'S', shopDay.charAt(6) == 'S'};
+        for(int i=0; i<dayArray.length; i++) {
+            if(dayArray[i]) {
+                redSpannable.setSpan(new ForegroundColorSpan(Color.RED), i*2, (i*2)+1, 0);
+            }
+        }
+        builder.append(redSpannable);
+
+        textViewShopDay.setText(builder, TextView.BufferType.SPANNABLE);
     }
 
     private void call() {

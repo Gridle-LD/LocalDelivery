@@ -3,6 +3,7 @@ package com.gridle.localdelivery.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.gridle.localdelivery.R;
 import com.gridle.localdelivery.local.Entity.ShopsEntity;
 import com.gridle.localdelivery.model.NearbyShopsResponse;
@@ -58,6 +61,9 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
             else {
                 shopName = name;
             }
+        }
+        if(nearbyShopsObject.getImage()!=null) {
+            holder.imageViewShop.setImageURI(Uri.parse(nearbyShopsObject.getImage()));
         }
         holder.textViewShopName.setText(shopName);
         holder.textViewShopType.setText(nearbyShopsObject.getShopType());
@@ -109,7 +115,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopsAdapter.NearbyShopsV
 
     public static class NearbyShopsViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView imageViewShop;
+        public SimpleDraweeView imageViewShop;
         public TextView textViewShopName;
         public TextView textViewShopType;
         public TextView textViewShopDistance;
