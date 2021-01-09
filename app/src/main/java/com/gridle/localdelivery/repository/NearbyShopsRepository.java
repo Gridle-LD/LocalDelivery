@@ -2,9 +2,11 @@ package com.gridle.localdelivery.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 import androidx.lifecycle.LiveData;
 import com.gridle.localdelivery.Interface.JsonApiHolder;
+import com.gridle.localdelivery.activity.SignUpLoginActivity;
 import com.gridle.localdelivery.local.Dao.ShopsDao;
 import com.gridle.localdelivery.local.ShopsDatabase;
 import com.gridle.localdelivery.local.Entity.ShopsEntity;
@@ -202,6 +204,10 @@ public class NearbyShopsRepository {
                             @Override
                             public void onError(Throwable e) {
                                 Toast.makeText(context, "Please Re-Login !", Toast.LENGTH_SHORT).show();
+                                prefUtils.logoutUser();
+                                Intent intent = new Intent(context, SignUpLoginActivity.class)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
                             }
                         }));
     }

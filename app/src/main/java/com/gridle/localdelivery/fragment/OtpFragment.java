@@ -1,6 +1,7 @@
 package com.gridle.localdelivery.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyListener, View.OnFocusChangeListener{
 
@@ -56,6 +59,9 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
     private CompositeDisposable disposable = new CompositeDisposable();
     private ImageView imageViewOtpVerifyScreen;
     private int otpRequestCode = 10;
+
+    //isOtpVerification is used to know whether this otp is for verification or not
+    private boolean isOtpVerification = true;
     private static OtpFragment instance;
 
     public OtpFragment(String username, String userId, String mobileNumber, String password) {
@@ -63,6 +69,13 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         this.userId = userId;
         this.mobileNumber = mobileNumber;
         this.password = password;
+        isOtpVerification = true;
+    }
+
+    public OtpFragment(String userId, String mobileNumber) {
+        this.userId = userId;
+        this.mobileNumber = mobileNumber;
+        isOtpVerification = false;
     }
 
     public OtpFragment() {
@@ -89,7 +102,13 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
 
         setView(view);
         setListeners();
-        startTimer();
+        if(isOtpVerification) {
+            startTimer();
+        }
+        else {
+            timer_text_view.setVisibility(View.INVISIBLE);
+            resend_otp_text.setVisibility(View.INVISIBLE);
+        }
         setClickListeners();
 
         return view;
@@ -135,10 +154,15 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                     Toast.makeText(mContext, "Fill all the fields !", Toast.LENGTH_LONG).show();
                     return;
                 }
-                stopTimer();
-                timer_text_view.setVisibility(View.INVISIBLE);
-                resend_otp_text.setVisibility(View.INVISIBLE);
-                verifyOtp(otp);
+                if(isOtpVerification) {
+                    stopTimer();
+                    timer_text_view.setVisibility(View.INVISIBLE);
+                    resend_otp_text.setVisibility(View.INVISIBLE);
+                    verifyOtp(otp);
+                }
+                else {
+                    verifyOtpPasswordChange(otp);
+                }
             }
         });
 
@@ -269,6 +293,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch(v.getId())
@@ -294,6 +319,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN)
@@ -348,6 +374,9 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
 
     public void verifyOtp(String otp) {
         OtpData otpData = new OtpData(otp);
+        imageViewOtpVerifyScreen.setVisibility(View.VISIBLE);
+        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         disposable.add(
                 jsonApiHolder.verifyOtp(userId, otpData)
@@ -363,15 +392,48 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                                 prefUtils.setContactNumber(mobileNumber);
                                 prefUtils.setPassword(password);
                                 imageViewOtpVerifyScreen.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                                 getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
                                         new GpsFragment()).commit();
                             }
 
                             @Override
                             public void onError(Throwable e) {
+                                imageViewOtpVerifyScreen.setVisibility(View.GONE);
+                                mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                                 Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
                             }
                         }));
+    }
+
+    private void verifyOtpPasswordChange(String otp) {
+        imageViewOtpVerifyScreen.setVisibility(View.VISIBLE);
+        mActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        disposable.add(
+                jsonApiHolder.verifyOtpForChangePassword(userId, new OtpData(otp))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull ResponseBody responseBody) {
+                        imageViewOtpVerifyScreen.setVisibility(View.GONE);
+                        mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                                new ChangePasswordFragment(userId, username)).commit();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                        imageViewOtpVerifyScreen.setVisibility(View.GONE);
+                        mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        Toast.makeText(mContext, "An Error Occurred !", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        );
     }
 
     private void resendOtp() {

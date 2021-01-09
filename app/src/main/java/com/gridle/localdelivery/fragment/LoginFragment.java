@@ -42,6 +42,7 @@ public class LoginFragment extends Fragment {
     private EditText editTextPassword;
     private ImageView imageViewButtonLogin;
     private TextView textViewSignUp;
+    private TextView textViewForgotPassword;
     private ProgressBar progressBar;
     private JsonApiHolder jsonApiHolder;
     private PrefUtils prefUtils;
@@ -81,6 +82,7 @@ public class LoginFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.editTextPasswordLogin);
         imageViewButtonLogin = view.findViewById(R.id.buttonLogin);
         textViewSignUp = view.findViewById(R.id.textViewSignUpLogin);
+        textViewForgotPassword = view.findViewById(R.id.textViewForgotPassword);
         progressBar = view.findViewById(R.id.progressBarLogin);
         viewBlurr = view.findViewById(R.id.blurr_screen_login);
     }
@@ -121,6 +123,14 @@ public class LoginFragment extends Fragment {
                 }
 
                 login(mobileNumber, password);
+            }
+        });
+
+        textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
+                        new ForgotPasswordFragment()).commit();
             }
         });
 

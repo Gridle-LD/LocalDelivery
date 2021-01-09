@@ -130,6 +130,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+            <TextView
+                android:id="@+id/textViewForgotPassword"
+                style="?android:borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="Forgot Password?"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

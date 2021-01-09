@@ -1,9 +1,11 @@
 package com.gridle.localdelivery.Interface;
 
 import com.gridle.localdelivery.model.CancelOrderData;
+import com.gridle.localdelivery.model.ChangePasswordData;
 import com.gridle.localdelivery.model.FavData;
 import com.gridle.localdelivery.model.FavResponse;
 import com.gridle.localdelivery.model.FeedbackData;
+import com.gridle.localdelivery.model.ForgotPasswordData;
 import com.gridle.localdelivery.model.LoginData;
 import com.gridle.localdelivery.model.LoginResponse;
 import com.gridle.localdelivery.model.NearbyShopsData;
@@ -35,6 +37,15 @@ public interface JsonApiHolder {
 
     @POST("user/otpVerify/{userId}")
     Single<OtpResponse> verifyOtp(@Path("userId") String id, @Body OtpData otpData);
+
+    @POST("user/forgotpassword")
+    Single<SignUpResponse> forgotPassword(@Body ForgotPasswordData forgotPasswordData);
+
+    @POST("user/verifyotp/{userId}")
+    Single<ResponseBody> verifyOtpForChangePassword(@Path("userId") String id, @Body OtpData otpData);
+
+    @POST("user/changeforgottenpassword")
+    Single<ResponseBody> changePassword(@Body ChangePasswordData changePasswordData);
 
     @POST("user/login")
     Single<LoginResponse> login(@Body LoginData loginData);
