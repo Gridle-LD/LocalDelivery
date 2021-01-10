@@ -14,6 +14,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -49,6 +50,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
     private TextView textViewNumber;
     private TextView textViewAddress;
     private TextView textViewStatus;
+    private TextView textViewDeliveryPrice;
     private TextView textViewTotalBill;
     private ImageView imageViewCompleted;
     private ImageView imageViewPending;
@@ -87,6 +89,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         textViewNumber = findViewById(R.id.textViewNumberConfirmedOrder);
         textViewAddress = findViewById(R.id.textViewAddressConfirmedOrder);
         textViewStatus = findViewById(R.id.textViewStatusConfirmedOrder);
+        textViewDeliveryPrice = findViewById(R.id.textViewDeliveryPriceConfirmedOrder);
         textViewTotalBill = findViewById(R.id.text_view_total_bill_confirmed_order);
         imageViewCompleted = findViewById(R.id.imageViewTickConfirmedOrder);
         imageViewPending = findViewById(R.id.imageViewPendingConfirmedOrder);
@@ -122,11 +125,15 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
             setPendingView();
         }
         textViewShopName.setText(order.getShopId().getShopDetails().getShopName());
+        textViewNumber.setText(order.getShopId().getPhoneNumber());
+        textViewDeliveryPrice.setText("Delivery Price : Rs " + order.getDeliveryPrice());
         if(order.isPickUp()) {
             textViewShopType.setText("PickUp");
+            textViewDeliveryPrice.setVisibility(View.INVISIBLE);
         }
         else {
             textViewShopType.setText("Delivery");
+            textViewDeliveryPrice.setVisibility(View.VISIBLE);
         }
 
         String time = convertTime(getStandardTime(order.getCreatedAt()).substring(11, 16));
@@ -135,7 +142,7 @@ public class ConfirmedOrderActivity extends AppCompatActivity {
         textViewTimePlaced.setText(time);
         //TODO : set shop phone number
         textViewAddress.setText(order.getShopId().getShopDetails().getAddress());
-        int price = Integer.parseInt(allOrders.get(pos).getOrder().get(0).getTotalPrice());
+        int price = Integer.parseInt(order.getTotalPrice());
         textViewTotalBill.setText("Bill Total : " + price);
 
         progressBar.setVisibility(View.GONE);

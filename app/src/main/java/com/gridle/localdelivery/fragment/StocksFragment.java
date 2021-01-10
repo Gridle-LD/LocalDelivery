@@ -53,6 +53,7 @@ public class StocksFragment extends Fragment {
     private boolean isFav;
     private boolean isPickupAvailable;
     private boolean isDeliveryAvailable;
+    private int deliveryPrice = 0;
     private int pos;
     private NearbyShopsViewModel viewModel;
     private StocksTabLayoutAdapter mainPagerAdapter;
@@ -73,7 +74,8 @@ public class StocksFragment extends Fragment {
     }
 
     public StocksFragment(List<StocksData> shop, String shopId, String shopName, boolean isPickup,
-                          boolean isFav, int pos, boolean isPickupAvailable, boolean isDeliveryAvailable) {
+                          boolean isFav, int pos, boolean isPickupAvailable, boolean isDeliveryAvailable,
+                          int deliveryPrice) {
         cartList = new ArrayList<>();
         StocksFragment.shop = shop;
         this.shopId = shopId;
@@ -83,6 +85,7 @@ public class StocksFragment extends Fragment {
         this.pos = pos;
         this.isPickupAvailable = isPickupAvailable;
         this.isDeliveryAvailable = isDeliveryAvailable;
+        this.deliveryPrice = deliveryPrice;
     }
 
     @Override
@@ -210,7 +213,7 @@ public class StocksFragment extends Fragment {
                 if(cartList.size()>0) {
                     getParentFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
                             new OrderFragment(shop, cartList, shopId, shopName, isPickup, isFav, pos,
-                                    isPickupAvailable, isDeliveryAvailable)).commit();
+                                    isPickupAvailable, isDeliveryAvailable, deliveryPrice)).commit();
                 }
                 else {
                     Toast.makeText(mContext, "You haven't selected any Item !", Toast.LENGTH_LONG).show();

@@ -66,11 +66,13 @@ public class OrdersResponse {
                 private List<Items> items;
                 private ShopId shopId;
                 private String totalPrice;
+                private String deliveryPrice;
                 private String createdAt;
                 private String updatedAt;
 
                 public Order(String status, boolean pickUp, String paymentType, String otp, String _id,
-                             List<Items> items, ShopId shopId, String totalPrice, String createdAt, String updatedAt) {
+                             List<Items> items, ShopId shopId, String totalPrice, String deliveryPrice,
+                             String createdAt, String updatedAt) {
                     this.status = status;
                     this.pickUp = pickUp;
                     this.paymentType = paymentType;
@@ -79,9 +81,24 @@ public class OrdersResponse {
                     this.items = items;
                     this.shopId = shopId;
                     this.totalPrice = totalPrice;
+                    this.deliveryPrice = deliveryPrice;
                     this.createdAt = createdAt;
                     this.updatedAt = updatedAt;
                 }
+
+//                public Order(String status, boolean pickUp, String paymentType, String otp, String _id,
+//                             List<Items> items, ShopId shopId, String totalPrice, String createdAt, String updatedAt) {
+//                    this.status = status;
+//                    this.pickUp = pickUp;
+//                    this.paymentType = paymentType;
+//                    this.otp = otp;
+//                    this._id = _id;
+//                    this.items = items;
+//                    this.shopId = shopId;
+//                    this.totalPrice = totalPrice;
+//                    this.createdAt = createdAt;
+//                    this.updatedAt = updatedAt;
+//                }
 
                 public String getStatus() {
                     return status;
@@ -145,6 +162,14 @@ public class OrdersResponse {
 
                 public void setTotalPrice(String totalPrice) {
                     this.totalPrice = totalPrice;
+                }
+
+                public String getDeliveryPrice() {
+                    return deliveryPrice;
+                }
+
+                public void setDeliveryPrice(String deliveryPrice) {
+                    this.deliveryPrice = deliveryPrice;
                 }
 
                 public String getCreatedAt() {
@@ -333,9 +358,11 @@ public class OrdersResponse {
 
                 public static class ShopId {
                     private ShopDetails shopDetails;
+                    private String phoneNumber;
 
-                    public ShopId(ShopDetails shopDetails) {
+                    public ShopId(ShopDetails shopDetails, String phoneNumber) {
                         this.shopDetails = shopDetails;
+                        this.phoneNumber = phoneNumber;
                     }
 
                     public ShopDetails getShopDetails() {
@@ -344,6 +371,14 @@ public class OrdersResponse {
 
                     public void setShopDetails(ShopDetails shopDetails) {
                         this.shopDetails = shopDetails;
+                    }
+
+                    public String getPhoneNumber() {
+                        return phoneNumber;
+                    }
+
+                    public void setPhoneNumber(String phoneNumber) {
+                        this.phoneNumber = phoneNumber;
                     }
 
                     public static class ShopDetails {

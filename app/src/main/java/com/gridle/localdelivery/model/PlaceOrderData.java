@@ -37,19 +37,31 @@ public class PlaceOrderData {
             private String shopId;
             private List<Items> items;
             private String totalPrice;
+            private String deliveryPrice;
             private boolean pickUp;
             private String paymentType;
             private String time;
 
-            public Shop(String shopId, List<Items> items, String totalPrice, boolean pickUp, String paymentType,
-                        String time) {
+            public Shop(String shopId, List<Items> items, String totalPrice, String deliveryPrice, boolean pickUp,
+                        String paymentType, String time) {
                 this.shopId = shopId;
                 this.items = items;
                 this.totalPrice = totalPrice;
+                this.deliveryPrice = deliveryPrice;
                 this.pickUp = pickUp;
                 this.paymentType = paymentType;
                 this.time = time;
             }
+
+//            public Shop(String shopId, List<Items> items, String totalPrice, boolean pickUp, String paymentType,
+//                        String time) {
+//                this.shopId = shopId;
+//                this.items = items;
+//                this.totalPrice = totalPrice;
+//                this.pickUp = pickUp;
+//                this.paymentType = paymentType;
+//                this.time = time;
+//            }
 
             public String getShopId() {
                 return shopId;
@@ -73,6 +85,14 @@ public class PlaceOrderData {
 
             public void setTotalPrice(String totalPrice) {
                 this.totalPrice = totalPrice;
+            }
+
+            public String getDeliveryPrice() {
+                return deliveryPrice;
+            }
+
+            public void setDeliveryPrice(String deliveryPrice) {
+                this.deliveryPrice = deliveryPrice;
             }
 
             public boolean isPickUp() {

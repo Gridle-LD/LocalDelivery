@@ -57,6 +57,7 @@ public class OrderFragment extends Fragment {
     private OrderItemAdapter orderItemAdapter;
     private List<StocksData> shop;
     private List<StocksData> cartList;
+    private TextView textViewDeliveryPrice;
     private TextView textViewTotalBill;
     private TextView textViewAddAnotherItem;
     private int price;
@@ -89,11 +90,14 @@ public class OrderFragment extends Fragment {
     private View viewBlurr;
     private boolean isPickupAvailable;
     private boolean isDeliveryAvailable;
+    private int deliveryPrice;
+    private boolean isDeliveryPriceAdded = false;
 
     private Integer ActivityRequestCode = 200;
 
     public OrderFragment(List<StocksData> shop, List<StocksData> cartList, String shopId, String shopName,
-                         boolean isPickup, boolean isFav, int pos, boolean isPickupAvailable, boolean isDeliveryAvailable) {
+                         boolean isPickup, boolean isFav, int pos, boolean isPickupAvailable,
+                         boolean isDeliveryAvailable, int deliveryPrice) {
         this.shop = shop;
         this.cartList = cartList;
         this.shopId = shopId;
@@ -103,6 +107,7 @@ public class OrderFragment extends Fragment {
         this.pos = pos;
         this.isPickupAvailable = isPickupAvailable;
         this.isDeliveryAvailable = isDeliveryAvailable;
+        this.deliveryPrice = deliveryPrice;
     }
 
     @Override
@@ -126,6 +131,12 @@ public class OrderFragment extends Fragment {
         calculateTotalPrice();
         setClickListeners();
 
+        //add delivery price if delivery is selected
+        if(!isPickup) {
+            price += deliveryPrice;
+            isDeliveryPriceAdded = true;
+        }
+
         //set total price
         textViewTotalBill.setText("Bill Total : Rs " + price);
         return view;
@@ -133,6 +144,7 @@ public class OrderFragment extends Fragment {
 
     private void setView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_order_item_list);
+        textViewDeliveryPrice = view.findViewById(R.id.textViewDeliveryPrice);
         textViewTotalBill = view.findViewById(R.id.textViewBillTotal);
         textViewAddAnotherItem = view.findViewById(R.id.textViewAddAnotherItem);
         imageViewPlaceOrder = view.findViewById(R.id.imageButtonPlaceOrder);
@@ -153,17 +165,19 @@ public class OrderFragment extends Fragment {
         viewBlurr = view.findViewById(R.id.blurr_screen_order);
 
         textViewAddress.setText(prefUtils.getAddress());
-
         textViewShopName.setText(shopName);
+        textViewDeliveryPrice.setText("Delivery Price : Rs " + String.valueOf(deliveryPrice));
 
         if(isPickup) {
             dividerPickup.setVisibility(View.VISIBLE);
             dividerDelivery.setVisibility(View.GONE);
+            textViewDeliveryPrice.setVisibility(View.INVISIBLE);
             constraintLayoutAddress.setVisibility(View.GONE);
         }
         else {
             dividerPickup.setVisibility(View.GONE);
             dividerDelivery.setVisibility(View.VISIBLE);
+            textViewDeliveryPrice.setVisibility(View.VISIBLE);
             constraintLayoutAddress.setVisibility(View.VISIBLE);
         }
 
@@ -225,7 +239,15 @@ public class OrderFragment extends Fragment {
                 isPickup = true;
                 dividerPickup.setVisibility(View.VISIBLE);
                 dividerDelivery.setVisibility(View.GONE);
+                textViewDeliveryPrice.setVisibility(View.INVISIBLE);
                 constraintLayoutAddress.setVisibility(View.GONE);
+
+                //remove delivery price if previously added
+                if(isDeliveryPriceAdded) {
+                    price -= deliveryPrice;
+                    isDeliveryPriceAdded = false;
+                    textViewTotalBill.setText("Bill Total : Rs " + price);
+                }
             }
         });
 
@@ -236,7 +258,15 @@ public class OrderFragment extends Fragment {
                     isPickup = false;
                     dividerPickup.setVisibility(View.GONE);
                     dividerDelivery.setVisibility(View.VISIBLE);
+                    textViewDeliveryPrice.setVisibility(View.VISIBLE);
                     constraintLayoutAddress.setVisibility(View.VISIBLE);
+
+                    //add delivery price if previously not added
+                    if(!isDeliveryPriceAdded) {
+                        price += deliveryPrice;
+                        isDeliveryPriceAdded = true;
+                        textViewTotalBill.setText("Bill Total : Rs " + price);
+                    }
                 }
             }
         });
@@ -295,7 +325,7 @@ public class OrderFragment extends Fragment {
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
                         new StocksFragment(shop, shopId, shopName, isPickup, isFav, pos, isPickupAvailable,
-                                isDeliveryAvailable))
+                                isDeliveryAvailable, deliveryPrice))
                         .commit();
             }
         });
@@ -356,7 +386,7 @@ public class OrderFragment extends Fragment {
 
         String currentTime = new SimpleDateFormat("HH:mm:ss_dd-MM-yyyy").format(new Date());
         PlaceOrderData.Order.Shop shop = new PlaceOrderData.Order.Shop(shopId, itemsList, String.valueOf(price),
-                isPickup, orderType, currentTime);
+                String.valueOf(deliveryPrice), isPickup, orderType, currentTime);
         PlaceOrderData.Order order = new PlaceOrderData.Order(shop);
         List<PlaceOrderData.Order> orderList = new ArrayList<>();
         orderList.add(order);

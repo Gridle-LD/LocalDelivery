@@ -86,6 +86,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
     private String shopDay = "MTWTFSS";
     private boolean isDelivery = false;
     private boolean isPickup = true;
+    private int deliveryPrice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,7 +294,8 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                                     Toast.LENGTH_LONG).show();
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
                                     new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), true,
-                                            shop.isFavourite(), pos, isPickup, isDelivery && isPickup))
+                                            shop.isFavourite(), pos, isPickup, isDelivery && isPickup,
+                                            deliveryPrice))
                                     .addToBackStack(null).commit();
                         }
                         else {
@@ -312,7 +314,8 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
                                     Toast.LENGTH_LONG).show();
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_visit_store,
                                     new StocksFragment(shop.getStock(), shop.get_id(), getShopName(), false,
-                                            shop.isFavourite(), pos, isPickup, isDelivery && isPickup))
+                                            shop.isFavourite(), pos, isPickup, isDelivery && isPickup,
+                                            deliveryPrice))
                                     .addToBackStack(null).commit();
                         }
                         else {
@@ -356,6 +359,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ImageClickL
             imageViewDelivering.setImageResource(R.drawable.tick);
             textViewDelivery.setTextColor(getResources().getColor(R.color.black));
             isDelivery = true;
+            deliveryPrice = Integer.parseInt(shop.getDeliveryRate());
         }
         else {
             textViewLocation.setText("Not Delivering to : " + prefUtils.getAddress());
