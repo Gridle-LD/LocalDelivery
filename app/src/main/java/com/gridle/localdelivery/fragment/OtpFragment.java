@@ -423,7 +423,7 @@ public class OtpFragment extends Fragment implements TextWatcher, View.OnKeyList
                         imageViewOtpVerifyScreen.setVisibility(View.GONE);
                         mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
-                                new ChangePasswordFragment(userId, username)).commit();
+                                new ChangePasswordFragment(userId, mobileNumber)).commit();
                     }
 
                     @Override

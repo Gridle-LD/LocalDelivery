@@ -129,10 +129,7 @@ public class ChangePasswordFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-//                        prefUtils.setContactNumber(phoneNumber);
-//                        prefUtils.setPassword(password);
-//                        prefUtils.setUserId(userId);
-
+                        Toast.makeText(mContext, "Password Updated !", Toast.LENGTH_SHORT).show();
                         getParentFragmentManager().beginTransaction().replace(R.id.fragment_sign_up_login,
                                 new LoginFragment()).commit();
                     }
